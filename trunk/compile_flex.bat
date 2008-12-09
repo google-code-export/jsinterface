@@ -1,0 +1,2 @@
+"c:\Program Files\Adobe\Flex Builder 3\sdks\3.0.0\bin\compc.exe" -source-path Z:\home\localhost\www\JSInterface\ . -namespace aw.external.JSInterface Z:\home\localhost\www\JSInterface\manifest_flex.xml -include-namespaces aw.external.JSInterface -output Z:\home\localhost\www\JSInterface\JSInterface_flex.swc -include-classes aw.external.JSInterface -include-file icon.png Z:\home\localhost\www\JSInterface\icon.png
+pause
