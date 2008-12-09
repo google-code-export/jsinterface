@@ -1,0 +1,36 @@
+<macromedia-extension
+	 name="JSInterface"
+	 version="1.1"
+	 type="flashcomponentswc"
+	 requires-restart="true">
+
+	<author name="a_[w], http://www.actualwave.com/" />
+
+	<products>
+		<product name="Flash" version="9" primary="true" required="true" />
+	</products>
+
+	<description>
+	<![CDATA[
+	JavaScript API component.
+	]]>
+	</description>
+
+	<ui-access>
+	<![CDATA[
+	You can add this component to Library by choosing:<br>
+Windows > Components > a_[w] > JSInterface
+	]]>
+	</ui-access>
+
+	<license-agreement>
+	<![CDATA[
+	
+	]]>
+	</license-agreement>
+
+	<files>
+		<file source="JSInterface_flash.swc" destination="$flash/Components/a_[w]" />
+	</files>
+
+</macromedia-extension>
