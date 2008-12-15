@@ -1,0 +1,74 @@
+<html>
+<head><title>${title}</title>
+<style type="text/css">
+body { margin: 0px; overflow:hidden }
+</style>
+<script type="text/javascript" src="flash_objects.js"></script>
+<script type="text/javascript">
+	flash('flash.geom.Matrix');
+	flash('flash.text.TextField');
+	flash('flash.display.Sprite');
+	flash('flash.display.SimpleButton');
+	flash('flash.display.GradientType');
+	flash('flash.display.Graphics');
+	function onJSIInstalled(){
+		try{
+			var w = 100;
+			var h = 20;
+			var m = new Matrix();
+			m.createGradientBox(w, h, Math.PI/2);
+			var root = new Sprite(FLObject.root());
+			var btn = new SimpleButton();
+			btn.x(100);
+			btn.y(100);
+			btn.upState(createState(w, h, 0xaaaaaa, 0x666666, m));
+			btn.hitTestState(btn.upState());
+			btn.overState(createState(w, h, 0xeeeeee, 0x888888, m));
+			btn.downState(createState(w, h, 0xeeeeee, 0x666666, m));
+			btn.addEventListener('click', this.btnClickHandler);
+			root.addChild(btn);
+		}catch(e){
+			alert(e.message);
+		}
+	};
+	function createState(w, h, c1, c2, m){
+		var sprite = new Sprite();
+		var g = sprite.graphics();
+		g.beginGradientFill(GradientType.LINEAR, [c1, c2], [1, 1], [0, 255], m);
+		g.drawRoundRect(0, 0, w, h, 8);
+		g.endFill();
+		var txt = new TextField();
+		txt.width(w);
+		txt.height(h);
+		txt.htmlText('<p align="center"><font face="Verdana" size="10">Click button!</font></p>');
+		sprite.addChild(txt);
+		return sprite;
+	}
+	function btnClickHandler(e){
+		setTimeout(traceEvent, 1, ['CLICK!']);
+	}
+	function traceEvent(){
+		alert('CLICK!');
+	}
+</script>
+</head>
+<body scroll="no">
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="${application}" width="${width}" height="${height}"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="AS3ClassesExample.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="${bgcolor}" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="AS3ClassesExample.swf" quality="high" bgcolor="${bgcolor}"
+				width="${width}" height="${height}" name="${application}" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed>
+	</object>
+</body>
+</html>
