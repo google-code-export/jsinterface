@@ -1,0 +1,73 @@
+<html>
+<head><title></title>
+<style type="text/css">
+body { margin: 0px; overflow:hidden }
+</style>
+<script type="text/javascript">
+	function onJSIInstalled(){
+		try{
+			var w = 100;
+			var h = 20;
+			var m = FLObject.create('flash.geom.Matrix');
+			m.call('createGradientBox', [w, h, Math.PI/2]);
+			var root = FLObject.root();
+			var btn = FLObject.create('flash.display.SimpleButton');
+			btn.set('x', 100);
+			btn.set('y', 100);
+			btn.set('upState', createState(w, h, 0xaaaaaa, 0x666666, m));
+			btn.set('hitTestState', btn.get('upState'));
+			btn.set('overState', createState(w, h, 0xeeeeee, 0x888888, m));
+			btn.set('downState', createState(w, h, 0xeeeeee, 0x666666, m));
+			btn.call('addEventListener', ['click', this.btnClickHandler]);
+			root.call('addChild', [btn]);
+		}catch(e){
+			alert([e.message, e.description, e]);
+		}
+	};
+	function createState(w, h, c1, c2, m){
+		var sprite = FLObject.create('flash.display.Sprite');
+		var g = sprite.get('graphics');
+		g.call('beginGradientFill', [
+			'linear', 
+			new FLSimple([c1, c2]), 
+			new FLSimple([1, 1]), 
+			new FLSimple([0, 255]), 
+			m
+		]);
+		g.call('drawRoundRect', [0, 0, w, h, 8]);
+		g.call('endFill');
+		var txt = FLObject.create('flash.text.TextField');
+		txt.set('width', w);
+		txt.set('height', h);
+		txt.set('htmlText', '<p align="center"><font face="Verdana" size="10">Click button!</font></p>');
+		sprite.call('addChild', [txt]);
+		return sprite;
+	}
+	function btnClickHandler(e){
+		setTimeout(traceEvent, 1, ['CLICK!']);
+	}
+	function traceEvent(){
+		alert('CLICK!');
+	}
+</script>
+</head>
+<body scroll="no">
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="InstanceUse" width="100%" height="100%"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="InstanceUse.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#869ca7" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="InstanceUse.swf" quality="high" bgcolor="#869ca7"
+				width="100%" height="100%" name="InstanceUse" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed>
+	</object>
+</body>
+</html>

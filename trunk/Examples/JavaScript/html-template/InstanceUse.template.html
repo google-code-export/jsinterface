@@ -1,0 +1,67 @@
+<html>
+<head><title>${title}</title>
+<style type="text/css">
+body { margin: 0px; overflow:hidden }
+</style>
+<script type="text/javascript">
+	function onJSIInstalled(){
+		/*
+		 * Original FLObject syntax
+		 */
+		try{
+			var stage = FLObject.stage();
+			stage.set('align', 'TL');
+			stage.set('scaleMode', 'noScale');
+			var root = FLObject.root();
+			var image = root.get('image');
+				image.set('x', (stage.get('stageWidth')-image.get('width'))/2);
+				image.set('y', stage.get('stageHeight')/2-image.get('height'));
+			var text = window.text = root.get('text');
+				text.set('width', image.get('width'));
+				text.set('height', image.get('height'));
+				text.set('background', true);
+				text.set('backgroundColor', 0xffffff);
+				text.set('border', true);
+				text.set('borderColor', 0x000000);
+				text.set('multiline', true);
+				text.set('wordWrap', true);
+				text.set('type', 'input');
+				text.set('text', 'Hello world!');
+				text.set('x', image.get('x'));
+				text.set('y', image.get('y')+image.get('height')*2);
+			var button = root.get('button');
+				button.set('x', image.get('x')+(image.get('width')-button.get('width'))/2);
+				button.set('y', image.get('y')+image.get('height')*1.5-button.get('height')/2);
+				button.call('addEventListener', ['click', this.btnClickHandler]);
+		}catch(e){
+			alert(e.message);
+		}
+	};
+	function btnClickHandler(e){
+		setTimeout(traceEvent, 1);
+	}
+	function traceEvent(){
+		alert(text.get('text'));
+	}
+</script>
+</head>
+<body scroll="no">
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="${application}" width="${width}" height="${height}"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="InstanceUse.swf" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="${bgcolor}" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="InstanceUse.swf" quality="high" bgcolor="${bgcolor}"
+				width="${width}" height="${height}" name="${application}" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer">
+			</embed>
+	</object>
+</body>
+</html>
