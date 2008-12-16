@@ -1,4 +1,4 @@
-==JavaScript'ing inside Flash:==
+==!JavaScript'ing inside Flash:==
 {{{
 package{
 	import aw.external.JSInterface;
