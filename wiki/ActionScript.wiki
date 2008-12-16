@@ -49,7 +49,7 @@
 </script>
 }}}
 
-Use internal JavaScript framework(now in development):
+===Use internal !JavaScript framework(now in development):===
 {{{
 <script type="text/javascript" src="flash_objects.js"></script>
 <script type="text/javascript">
