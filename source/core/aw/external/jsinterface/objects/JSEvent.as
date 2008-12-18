@@ -1,0 +1,182 @@
+package aw.external.jsinterface.objects{
+	import aw.external.js_interface;
+	import aw.external.jsinterface.JSDynamic;
+	import aw.external.jsinterface.JSTypeMap;
+	
+	import flash.utils.getQualifiedClassName;
+	/**
+	 * <a href="http://www.aptana.com/reference/html/api/HTMLDOM2.index.html">HTML DOM Level 2 Reference</a> :: <a href="http://www.aptana.com/reference/html/api/Event.html">Event</a>.
+	 * Класс портирован по документации <a href="http://www.aptana.com/studio">Aptana Studio</a>.
+	 */
+	public dynamic class JSEvent extends JSDynamic{
+		static public const CLASS_NAME:String = 'Event';
+		static js_interface const ALT_KEY_PROPERTY:String = 'altKey';
+		static js_interface const BUBBLES_PROPERTY:String = 'bubbles';
+		static js_interface const CANCELABLE_PROPERTY:String = 'cancelable';
+		static js_interface const CLIENT_X_PROPERTY:String = 'clientX';
+		static js_interface const CLIENT_Y_PROPERTY:String = 'clientY';
+		static js_interface const CTRL_KEY_PROPERTY:String = 'ctrlKey';
+		static js_interface const CURRENT_TARGET_PROPERTY:String = 'currentTarget';
+		static js_interface const EVENT_PHASE_PROPERTY:String = 'eventPhase';
+		static js_interface const FROM_ELEMENT_PROPERTY:String = 'fromElement';
+		static js_interface const KEY_CODE_PROPERTY:String = 'keyCode';
+		static js_interface const OFFSET_X_PROPERTY:String = 'offsetX';
+		static js_interface const OFFSET_Y_PROPERTY:String = 'offsetY';
+		static js_interface const SCREEN_X_PROPERTY:String = 'screenX';
+		static js_interface const SCREEN_Y_PROPERTY:String = 'screenY';
+		static js_interface const SHIFT_KEY_PROPERTY:String = 'shiftKey';
+		static js_interface const SRC_ELEMENT_PROPERTY:String = 'srcElement';
+		static js_interface const TARGET_PROPERTY:String = 'target';
+		static js_interface const TO_ELEMENT_PROPERTY:String = 'toElement';
+		static js_interface const TYPE_PROPERTY:String = 'type';
+		static js_interface const X_PROPERTY:String = 'x';
+		static js_interface const Y_PROPERTY:String = 'y';
+		static js_interface const INIT_EVENT_METHOD:String = 'initEvent';
+		static js_interface const PREVENT_DEFAULT_METHOD:String = 'preventDefault';
+		static js_interface const STOP_PROPAGATION_METHOD:String = 'stopPropagation';
+		public function JSEvent(className:Object='', args:*=null):void{
+			if(className){
+				if(arguments.length>1 && !(args is Array)) args = [args];
+				super(className, args);
+			}else init();
+		}
+		public function get altKey():Boolean{
+			return this.internalGet(js_interface::ALT_KEY_PROPERTY);
+		}
+		public function set altKey(p:Boolean):void{
+			this.internalSet(js_interface::ALT_KEY_PROPERTY, p);
+		}
+		public function get bubbles():Boolean{
+			return this.internalGet(js_interface::BUBBLES_PROPERTY);
+		}
+		public function set bubbles(p:Boolean):void{
+			this.internalSet(js_interface::BUBBLES_PROPERTY, p);
+		}
+		public function get cancelable():Boolean{
+			return this.internalGet(js_interface::CANCELABLE_PROPERTY);
+		}
+		public function set cancelable(p:Boolean):void{
+			this.internalSet(js_interface::CANCELABLE_PROPERTY, p);
+		}
+		public function get clientX():int{
+			return this.internalGet(js_interface::CLIENT_X_PROPERTY);
+		}
+		public function set clientX(p:int):void{
+			this.internalSet(js_interface::CLIENT_X_PROPERTY, p);
+		}
+		public function get clientY():int{
+			return this.internalGet(js_interface::CLIENT_Y_PROPERTY);
+		}
+		public function set clientY(p:int):void{
+			this.internalSet(js_interface::CLIENT_Y_PROPERTY, p);
+		}
+		public function get ctrlKey():Boolean{
+			return this.internalGet(js_interface::CTRL_KEY_PROPERTY);
+		}
+		public function set ctrlKey(p:Boolean):void{
+			this.internalSet(js_interface::CTRL_KEY_PROPERTY, p);
+		}
+		public function get currentTarget():Object{
+			return this.internalGet(js_interface::CURRENT_TARGET_PROPERTY);
+		}
+		public function set currentTarget(p:Object):void{
+			this.internalSet(js_interface::CURRENT_TARGET_PROPERTY, p);
+		}
+		public function get eventPhase():int{
+			return this.internalGet(js_interface::EVENT_PHASE_PROPERTY);
+		}
+		public function set eventPhase(p:int):void{
+			this.internalSet(js_interface::EVENT_PHASE_PROPERTY, p);
+		}
+		public function get fromElement():JSElement{
+			return this.internalGet(js_interface::FROM_ELEMENT_PROPERTY);
+		}
+		public function set fromElement(p:JSElement):void{
+			this.internalSet(js_interface::FROM_ELEMENT_PROPERTY, p);
+		}
+		public function get keyCode():int{
+			return this.internalGet(js_interface::KEY_CODE_PROPERTY);
+		}
+		public function set keyCode(p:int):void{
+			this.internalSet(js_interface::KEY_CODE_PROPERTY, p);
+		}
+		public function get offsetX():int{
+			return this.internalGet(js_interface::OFFSET_X_PROPERTY);
+		}
+		public function set offsetX(p:int):void{
+			this.internalSet(js_interface::OFFSET_X_PROPERTY, p);
+		}
+		public function get offsetY():int{
+			return this.internalGet(js_interface::OFFSET_Y_PROPERTY);
+		}
+		public function set offsetY(p:int):void{
+			this.internalSet(js_interface::OFFSET_Y_PROPERTY, p);
+		}
+		public function get screenX():int{
+			return this.internalGet(js_interface::SCREEN_X_PROPERTY);
+		}
+		public function set screenX(p:int):void{
+			this.internalSet(js_interface::SCREEN_X_PROPERTY, p);
+		}
+		public function get screenY():int{
+			return this.internalGet(js_interface::SCREEN_Y_PROPERTY);
+		}
+		public function set screenY(p:int):void{
+			this.internalSet(js_interface::SCREEN_Y_PROPERTY, p);
+		}
+		public function get shiftKey():Boolean{
+			return this.internalGet(js_interface::SHIFT_KEY_PROPERTY);
+		}
+		public function set shiftKey(p:Boolean):void{
+			this.internalSet(js_interface::SHIFT_KEY_PROPERTY, p);
+		}
+		public function get srcElement():JSElement{
+			return this.internalGet(js_interface::SRC_ELEMENT_PROPERTY);
+		}
+		public function set srcElement(p:JSElement):void{
+			this.internalSet(js_interface::SRC_ELEMENT_PROPERTY, p);
+		}
+		public function get target():Object{
+			return this.internalGet(js_interface::TARGET_PROPERTY);
+		}
+		public function set target(p:Object):void{
+			this.internalSet(js_interface::TARGET_PROPERTY, p);
+		}
+		public function get toElement():JSElement{
+			return this.internalGet(js_interface::TO_ELEMENT_PROPERTY);
+		}
+		public function set toElement(p:JSElement):void{
+			this.internalSet(js_interface::TO_ELEMENT_PROPERTY, p);
+		}
+		public function get type():String{
+			return this.internalGet(js_interface::TYPE_PROPERTY);
+		}
+		public function set type(p:String):void{
+			this.internalSet(js_interface::TYPE_PROPERTY, p);
+		}
+		public function get x():int{
+			return this.internalGet(js_interface::X_PROPERTY);
+		}
+		public function set x(p:int):void{
+			this.internalSet(js_interface::X_PROPERTY, p);
+		}
+		public function get y():int{
+			return this.internalGet(js_interface::Y_PROPERTY);
+		}
+		public function set y(p:int):void{
+			this.internalSet(js_interface::Y_PROPERTY, p);
+		}
+		public function initEvent(eventTypeArg:String, canBubbleArg:Boolean, cancelableArg:Boolean):void{
+			this.internalCall(js_interface::INIT_EVENT_METHOD, arguments);
+		}
+		public function preventDefault():void{
+			this.internalCall(js_interface::PREVENT_DEFAULT_METHOD, arguments);
+		}
+		public function stopPropagation():void{
+			this.internalCall(js_interface::STOP_PROPAGATION_METHOD, arguments);
+		}
+		static public function create(...args:Array):JSEvent{
+			return new JSEvent(CLASS_NAME, args);
+		}
+	}
+}

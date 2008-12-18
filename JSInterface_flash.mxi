@@ -1,10 +1,10 @@
 <macromedia-extension
 	 name="JSInterface"
-	 version="2.2"
+	 version="2.3"
 	 type="flashcomponentswc"
 	 requires-restart="true">
 
-	<author name="a_[w], http://www.actualwave.com/" />
+	<author name="Galaburda a_[w] Oleg, http://www.actualwave.com/" />
 
 	<products>
 		<product name="Flash" version="9" primary="true" required="true" />
