@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<componentPackage>
+   <component
+       id="JSInterface (lite)"
+       class="JSInterfaceComponent"
+       preview="livepreview.swf"
+       icon="icon.png"
+   />
+</componentPackage>

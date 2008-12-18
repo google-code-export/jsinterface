@@ -1,2506 +1,1 @@
-//---------------------------------------------------------------------------------------------------- ШОРТКАТ ОБЪЕКТ
-/** Cодержит шорткаты-методы выполняющие несколько комбинированых действий */
-JSI = function(){};
-JSIHost = {};
-JSI.first;
-JSI.count = 0;
-/** Базовое имя создаваемых экземпляров объекта */
-JSI.name = '__jsi_';
-/** Индекс экземпляров объекта */
-JSI.index = 0;
-/** Список названий методов объекта window, которые будут вызваны при инициализации системы */
-JSI.isInstalled = false;
-JSI.installedEventList = ['onJSIInstalled', 'onjsiinstalled'];
-//---------------------------------------------------------------------------------------------------- JSI PUBLIC
-//---------------------------------------------------------------------------------------------------- JSI STATIC
-/** Создать экземпляр оъекта. Возвращает ссылку на него. 
- * 
- * @param {String} id
- * @param {String} url
- * @return {String}
- */
-JSI.create = function(id, url){
-	var nm = id ? id : JSI.name+String(JSI.index++);
-	var o = new JSIMain(id, url, nm);
-	if(!JSI.first){
-		JSI.first = o;
-	};
-	JSIHost[nm] = o;
-	JSI.count++;
-	return nm;
-};
-/** Получить экземпляр объекта по его ссылке 
- * 
- * @param {String} n
- * @return {JSIMain}
- */
-JSI.get = function(n){
-	var r;
-	if(n){
-		r = JSIHost[n];
-	}else if(JSI.count==1){
-		r = JSI.first;
-	};
-	return r;
-};
-/** Отчистить текущий сеанс JS 
- * 
- * @param {String} n
- * @param {Boolean} c Указывает на необходимость отчищать каллбеки(объекты обёртки)
- */
-JSI.clear = function(n, c, o){
-	JSIHost[n].clear(c, o);
-};
-/** Возвращает ссылку на объект document. Имя максимально укорочено, чтоб уменьшить количество символов передаваемых вExternalInterface во время фазы JavaScript injection(необходимо, чтоб символов было не больше 255) 
- * 
- * @return {HTMLDocument}
- */
-JSI.d = function(){
-	var d;
-	try{
-		d = window['document'];
-	}catch(e){
-		d = null;
-	};
-	return d;
-};
-/** Проверяет, доступен ли объект document
- * 
- * @return {Boolean}
- */
-JSI.hasDocument = function(){
-	return Boolean(JSI.d());
-};
-/** Проверяет, не, ёбаный в жопу тупым предметом, осёл ли текущий браузер
- * 
- * @return {Boolean}
- */
-JSI.isIE = function(){
-	return (navigator.appName.indexOf('Microsoft')>=0);
-};
-/** Индекс экземпляров объект */
-JSI.onInstalled = function(){
-	if(!JSI.isInstalled){
-		var len = JSI.installedEventList.length;
-		for(var i=0; i<len; i++){
-			var e = JSI.installedEventList[i];
-			if(typeof window[e]=='function'){
-				window[e]();
-			};
-		};
-		JSI.isInstalled = true;
-	};
-};
-//----------------------------- Системные объекты
-/** Получить ссылку на объект document. 
- * 
- * @param {String} jn
- * @return {String}
- */
-JSI.getDocumentLink = function(jn){
-	return JSIHost[jn].getInfo(JSI.hasDocument() ? JSI.d() : null);
-};
-/** Получить ссылку на объект window.
- * 
- * @param {String} jn
- * @return {String}
- */
-JSI.getWindowLink = function(jn){
-	return JSIHost[jn].getInfo(window);
-};
-/** Получить ссылку на объект navigator. 
- * 
- * @param {String} jn
- * @return {String}
- */
-JSI.getNavigatorLink = function(jn){
-	return JSIHost[jn].getInfo(navigator);
-};
-/** Получить ссылку на объект флеш плеера. 
- * 
- * @param {String} jn
- * @return {String}
- */
-JSI.getMainLink = function(jn){
-	var j = JSIHost[jn];
-	var m = j.main;
-	return j.getInfo(m);
-};
-/** Получить ссылку на объект события. 
- * 
- * @param {String} jn
- * @return {String}
- */
-JSI.getEventLink = function(jn){
-	var j = JSIHost[jn];
-	return j.getInfo(event);
-};
-//----------------------------- Общие
-/** Получить info объект из значения 
- * 
- * @param {String} jn
- * @param {Object} val
- * @return {Object}
- */
-JSI.getInfo = function(jn, vn){
-	var val = JSI.eval(vn);
-	return {value:JSIHost[jn].getInfo(val)};
-};
-/** 
- * @private
- */
-JSI.tryGetInfo = function(jn, vn){
-	var o;
-	try{
-		o = JSI.getInfo(jn, vn);
-	}catch(e){
-		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, vn)};
-	};
-	return o;
-};
-/** Замена обычному eval, т.к. глобальная функция eval вызывает ошибку в FireFox'е
- * "function eval must be called directly, and not by way of a function of another name", 
- * и я решил эту проблему созданием и последующим выполнением анонимной функции.
- * 
- * @param {String} n Код, который нужно выполнить. В осносном будет парсить пути в точечной нотации.
- */
-JSI.eval = function(n){
-	var f = new Function('return '+n+';');
-	return f();
-};
-/** Получить список info объектов из значений, с указанием JSI объекта 
- * 
- * @param {JSIMain} j
- * @param {Array} args
- * @return {Array}
- */
-JSI.convertListToInfoIn = function(j, args){
-	var ret = [];
-	if(args){
-		var len = args.length;
-		for(var i=0; i<len; i++){
-			ret[i] = j.getInfo(args[i]);
-		};
-	};
-	return ret;
-};
-/** Получить значение из info объекта 
- * 
- * @param {String} jn
- * @param {Object} info
- * @return {Object}
- */
-JSI.getValue = function(jn, o){
-	var r;
-	if(o instanceof Object){
-		r = JSI.getValueIn(JSIHost[jn], o);
-	}else{
-		r = o;
-	};
-	return r;
-};
-/** Получить значение из info объекта, с указанием JSI объекта 
- * 
- * @param {JSIMain} j
- * @param {Object} info
- * @return {Object}
- */
-JSI.getValueIn = function(j, o){
-	var r;
-	if(o instanceof Object && o.constructor==Object){
-		if(o.isComplex){
-			r = JSI.getComplexValueIn(j, o);
-		}else{
-			r = JSI.getSimpleValueIn(j, o);
-		};
-	}else{
-		r = o;
-	};
-	return r;
-};
-/** Получить значение комплексного типа
- * @private
- * @param {Object} j
- * @param {Object} o
- */
-JSI.getComplexValueIn = function(j, o){
-	var r;
-	if(o.side=='JS'){
-		if(o.type=='function'){
-			r = j.funcs.getItem(o.value);
-		}else{
-			r = j.objects.getItem(o.value);
-		};
-	}else{
-		if(o.type=='function'){
-			r = j.callbacks.getItemByInfo(o);
-		}else{
-			r = new FLObject(j, o);
-		};
-	};
-	return r;
-};
-/** Получить значение простого типа
- * @private
- * @param {Object} j
- * @param {Object} o
- */
-JSI.getSimpleValueIn = function(j, o){
-	var r;
-	if(o.type=='array'){
-		r = JSI.convertListToValueIn(j, o.value);
-	}else if(o.type=='object'){
-		r = JSI.convertObjectToValueIn(j, o.value);
-	}else{
-		r = o.value;
-	};
-	return r;
-};
-/** Получить значения из списка info объектов, с указанием JSI объекта 
- * 
- * @param {JSIMain} j
- * @param {Array} args
- * @return {Array}
- */
-JSI.convertListToValueIn = function(j, args){
-	var r = [];
-	if(args){
-		var len = args.length;
-		for(var i=0; i<len; i++){
-			r[i] = JSI.getValueIn(j, args[i]);
-		};
-	};
-	return r;
-};
-/** Получить значения из ассоциативного массива(объекта) info объектов, с указанием JSI объекта 
- * 
- * @param {JSIMain} j
- * @param {Array} args
- * @return {Array}
- */
-JSI.convertObjectToValueIn = function(j, obj){
-	var r = {};
-	if(obj){
-		for(var p in obj){
-			r[p] = JSI.getValueIn(j, obj[p]);
-		};
-	};
-	return r;
-};
-//----------------------------- Объекты
-/** Получить объект по ссылке на JSI и ссылки на требуемый объект 
- * 
- * @param {String} jn
- * @param {String} nm
- * @return {Object}
- */
-JSI.getObject = function(jn, nm){
-	return JSIHost[jn].objects.getItem(nm);
-};
-/** Создать экземпляр класса 
- * 
- * @param {String} jn - Имя экземпляра фреймворка
- * @param {String} args - Строка с аргументами, через запятую
- * @param {String} code - Код функции
- * @return {Object}
- */
-JSI.createFunction = function(jn, args, code){
-	var j = JSIHost[jn];
-	var func = JSI.eval('function('+args+'){'+code+'};');
-	return {value:j.getInfo(func)};
-};
-/** 
- * @private
- */
-JSI.tryCreateFunction = function(jn, args, code){
-	var o;
-	try{
-		o = JSI.createFunction(jn, args, code);
-	}catch(e){
-		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, 'Function')};
-	};
-	return o;
-};
-/** Создать экземпляр класса 
- * 
- * @param {String} jn - Имя экземпляра фреймворка
- * @param {String} cn - Имя класса создаваемого объекта
- * @param {Array} args - Список аргументов передаваемых в конструктор
- * @return {Object}
- */
-JSI.createInstance = function(jn, cn, args){
-	var j = JSIHost[jn];
-	var cls = JSI.eval(cn);
-	args = JSI.convertListToValueIn(j, args);
-	return {value:j.getInfo(JSIInstance.create(cls, args))};
-};
-/** 
- * @private
- */
-JSI.tryCreateInstance = function(jn, cn, args){
-	var o;
-	try{
-		o = JSI.createInstance(jn, cn, args);
-	}catch(e){
-		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, cn)};
-	};
-	return o;
-};
-/** Создать экземпляр класса 
- * 
- * @param {String} jn - Имя экземпляра фреймворка
- * @param {String} cn - Имя класса создаваемого объекта
- * @param {Array} args - Список аргументов передаваемых в конструктор
- * @return {Object}
- */
-JSI.createInstanceByLink = function(jn, nm, t, args){
-	var j = JSIHost[jn];
-	var cls = (t=='function' ? j.funcs : j.objects).getItem(nm);
-	args = JSI.convertListToValueIn(j, args);
-	return {value:j.getInfo(JSIInstance.create(cls, args))};
-};
-/** 
- * @private
- */
-JSI.tryCreateInstanceByLink = function(jn, nm, t, args){
-	var o;
-	try{
-		o = JSI.createInstance(jn, nm, t, args);
-	}catch(e){
-		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm)};
-	};
-	return o;
-};
-/** Удалить ссылку на объект
- * 
- * @param {String} jn
- * @param {String} nm
- */
-JSI.removeObject = function(jn, nm){
-	JSIHost[jn].objects.removeItem(nm);
-};
-/** Проверить существование ссылки на объект
- * 
- * @param {String} jn
- * @param {String} nm
- * @return {Boolean}
- */
-JSI.isExistsObject = function(jn, nm){
-	return JSIHost[jn].objects.isExists(nm);
-};
-//----------------------------- Функции
-/** Получить объект функции по ссылке 
- * 
- * @param {String} jn
- * @param {String} fn
- * @return {Function}
- */
-JSI.getFunc = function(jn, fn){
-	return JSIHost[jn].funcs.getItem(fn);
-};
-/** Удаляет ссылку на функцию
- * 
- * @param {String} jn
- * @param {String} fn
- * @return {Boolean}
- */
-JSI.removeFunc = function(jn, fn){
-	return JSIHost[jn].funcs.removeItem(fn);
-};
-/** Проверяет существование ссылки на функцию
- * 
- * @param {String} jn
- * @param {String} fn
- * @return {Boolean}
- */
-JSI.isExistsFunc = function(jn, fn){
-	return JSIHost[jn].funcs.isExists(fn);
-};
-/** Проверяет соответствие функции переданной по ссылке к содержимому свойства сохранённого объекта.
- * Если Функция не была удалена из этотго свойства, то она будет вызвана через имя свойства, если нет - будет вызвана через ссылку на функцию
- * @param {String} jn
- * @param {String} fn
- * @param {String} pn
- * @return {Boolean}
- */
-JSI.isCurrentFunc = function(jn, fn, pn){
-	return JSIHost[jn].funcs.isCurrent(fn, pn);
-};
-/** Вызвать функцию по ссылке на эту же функцию 
- * 
- * @param {String} jn
- * @param {String} fn
- * @param {String} pn
- * @param {Array} args
- * @return {Object}
- */
-JSI.callFunction = function(jn, fn, pn, args){
-	var j = JSIHost[jn];
-	var f = j.funcs.getItemObject(fn);
-	return {value:j.getInfo(JSI.__callFunction(j, f, fn, pn, JSI.convertListToValueIn(j, args)))};
-};
-/** 
- * @private
- */
-JSI.tryCallFunction = function(jn, fn, pn, args){
-	var r;
-	try{
-		r = JSI.callFunction(jn, fn, pn, args);
-	}catch(e){
-		var j = JSIHost[jn];
-		var f = j.funcs.getItemObject(fn);
-		r = {value:null, error:JSICallbacks.getErrorObject(j, e, pn, f.name)};
-	};
-	return r;
-};
-/** 
- * @private
- * @param {JSIMain} j
- * @param {Object} f
- * @param {String} fn
- * @param {String} pn
- * @param {Array} args
- * @return {Object}
- */
-JSI.__callFunction = function(j, f, fn, pn, args){
-	var val;
-	if(pn){
-		val = f.func.apply(j.objects.getItem(pn), args);
-	}else{
-		var p = f.parent;
-		var n = f.name;
-		if(p && n && j.funcs.isCurrent(fn, p)){
-			val = JSIInstance.callMethod(j.objects.getItem(p), n, args);
-		}else{
-			val = JSIInstance.callFunction(f.func, args);
-		};
-	};
-	return val;
-};
-/** Получить JS-функцию, обёртку флешового калбека 
- * 
- * @param {String} jn
- * @param {String} cn
- * @return {Function}
- */
-JSI.getCallback = function(jn, cn){
-	var j = JSIHost[jn];
-	return j.callbacks.getItem(cn);
-};
-/** Вызов функции callLater(obj, func, handler, time=1), который вызывает func по таймауту, а результат возвращать в хендлер.
- * {String} jn Ссылка на объект JSIMain
- * {Object,String} nm Ссылка или сам объект, в котором находится необходимая функция
- * {String} hn Имя функции
- * {Array} a Массив аргументов функции
- * {String} cn Ссылка на калбек, в который будут переданы результаты работы функции
- * {Number} t Таймаут через который будет выполнена функция
- */
-JSI.callLater = function(jn, nm, hn, a, cn, t){
-	var j = JSIHost[jn];
-	var f = JSI.__getCallLater(j);
-	JSI.__callLater(f, j, nm, hn, a, cn);
-	setTimeout(f, t);
-};
-/**
- * @private
- */
-JSI.__callLater = function(f, j, nm, hn, a, cn){
-	if(typeof nm == 'string'){
-		nm = j.objects.getItem(nm);
-	};
-	f._o = nm;
-	f._hn = hn;
-	f._a = a;
-	if(cn){
-		f._c = j.callbacks.getItem(cn);
-	};
-};
-/**
- * @private
- */
-JSI.__getCallLater = function(j){
-	var f = function(){
-		var c = arguments.callee;
-		var r = JSIInstance.callMethod(c._o,  c._hn, c._a);
-		if (c._c){
-			c._c(r);
-		};
-	};
-	return f;
-};
-/** 
- * @private
- */
-JSI.tryCallLater = function(jn, nm, hn, a, cn, t){
-	var j = JSIHost[jn];
-	var f = JSI.__tryGetCallLater(j);
-	JSI.__callLater(f, j, nm, hn, a, cn);
-	setTimeout(f, t);
-};
-/**
- * @private
- */
-JSI.__tryGetCallLater = function(j){
-	var f = function(){
-		var c = arguments.callee;
-		var r;
-		try{
-			r = JSIInstance.callMethod(c._o,  c._hn, c._a);
-		}catch(e){
-			c._j.callbacks.throwException(e, c._o, c._hn);
-		};
-		if (c._c){
-			c._c(r);
-		};
-	};
-	f._j = j;
-	return f;
-};
-//----------------------------- Свойства
-/** Получить свойство 
- * 
- * @param {String} jn
- * @param {String} nm
- * @param {String} pn
- * @return {Object}
- */
-JSI.getProperty = function(jn, nm, t, pn){
-	var j = JSIHost[jn];
-	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);
-	var r;
-	if(pn in o){
-		r = o[pn];
-	};
-	return {value:j.getInfo(r, nm, pn)};
-};
-/** 
- * @private
- */
-JSI.tryGetProperty = function(jn, nm, t, pn){
-	var r;
-	try{
-		r = JSI.getProperty(jn, nm, t, pn);
-	}catch(e){
-		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};
-	};
-	return r;
-};
-/** Проверить существование свойства 
- * 
- * @param {String} jn
- * @param {String} nm
- * @param {String} pn
- * @return {Boolean}
- */
-JSI.hasProperty = function(jn, nm, t, pn){
-	var j = JSIHost[jn];
-	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);
-	return {value:(pn in o)};
-};
-/** 
- * @private
- */
-JSI.tryHasProperty = function(jn, nm, t, pn){
-	var r;
-	try{
-		r = JSI.hasProperty(jn, nm, t, pn);
-	}catch(e){
-		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};
-	};
-	return r;
-};
-/** Установить значение свойства 
- * 
- * @param {String} jn
- * @param {String} nm
- * @param {String} pn
- * @param {Object} info
- */
-JSI.setProperty = function(jn, nm, t, pn, info){
-	var j = JSIHost[jn];
-	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);
-	o[pn] = JSI.getValueIn(j, info);
-	return {value:null};
-};
-/** 
- * @private
- */
-JSI.trySetProperty = function(jn, nm, t, pn, info){
-	var r;
-	try{
-		r = JSI.setProperty(jn, nm, t, pn, info);
-	}catch(e){
-		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};
-	};
-	return r;
-};
-/** Удалить свойство 
- * 
- * @param {String} jn
- * @param {String} nm
- * @param {String} pn
- * @return {Boolean}
- */
-JSI.deleteProperty = function(jn, nm, t, pn){
-	var j = JSIHost[jn];
-	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);
-	return {value:delete o[pn]};
-};
-/** 
- * @private
- */
-JSI.tryDeleteProperty = function(jn, nm, t, pn){
-	var r;
-	try{
-		r = JSI.deleteProperty(jn, nm, t, pn);
-	}catch(e){
-		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};
-	};
-	return r;
-};
-/** Вызвать свойство, как метод 
- * 
- * @param {String} jn
- * @param {String} nm
- * @param {String} hn
- * @param {Array} args
- * @return {Object}
- */
-JSI.callProperty = function(jn, nm, t, hn, args){
-	var j = JSIHost[jn];
-	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);
-	var r;
-	if(JSIFunctions.isFunction(o[hn])){
-		r = JSI.callPropertyAsFunc(j, o, hn, args);
-	}else{
-		r = j.getInfo(o[hn], nm, hn);
-	};
-	return {value:r};
-};
-/** 
- * @private
- */
-JSI.tryCallProperty = function(jn, nm, t, hn, args){
-	var r;
-	try{
-		r = JSI.callProperty(jn, nm, t, hn, args);
-	}catch(e){
-		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, hn)};
-	};
-	return r;
-};
-/** Вызвать метод по ссылке на объект 
- * 
- * @param {JSIMain} j
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- * @return {Object}
- */
-JSI.callPropertyAsFunc = function(j, o, hn, args){
-	args = JSI.convertListToValueIn(j, args);
-	return j.getInfo(JSIInstance.callMethod(o, hn, args));
-};
-/** Перебрать свойства объекта, отправляя информацию о свойстве в каллбек функцию - имя, info 
- * 
- * @param {Object} jn
- * @param {Object} nm
- * @param {Object} cn
- */
-JSI.forEach = function(jn, nm, cn){
-	var j = JSIHost[jn];
-	var o = j.objects.getItem(nm);
-	var fem = JSICallbacks.forEachMethod;
-	var m = j.main;
-	for(var p in o){
-		m[fem](cn, p, j.getInfo(o[p]));
-	};
-};
-/** Получить список доступных свойств объекта, по ссылке 
- * 
- * @param {String} jn
- * @param {String} nm
- * @return {Array}
- */
-JSI.getPropertyList = function(jn, nm){
-	var j = JSIHost[jn];
-	var o = j.objects.getItem(nm);
-	var list = [];
-	for(var p in o){
-		list.push(p);
-	};
-	return list;
-};
-//---------------------------------------------------------------------------------------------------- ПОЛУЧЕНИЕ ССЫЛКИ НА ОБЪЕКТ ФЛЕШКИ ДЛЯ КАЛЛБЕКОВ
-/** Oбъект для поиска флеш объектов в документе. */
-JSIElement = function(){};
-JSIElement.noIENodeName = 'embed';
-//---------------------------------------------------------------------------------------------------- JSIElement PUBLIC
-//---------------------------------------------------------------------------------------------------- JSIElement STATIC
-/** Получить object/embed элемент DOM структуры по его ID или URL 
- * 
- * @param {String} id
- * @param {String} url
- * @return {HTMLElement}
- */
-JSIElement.get = function(id, url){
-	var r;
-	if(id){
-		var d = JSI.d();
-		r = JSI.isIE() ? d[id] : JSIElement.getNOIE(d, id);
-		if(!r){
-			r = d.getElementById(id);
-		};
-	};
-	if(!r){
-		r = JSIElement.find(url);
-	};
-	return r;
-};
-/**
- * @private
- * @param {Object} d
- * @param {Object} id
- */
-JSIElement.getNOIE = function(d, id){
-	var n = 'embed';
-	var d = JSI.d();
-	var r = JSIElement.getEmbed(window[id]);
-	if(!r){
-		r = JSIElement.getEmbed(d[id]);
-	};
-	if(!r){
-		r = JSIElement.getEmbed(d.all[id]);
-	};
-	return r;
-};
-/**
- * @private
- * @param {Object} node
- */
-JSIElement.isEmbed = function(node){
-	if(node instanceof HTMLElement && node.nodeName.toLowerCase()==JSIElement.noIENodeName){
-		return true;
-	}else{
-		return false;
-	};
-};
-/**
- * @private
- * @param {Object} v
- */
-JSIElement.getEmbed = function(v){
-	var r;
-	if(v){
-		if(JSIElement.isEmbed(v)){
-			r = v;
-		}else if('length' in v){
-			var l = v.length;
-			for(var i=0; i<l; i++){
-				if(JSIElement.isEmbed(v[i])){
-					r = v[i];
-					break;
-				};
-			};
-		};
-	};
-	return r;
-};
-/** Найти элемент по его URL 
- * 
- * @param {String} url
- * @return {HTMLElement}
- */
-JSIElement.find = function(url){
-	if(JSI.isIE()){
-		return JSIElement.findIE(url);
-	}else{
-		return JSIElement.findNOIE(url);
-	};
-};
-/** Ищет элемент в случае, если браузер IE 
- * 
- * @param {String} url
- * @return {HTMLElement}
- */
-JSIElement.findIE = function(url){
-	var r;
-	var list = JSI.d().getElementsByTagName('object');
-	var len = list.length;
-	for(var i=0; i<len; i++){
-		var o = list[i];
-		if(JSIElement.findIEIsValid(o.childNodes, url)){
-			r = o;
-			break;
-		};
-	};
-	if(!r){
-		r = list[0];
-	};
-	return r;
-};
-/** ищет в параметрах тега <object> параметр с именем movie и сверяет значение URL на соответствие 
- * 
- * @param {NodeList} list
- * @param {String} url
- * @return {Boolean}
- */
-JSIElement.findIEIsValid = function(list, url){
-	var len = list.length;
-	for(var i=0; i<len; i++){
-		var a = list[i].attributes;
-		if(a.name.value=='movie'){
-			if(a.value.value==url){
-				return true;
-			}else{
-				return false;
-			};
-		};
-	};
-	return false;
-};
-/** Ищет элемент <embed> в случаях, когда текущий браузер не является IE 
- * 
- * @param {String} url
- * @return {HTMLElement}
- */
-JSIElement.findNOIE = function(url){
-	var r;
-	var list = JSI.d().getElementsByTagName('embed');
-	var len = list.length;
-	for(var i=0; i<len; i++){
-		var o = list[i];
-		var a = o.attributes.src;
-		if(a && a.value==url){
-			r = o;
-			break;
-		};
-	};
-	if(!r){
-		r = list[0];
-	};
-	return r;
-};
-//---------------------------------------------------------------------------------------------------- ПОЛУЧЕНИЕ ССЫЛКИ НА ОБЪЕКТ ФЛЕШКИ ДЛЯ КАЛЛБЕКОВ
-/** Обеспечивает быстрый доступ к самым необходимым свойствам окна и документа. */
-JSIBrowser = function(){};
-//---------------------------------------------------------------------------------------------------- JSIBrowser PUBLIC
-//---------------------------------------------------------------------------------------------------- JSIBrowser STATIC
-/** Проверяет и воссоздаёт теги <head><title></title></head> для безпроблемного задания заголовка окна. Патч для Opera. */
-JSIBrowser.presetTitle = function(){
-	var d = JSI.d();
-	var f = d.getElementsByTagName;
-	if(d){
-		if(!f.call(d,'head').length){
-			d.appendChild(d.createElement('head'));
-		};
-		if(!f.call(d,'title').length){
-			f.call(d,'head')[0].appendChild(d.createElement('title'));
-		};
-	};
-};
-/** Получить заголовок документа */
-JSIBrowser.getTitle = function(){
-	return JSI.hasDocument() ? JSI.d().title : '';
-};
-/** Задать заголовок документа 
- * 
- * @param {String} p
- */
-JSIBrowser.setTitle = function(p){
-	if(JSI.hasDocument()){
-		JSI.d().title = p;
-	};
-};
-/** Получить статус окна */
-JSIBrowser.getStatus = function(){
-	return window.status;
-};
-/** Задать статус окна 
- * 
- * @param {String} p
- */
-JSIBrowser.setStatus = function(p){
-	window.status = p;
-};
-/** Получить статус окна по умлочанию */
-JSIBrowser.getDefaultStatus = function(){
-	return window.defaultStatus;
-};
-/** Задать статус окна по умлочанию 
- * 
- * @param {String} p
- */
-JSI.setDefaultStatus = function(p){
-	window.defaultStatus = p;
-};
-/** Получить строку адреса */
-JSIBrowser.getLocation = function(){
-	if(JSI.hasDocument()){
-		return JSI.d().location.href;
-	}else{
-		return window.location.href;
-	};
-};
-/** Получить строку адресса окна */
-JSIBrowser.getTopLocation = function(){
-	var p = window.top;
-	if(JSI.hasDocument()){
-		return p.document.location.href;
-	}else{
-		return p.location.href;
-	};
-};
-/** Получить хеш текущего адреса */
-JSIBrowser.getLocationHash = function(){
-	if(JSI.hasDocument()){
-		return JSI.d().location.hash;
-	}else{
-		return window.location.hash;
-	};
-};
-/** Задать хеш текущего адреса 
- * 
- * @param {String} p
- */
-JSIBrowser.setLocationHash = function(p){
-	if(JSI.hasDocument()){
-		JSI.d().location.hash = p;
-	}else{
-		window.location.hash = p;
-	};
-};
-/** Получить строку куки */
-JSIBrowser.getCookieString = function(){
-	return JSI.d().cookie;
-};
-/** Задать строку куки 
- * 
- * @param {String} p
- */
-JSIBrowser.setCookieString = function(p){
-	JSI.d().cookie = p;
-};
-//---------------------------------------------------------------------------------------------------- СОЗДАНИЕ ЭКЗЕМПЛЯРОВ
-/** Объект создающий экземпляры объектов и вызывает функции без смены областей видимости */
-JSIInstance = function(){};
-//---------------------------------------------------------------------------------------------------- JSIBrowser PUBLIC
-//---------------------------------------------------------------------------------------------------- JSIBrowser STATIC
-/** Метод создания экземпляра класса с любым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create = function(cls, args){
-	var r;
-	if(args){
-		r = JSIInstance['create'+args.length](cls, args);
-	}else{
-		r = JSIInstance.create0(cls);
-	};
-	return r;
-};
-/** Вызывает метод под динамическим именем 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod = function(o, hn, args){
-	var r;
-	if(args){
-		r = JSIInstance['callMethod'+args.length](o, hn, args);
-	}else{
-		r = JSIInstance.callMethod0(o, hn);
-	};
-	return r;
-};
-/** Вызывает функцию напрямую, не меняя её области видимости.
- * 
- * @param {Function} f
- * @param {Array} args
- */
-JSIInstance.callFunction = function(f, args){
-	var r;
-	if(args){
-		r = JSIInstance['callFunction'+args.length](f, args);
-	}else{
-		r = JSIInstance.callFunction0(f);
-	};
-	return r;
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create0 = function(cls, args){
-	return new cls();
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create1 = function(cls, args){
-	return new cls(args[0]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create2 = function(cls, args){
-	return new cls(args[0], args[1]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create3 = function(cls, args){
-	return new cls(args[0], args[1], args[2]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create4 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create5 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create6 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create7 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create8 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create9 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create10 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create11 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create12 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create13 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create14 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
-};
-/** Метод создания экземпляра класса с N-ым кол-вом аргументов 
- * 
- * @param {Object} cls
- * @param {Array} args
- */
-JSIInstance.create15 = function(cls, args){
-	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod0 = function(o, hn, args){
-	return o[hn]();
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod1 = function(o, hn, args){
-	return o[hn](args[0]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod2 = function(o, hn, args){
-	return o[hn](args[0], args[1]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod3 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod4 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod5 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod6 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod7 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod8 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod9 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod10 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod11 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod12 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod13 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod14 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
-};
-/** Вызывает метод под динамическим именем с N-ым кол-вом аргументов 
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callMethod15 = function(o, hn, args){
-	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction0 = function(f, args){
-	return f();
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction1 = function(f, args){
-	return f(args[0]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction2 = function(f, args){
-	return f(args[0], args[1]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction3 = function(f, args){
-	return f(args[0], args[1], args[2]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction4 = function(f, args){
-	return f(args[0], args[1], args[2], args[3]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction5 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction6 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction7 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction8 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction9 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction10 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction11 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction12 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction13 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction14 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
-};
-/** Вызывает функцию с N-ым кол-вом аргументов не меняя её области видимости
- * 
- * @param {Object} o
- * @param {String} hn
- * @param {Array} args
- */
-JSIInstance.callFunction15 = function(f, args){
-	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);
-};
-//---------------------------------------------------------------------------------------------------- ГЛАВНЫЙ ОБЪЕКТ СИСТЕМЫ
-/** Контейнер для всей системы. 
- * 
- * @param {String} i
- * @param {String} u
- * @param {String} n
- */
-JSIMain = function(i, u, n){
-	this.id = i;
-	this.url = u;
-	this.name = n;
-	this.funcs = new JSIFunctions(this);
-	this.objects = new JSIObjects(this);
-	this.callbacks = new JSICallbacks(this);
-	this.getDocProps();
-};
-/** Шорткат прототипа JSIMain */
-JSI.mp = JSIMain.prototype;
-/**
- * @private
- */
-JSI.mp.getDocProps = function(){
-	if(JSI.hasDocument()){
-		this.tag = JSIMain.getTag();
-		this.main = JSIElement.get(this.id, this.url);
-	};
-};
-/** Шорткат для указателя баузера */
-JSIMain.ieBrowser = JSI.isIE();
-/** Объект содержащий свойства по строковым значениям простых типов данных. */
-JSIMain.simple = {};
-JSIMain.simple['number'] = true;
-JSIMain.simple['string'] = true;
-JSIMain.simple['boolean'] = true;
-//---------------------------------------------------------------------------------------------------- JSIMain PUBLIC
-/** Удалить все приобретённые знания
- * 
- * @param {Object} c - удалить Flash каллбеки
- * @param {Object} o - удалить Flash объекты
- */
-JSI.mp.clear = function(c, o){
-	if(c){
-		this.callbacks.clear();
-	};
-	if(o){
-		this.objects.clear();
-		this.funcs.clear();
-	};
-};
-/** Получить развёрнутую информацию о значении. Если значением аргумента является объект, то вместо него, в возвращаемом объекте будет находиться ссылка на этот объект. 
- * @param {Object} val - Значение для которого собирается информация
- * @param {String} p - Ссылка на объект родитель для текущего значения *Для функций
- * @param {String} n - Имя параметра в котором содержится значение *Для функций
- * @return {Object}
-*/
-JSI.mp.getInfo = function(v, p, n){
-	var o;
-	if(v instanceof Object || typeof v == 'object'){
-		if(v instanceof FLSimple){
-			o = this.getSimpleInfo(v);
-		}else if(v instanceof FLObject){
-			o = v.info;
-		}else{
-			o = this.getComplexInfo(v, p, n);
-		};
-	}else{
-		o = v;
-	};
-	return o;
-};
-/** Получить инфо о сложном объекте со ссылкой на него.
- * 
- * @param {Object} v
- * @param {String} p
- * @param {String} n
- * @return {Object}
- */
-JSI.mp.getComplexInfo = function(v, p, n){
-	var o = JSIMain.__getInfo(v);
-	if(o.isComplex){
-		if(o.type=='function'){
-			if('jsDynamicInfo' in v){
-				return v.jsDynamicInfo;
-			}else{
-				o.value = this.funcs.addItem(v, p, n);
-			};
-		}else{
-			o.value = this.objects.addItem(v);
-		};
-	};
-	return o;
-};
-/** Получить инфо о простом объекте, но если в нём содержмится ссылка на сложный объект, то он будет передан по ссылке, как полагается.
- * 
- * @param {Object} v
- * @return {Object}
- */
-JSI.mp.getSimpleInfo = function(v){
-	var o = v.data;
-	if(o instanceof Array){
-		o = this.getSimpleArray(o);
-	}else if(o instanceof Object){
-		o = this.getSimpleObject(o);
-	};
-	return {value:o, type:JSIMain.getType(o), isComplex:false, side:'JS'};
-};
-/** Получить дубликат объекта с информацией о сложных объектах находящихся в нём, подготовленных к переноске во флеш среду.
- * 
- * @param {Object} v
- * @return {Object}
- */
-JSI.mp.getSimpleObject = function(v){
-	var r = {};
-	for(var p in v){
-		r[p] = this.getInfo(v[p]);
-	};
-	return r;
-};
-/** Получить дубликат массива с информацией о сложных объектах находящихся в нём, подготовленных к переноске во флеш среду.
- * 
- * @param {Array} v
- * @return {Array}
- */
-JSI.mp.getSimpleArray = function(v){
-	var r = [];
-	var l = v.length;
-	for(var i=0; i<l; i++){
-		r[i] = this.getInfo(v[i]);
-	};
-	return r;
-};
-/** Получить шаблон с информацией о значении. 
- * @private
- * @param {Object} val
- * @return {Object}
- */
-JSIMain.__getInfo = function(val){
-	return {value:val, type:JSIMain.getType(val), isComplex:JSIMain.isComplex(val), side:'JS'};
-};
-/** Получить тип значения 
- * 
- * @param {Object} o
- * @return {String}
- */
-JSIMain.getType = function(o){
-	var t = typeof o;
-	if(t == 'object'){
-		if(o){
-			if(o instanceof Array){
-				t = 'array';
-			}else if(JSIMain.ieBrowser){
-				t = JSIMain.getIEString(o, t);
-			};
-		}else{
-			t = 'void';
-		};
-	}else if(o.constructor==Object){
-		t = 'object';
-	};
-	return t;
-};
-/** Получает достоверную информацию, объект был передан или функция.
- * В IE, некоторые функции в операции typeof возвращают "object", а этот способ даёт гарантию получения точного типа.
- * @param {Object} o
- * @param {String} t
- * @return {String}
- */
-JSIMain.getIEString = function(o, t){
-	if('toString' in o){
-		var p = o.toString().indexOf('function');
-		if(p>=0 && p<3){
-			t = 'function';
-		};
-	};
-	return t;
-};
-/** Проверяет комплексного ли типа значение переданое в качестве аргумента 
- * 
- * @param {Object} o
- * @return {Boolean}
- */
-JSIMain.isComplex = function(o){
-	return (!Boolean(!o || JSIMain.simple[typeof o]) || o instanceof Array);
-};
-//---------------------------------------------------------------------------------------------------- JSIMain STATIC
-/** Получить тэг, который будет использован как контейнер для создаваемых, в процессе работы системы, временных узлов 
- * @return {HTMLElement}
- */
-JSIMain.getTag = function(){
-	var d = JSI.d();
-	var hd = d.getElementsByTagName('head')[0];
-	if(!hd){
-		hd = d.createElement('head');
-		d.firstChild.appendChild(hd);
-	};
-	return hd;
-};
-//----------------------------------- ОБЪЕКТ КОНТРОЛИРУЮЩИЙ ССЫЛКИ НА JS ФУНКЦИИ ВНУТРИ ФЛЕШ ПЛЕЕРА
-/**
- * 
- * @param {Object} i
- */
-JSIFunctions = function(i){
-	this.jsi = i;
-	this.index = 0;
-	this.items = {};
-};
-/** Шорткат прототипа JSIFunctions */
-JSI.fp = JSIFunctions.prototype;
-/** Базовая часть ссылки на функцию. Ссылка состоит из базового имени и номера ссылки. Каждая ссылка уникальна. */
-JSIFunctions.base = 'func_';
-//---------------------------------------------------------------------------------------------------- JSIFunctions PUBLIC
-/** Проверяет, функция была вызвана непосредственно из объекта или по ссылке.
- * @param {Function} fn - Функция
- * @param {String} pn - Ссылка на объект в котором находилась функция
- * @param {String} nm - Имя свойства в котором находилась функция
- * @return {String} 
-*/
-JSI.fp.addItem = function(fn, pn, nm){
-	var n = this.findItem(fn, pn, nm);
-	if(!n){
-		n = JSIFunctions.base+String(this.index++);
-		this.items[n] = {func:fn, parent:pn, name:nm};	
-	};
-	return n;
-};
-/** Получить функцию по ссылке
- * 
- * @param {Function} fn Ссылка на функцию
- * @param {String} pn Ссылка на объект контейнер
- * @param {String} nm Имя свойства, в котором содержалась функция.
- */
-JSI.fp.findItem = function(fn, pn, nm){
-	for(var p in this.items){
-		var o = this.items[p];
-		if(o.func==fn && o.parent==pn && o.name==nm){
-			return p;
-		};
-	};
-	return '';
-};
-/** Получить функцию с указанием объекта
- * 
- * @param {Function} fn
- * @param {Object} pt Объект в котором содержалась функция
- * @param {String} nm
- */
-JSI.fp.addItemByTarget = function(fn, pt, nm){
-	return this.addItem(fn, this.jsi.objects.addItem(pt), nm);
-};
-/** Получить функцию по ссылке. 
- * 
- * @param {String} n
- * @return {Function}
- */
-JSI.fp.getItem = function(n){
-	var o = this.items[n];
-	if(o){
-		return o.func;
-	}else{
-		return null;
-	};
-};
-/** Получить объект функции по ссылке. 
- * 
- * @param {String} n
- * @return {Object}
- */
-JSI.fp.getItemObject = function(n){
-	return this.items[n];
-};
-/** Удалить ссылку на функцию 
- * 
- * @param {String} n
- */
-JSI.fp.removeItem = function(n){
-	delete this.items[n];
-};
-/** Удалить все ссылки на функции */
-JSI.fp.clear = function(){
-	for(var p in this.items){
-		delete this.items[p];
-	};
-};
-/** Проверить существование ссылки 
- * 
- * @param {String} n
- * @return {Boolean}
- */
-JSI.fp.isExists = function(n){
-	return Boolean(this.items[n]);
-};
-/**
- * 
- * @param {String} fn
- * @param {Object} pt
- * @return {Boolean}
- */
-JSI.fp.isCurrentByTarget = function(fn, pt){
-	return this.isCurrent(fn, this.jsi.objects.addItem(pt));
-};
-/**
- * 
- * @param {String} fn
- * @param {String} pn
- * @return {Boolean}
- */
-JSI.fp.isCurrent = function(fn, pn){
-	var jo = this.jsi.objects;
-	var o = this.getItem(fn);
-	var p = jo.getItem(o.parent);
-	var t = jo.getItem(pn);
-	if(p===t && t[o.name]===o.func){
-		return true;
-	}else{
-		return false;
-	};
-};
-//---------------------------------------------------------------------------------------------------- JSIFunctions STATIC
-/** Проверить, не является ли объект функцей 
- * 
- * @param {Object} o
- * @return {Boolean}
- */
-JSIFunctions.isFunction = function(o){
-	if(o){
-		var t = typeof o;
-		if(t=='function'){
-			return true;
-		}else if(JSIMain.ieBrowser && t=='object'){
-			var pos = String(o).indexOf('function');
-			if(pos>=0 && pos<3){
-				return true;
-			};
-		};
-	};
-	return false;
-};
-//----------------------------------- ОБЪЕКТ КОНТРОЛИРУЮЩИЙ ССЫЛКИ НА JS ОБЪЕКТЫ ВНУТРИ ФЛЕШ ПЛЕЕРА
-/**  
- * 
- * @param {JSIMain} i
- */
-JSIObjects = function(i){
-	this.jsi = i;
-	this.index = 0;
-	this.items = {};
-};
-/** Шорткат прототипа JSIObjects */
-JSI.op = JSIObjects.prototype;
-/** Базовая часть ссылки на объект. ССылка состоит из базового имени и номера ссылки. Каждая ссылка уникальна. */
-JSIObjects.base = 'obj_';
-//---------------------------------------------------------------------------------------------------- JSIObjects PUBLIC
-/** Возвращает ссылку на объект. Если ссылка для этого объекта уже создана, то она будет возвращена. 
- * 
- * @param {Object} o
- */
-JSI.op.addItem = function(o){
-	for(var p in this.items){
-		if(this.items[p]===o){
-			return p;
-		};
-	};
-	var name = JSIObjects.base+String(this.index++);
-	this.items[name] = o;
-	return name;
-};
-/** Получить объект по ссылке. 
- * 
- * @param {String} n
- */
-JSI.op.getItem = function(n){
-	return this.items[n];
-};
-/** Получить тип значения по ссылке 
- * 
- * @param {String} n
- */
-JSI.op.getItemType = function(n){
-	return typeof this.items[n];
-};
-/** Удалить ссылку на объект 
- * 
- * @param {String} n
- */
-JSI.op.removeItem = function(n){
-	delete this.items[n];
-};
-/** Удалить все ссылки на объекты */
-JSI.op.clear = function(){
-	for(var p in this.items){
-		delete this.items[p];
-	};
-};
-/** Проверить существование ссылки 
- * 
- * @param {String} n
- */
-JSI.op.isExists = function(n){
-	return Boolean(this.items[n]);
-};
-//---------------------------------------------------------------------------------------------------- JSIObjects STATIC
-//----------------------------------- ОБЪЕКТ КОНТРОЛИРУЮЩИЙ КАЛЛБЕКИ
-/** Объект создаёт функции обёртки позволяющие вызывать методы объектов по ссылкам, вести историю или вызывать калбеки */
-JSICallbacks = function(i){
-	this.objects = {};
-	this.jsi = i;
-};
-/** Шорткат прототипа JSICallbacks */
-JSI.cp = JSICallbacks.prototype;
-JSICallbacks.getJSINameMethod = 'getJSIName';
-JSICallbacks.forEachMethod = 'jsiCaller_ForEachMethod';
-JSICallbacks.callbackMethod = 'jsiCaller_CallMethod';
-JSICallbacks.exceptionMethod = 'jsiCaller_ThrowException';
-JSICallbacks.objectCreateMethod = 'jsiCaller_Object_CreateMethod';
-JSICallbacks.objectInstanceMethod = 'jsiCaller_Object_InstanceMethod';
-JSICallbacks.objectCallMethod = 'jsiCaller_Object_CallMethod';
-JSICallbacks.objectCallCommand = 'jsiCaller_Object_CallCommand';
-JSICallbacks.objectHasMethod = 'jsiCaller_Object_HasMethod';
-JSICallbacks.objectGetMethod = 'jsiCaller_Object_GetMethod';
-JSICallbacks.objectSetMethod = 'jsiCaller_Object_SetMethod';
-JSICallbacks.objectDeleteMethod = 'jsiCaller_Object_DeleteMethod';
-JSICallbacks.objectRemoveMethod = 'jsiCaller_Object_RemoveMethod';
-JSICallbacks.objectsClear = 'jsiCaller_Objects_Clear';
-//---------------------------------------------------------------------------------------------------- JSICallbacks PUBLIC
-/** Применяет функцию обратного вызова
- * 
- * @param {String} cn Callback name
- * @param {String} on Object link value
- * @param {String} hn Handler function name
-*/
-JSI.cp.addItem = function(cn, on, hn){
-	var obj = this.jsi.objects.getItem(on);
-	if(cn){
-		obj[hn] = this.getItem(cn);
-	}else{
-		delete obj[hn];
-	};
-};
-/** Создаёт функцию обратного вызова, использует объект document 
- * @private
- * @param {String} cn
- */
-JSI.cp.getItem = function(cn){
-	if(cn){
-		return JSICallbacks.getHandler(this.jsi, cn);
-	}else{
-		return null;
-	};
-};
-/** Создаёт функцию обратного вызова, добавляя ссылку на info объект
- * 
- * @param {String} cn
- */
-JSI.cp.getItemByInfo = function(info){
-	var f = this.getItem(info.value);
-	if(f){
-		f.jsDynamicInfo = info;
-	};
-	return f;
-};
-/** Удалить функцию обратного вызова 
- * 
- * @param {String} on
- * @param {String} hn
- */
-JSI.cp.removeItem = function(on, hn){
-	var obj = this.jsi.objects.getItem(on);
-	obj[hn] = null;
-	delete obj[hn];
-};
-JSI.cp.clear = function(){
-	for(var p in this.objects){
-		delete this.objects[p];
-	};
-};
-/** Отправляет информацию о ошибке во флеш плеер
- * 
- * @param {Error} e Объект произошедшей ошибки
- * @param {Object,String} nm Сылка на объект или сам объект при обработке свойства которого произошла ошибка
- * @param {String} pn Имя свойства при обработке которого произошла ошибка
-*/
-JSI.cp.throwException = function(e, nm, pn){
-	var m = this.jsi.main;
-	m[JSICallbacks.exceptionMethod](JSICallbacks.getErrorObject(this.jsi, e, nm, pn));
-};
-//--------------------------------------------- For FLObject
-/** Получает объект обёртку на флеш объект по его ссылке.
- * 
- * @param {Object} on ссылка на флеш объект
- */
-JSI.cp.addObject = function(on){
-	var obj = this.getObject(on);
-	if(!obj){
-		obj = new FLObject(this.jsi, on);
-		this.objects[on] = obj;
-	};
-};
-/** Получить закешированый объект обёртку по ссылке на флеш объект, если он есть.
- * 
- * @param {Object} on
- */
-JSI.cp.getObject = function(on){
-	return this.objects[on];
-};
-/** Удалить объект обёртку по ссылке на флеш объект
- * 
- * @param {Object} on
- */
-JSI.cp.removeObject = function(on){
-	delete this.objects[on];
-};
-/** Создать флеш объект
- * 
- * @param {String} cn
- * @param {Array} a
- */
-JSI.cp.createObject = function(cn, a){
-	var r = this.jsi.main[JSICallbacks.objectCreateMethod](cn, JSI.convertListToInfoIn(this.jsi, a));
-	return this.getReturnedValue(r);
-};
-/** Получить существующий флеш объект через путь(точечная нотация)
- * 
- * @param {Object} p
- */
-JSI.cp.instanceObject = function(p, t){
-	if(t && t instanceof FLObject){
-		t = t.info;
-	};
-	var r = this.jsi.main[JSICallbacks.objectInstanceMethod](p, t);
-	return this.getReturnedValue(r);
-};
-/** Удалить объект из стека ссылок
- * 
- * @param {Object} p
- */
-JSI.cp.removeObject = function(p){
-	this.jsi.main[JSICallbacks.objectRemoveMethod](p);
-};
-/** Отчистить стек ссылок флеш объектов
- * 
- * @param {Object} c - удалить JavaScript каллбеки
- * @param {Object} o - удалить JavaScript объекты
- */
-JSI.cp.objectsClear = function(c, o){
-	this.jsi.main[JSICallbacks.objectsClear](c, o);
-};
-/** Вызвать свойство/метод объекта
- * 
- * @param {String} nm
- * @param {String} pn
- * @param {Array} a
- * @param {String} u
- */
-JSI.cp.callProperty = function(nm, pn, a, u){
-	var r = this.jsi.main[JSICallbacks.objectCallMethod](nm, pn, JSI.convertListToInfoIn(this.jsi, a), u);
-	return this.getReturnedValue(r);
-};
-/** Вызвать команду, определённую во флеш плеере
- * 
- * @param {String} nm
- * @param {String} cn
- * @param {Array} a
- */
-JSI.cp.callCommand = function(nm, cn, a){
-	if(!a){
-		a = [];
-	};
-	if(!(a instanceof Array)){
-		a  [a];
-	};
-	var r = this.jsi.main[JSICallbacks.objectCallCommand](nm, cn, JSI.convertListToInfoIn(this.jsi, a));
-	return this.getReturnedValue(r);
-};
-/** Проверить существование свойства у флеш объекта
- * 
- * @param {String} nm
- * @param {String} pn
- * @param {String} u
- */
-JSI.cp.hasProperty = function(nm, pn, u){
-	var r = this.jsi.main[JSICallbacks.objectHasMethod](nm, pn, u);
-	return this.getReturnedValue(r);
-};
-/** Получить значение у свойства флеш объекта
- * 
- * @param {String} nm
- * @param {String} pn
- * @param {String} u
- */
-JSI.cp.getProperty = function(nm, pn, u){
-	var r = this.jsi.main[JSICallbacks.objectGetMethod](nm, pn, u);
-	return this.getReturnedValue(r);
-};
-/** Установить значение свойства флеш объекта
- * 
- * @param {String} nm
- * @param {String} pn
- * @param {Object} v
- * @param {String} u
- */
-JSI.cp.setProperty = function(nm, pn, v, u){
-	var r = this.jsi.main[JSICallbacks.objectSetMethod](nm, pn, this.jsi.getInfo(v), u);
-	return this.getReturnedValue(r);
-};
-/** Удалить свойство флеш объекта
- * 
- * @param {String} nm
- * @param {String} pn
- * @param {String} u
- */
-JSI.cp.deleteProperty = function(nm, pn, u){
-	var r = this.jsi.main[JSICallbacks.objectDeleteMethod](nm, pn, u);
-	return this.getReturnedValue(r);
-};
-/** Вызвать исключение полученное из флеш плеера
- * 
- * @param {Object} o
- */
-JSI.cp.throwObjectError = function(o){
-	var e = new Error(o.message);
-	e.flId = o.id;
-	e.flDef = o.def;
-	e.flName = o.name;
-	e.flStackTrace = o.stackTrace;
-	throw e;
-};
-/** Пролучить корректное значение из флеш плеера.
- * 
- * @param {Object} r
- */
-JSI.cp.getReturnedValue = function(r){
-	if('error' in r){
-		this.throwObjectError(r.error);
-	}else{
-		return JSI.getValueIn(this.jsi, r.value);
-	};
-	var u;
-	return u;
-};
-//---------------------------------------------------------------------------------------------------- JSICallbacks STATIC
-/** Получить функцию обратного вызова, использует объект document 
- * @private
- * @param {JSIMain} j
- * @param {String} n
- */
-JSICallbacks.getHandler = function(j, n){
-	var f = function(){
-		var a = arguments;
-		var c = a.callee;
-		var m = c._jsi.main;
-		return m[JSICallbacks.callbackMethod](c._jsi.getInfo(this), c._n, JSI.convertListToInfoIn(c._jsi, a));
-	};
-	f._jsi = j;
-	f._n = n;
-	return f;
-};
-/**
- * 
- * @param {Error} e
- * @param {Object} o
- * @param {String} pn
- */
-JSICallbacks.getErrorObject = function(j, e, nm, pn){
-	var o = {
-		message:e.message,
-		number:e.number,
-		description:e.description,
-		fileName:e.fileName,
-		lineNumber:e.lineNumber,
-		name:e.name,
-		stack:e.stack,
-		property:pn
-	};
-	JSICallbacks.__errTarget(j, o, nm);
-	JSICallbacks.__errFL(e, o);
-	return o;
-};
-/**
- * @private
- * @param {Object} j
- * @param {Object} o
- * @param {Object} nm
- */
-JSICallbacks.__errTarget = function(j, o, nm){
-	if(j && nm){
-		if(typeof nm == 'string'){
-			if(j.objects.isExists(nm)){
-				o.target = j.getInfo(j.objects.getItem(nm));
-			}else{
-				o.target = nm;
-			};
-		}else{
-			o.target = j.getInfo(nm);
-		};
-	};
-};
-/**
- * @private
- * @param {Object} e
- * @param {Object} o
- */
-JSICallbacks.__errFL = function(e, o){
-	if('flId' in e){
-		o.flId = e.flId;
-		o.flDef = e.flDef;
-		o.flName = e.flName;
-		o.flStackTrace = e.flStackTrace;
-	};
-};
-//----------------------------------- ОБЪЕКТ ЗАГРУЖАЮЩИЙ ДОПОЛНИТЕЛЬНЫЕ ОБЪЕКТЫ
-/**
- * 
- * 
- */
-JSIInclude = function(){};
-//---------------------------------------------------------------------------------------------------- JSIInclude PUBLIC
-//---------------------------------------------------------------------------------------------------- JSIInclude STATIC
-/** Задать загрузку JavaScript файла
- * 
- * @param {String} jn
- * @param {String} url
- * @param {String} func
- * @param {String} type
- */
-JSIInclude.loadJavaScript = function(jn, url, func, type){
-	var j = JSIHost[jn];
-	if(!type){
-		type = 'text/javascript';
-	};
-	var el = JSIInclude.getJSEl(url, type);
-	if(func){
-		JSIInclude.getCH(j, el, func);
-	};
-	el.src = url;
-	j.tag.appendChild(el);
-	return j.getInfo(el);
-};
-/**
- * @private
- * @param {Object} jn
- * @param {Object} url
- * @param {Object} func
- * @param {Object} type
- */
-JSIInclude.tryLoadJavaScript = function(jn, url, func, type){
-	var o;
-	try{
-		o = JSIInclude.loadJavaScript(jn, url, func, type);
-	}catch(e){
-		var j = JSIHost[jn];
-		j.callbacks.throwException(e, null, '');
-	};
-	return o;
-};
-/** Получить новый HTML-элемент SCRIPT
- * @private
- * @param {JSIMain} j
- * @param {String} name
- * @param {String} url
- * @param {String} type
- */
-JSIInclude.getJSEl = function(url, type){
-	var el = JSI.d().createElement('script');
-	el.type = type;
-	return el;
-};
-/** Задать загрузку CSS файла
- * 
- * @param {String} jn
- * @param {String} url
- * @param {String} func
- * @param {String} type
- */
-JSIInclude.loadCSS = function(jn, url, func, type){
-	var j = JSIHost[jn];
-	if(!type){
-		type = 'text/css';
-	};
-	var el = JSIInclude.getCSSEl(url, type);
-	if(func){
-		JSIInclude.getCH(j, el, func);
-	};
-	el.href = url;
-	j.tag.appendChild(el);
-	return j.getInfo(el);
-};
-/**
- * @private
- * @param {Object} jn
- * @param {Object} url
- * @param {Object} func
- * @param {Object} type
- */
-JSIInclude.tryLoadCSS = function(jn, url, func, type){
-	var o;
-	try{
-		o = JSIInclude.loadCSS(jn, url, func, type);
-	}catch(e){
-		var j = JSIHost[jn];
-		j.callbacks.throwException(e, null, '');
-	};
-	return o;
-};
-/** Получить новый HTML-элемент LINK
- * @private
- * @param {JSIMain} j
- * @param {String} name
- * @param {String} url
- * @param {String} type
- */
-JSIInclude.getCSSEl = function(url, type){
-	var el = JSI.d().createElement('link');
-	el.rel = 'stylesheet';
-	el.type = type;
-	return el;
-};
-/** Получить хандлер на событие загрузки
- * @private
- * @param {JSIMain} j
- * @param {HTMLElement} el
- * @param {String} func
- */
-JSIInclude.getCH = function(j, el, func){
-	var f = function(){
-		var a = arguments;
-		JSIInclude.callCH(this, a.callee._h, a);
-		JSIInclude.clearCH(this);
-	};
-	f._h = j.callbacks.getItem(func);
-	if(JSI.isIE()){
-		el.onreadystatechange = f;
-	}else{
-		el.onload = f;
-	};
-	return f;
-};
-/** Вызвать флеш функцию по таймауту
- * @private
- * @param {HTMLElement} el
- * @param {Function} func
- * @param {Array} args
- */
-JSIInclude.callCH = function(el, func, args){
-	var f = function(){
-		var c = arguments.callee;
-		c._f.apply(c._e, c._a);
-	};
-	f._e = el;
-	f._f = func;
-	f._a = args;
-	setTimeout(f, 1);
-};
-/** Удалить хандлер события
- * @private
- * @param {HTMLElement} el
- * @param {Function} func
- * @param {Array} args
- */
-JSIInclude.clearCH = function(el){
-	if(JSI.isIE()){
-		el.onreadystatechange = null;
-	}else{
-		el.onload = null;
-	};
-};
-//----------------------------------- ОБЪЕКТ ОБЁРТКА ДЛЯ JavaScript ОБЪЕКТОВ ПЕРЕДАВАЕМЫХ НАПРЯМУЮ
-/**
- * 
- * @param {Object} v
- */
-FLSimple = function(v){
-	this.data = v;
-};
-//----------------------------------- ОБЪЕКТ ОБЁРТКА ДЛЯ ВСЕХ ОБЪЕКТОВ ИЗ FLASH СРЕДЫ
-/**
- * 
- * @param {Object} j
- * @param {Object} n
- */
-FLObject = function(j, i){
-	this.jsi = j;
-	this.info = i;
-	this.name = i.value;
-};
-JSI.fo = FLObject.prototype;
-//---------------------------------------------------------------------------------------------------- FLObject PUBLIC
-/** Вызвать свойство/метод из флеш объекта
- * 
- * @param {Object} n
- * @param {Object} a
- * @param {Object} u
- */
-JSI.fo.call = function(n, a, u){
-	if (!a) {
-		a = [];
-	};
-	if(arguments.length<=2){
-		u = '';
-	};
-	return this.jsi.callbacks.callProperty(this.name, n, a, u);
-};
-/** Проверить наличие свойства во флеш объекте
- * 
- * @param {Object} n
- * @param {Object} u
- */
-JSI.fo.has = function(n, u){
-	if(arguments.length==1){
-		u = '';
-	};
-	return this.jsi.callbacks.hasProperty(this.name, n, u);
-};
-/** Получить значение свойства из флеш объекта
- * 
- * @param {Object} n
- * @param {Object} u
- */
-JSI.fo.get = function(n, u){
-	if(arguments.length==1){
-		u = '';
-	};
-	return this.jsi.callbacks.getProperty(this.name, n, u);
-};
-/** Установить свойство во флеш объекте
- * 
- * @param {Object} n
- * @param {Object} v
- * @param {Object} u
- */
-JSI.fo.set = function(n, v, u){
-	if(arguments.length<=2){
-		u = '';
-	};
-	return this.jsi.callbacks.setProperty(this.name, n, v, u);
-};
-/** Удалить свойство из флеш объекта
- * 
- * @param {Object} n
- * @param {Object} u
- */
-JSI.fo.del = function(n, u){
-	if(arguments.length==1){
-		u = '';
-	};
-	return this.jsi.callbacks.deleteProperty(this.name, n, u);
-};
-/** Получить данный флеш объект не как ссылку, а напрямую - с последующей пастеризацией и потерей связи с флеш окружением.
- * 
- */
-JSI.fo.getAsSimple = function(){
-	return this.jsi.callbacks.callCommand(this.name, 'asSimple');
-};
-/** Получить список свойств флеш объекта
- * 
- * @param {String} ac - R,W,RW,D(только динамические, не объявленные свойства)
- */
-JSI.fo.getPropertyList = function(ac){
-	return this.jsi.callbacks.callCommand(this.name, 'propertyList', arguments);
-};
-/** Получить список методов флеш объекта
- * 
- */
-JSI.fo.getMethodList = function(){
-	return this.jsi.callbacks.callCommand(this.name, 'methodList');
-};
-/** Получить имя класса флеш объекта
- * 
- */
-JSI.fo.describeType = function(){
-	return this.jsi.callbacks.callCommand(this.name, 'describeType');
-};
-/** Получить имя класса флеш объекта
- * 
- */
-JSI.fo.getClassName = function(){
-	return this.jsi.callbacks.callCommand(this.name, 'className');
-};
-/** Получить имя супер класса флеш объекта
- * 
- */
-JSI.fo.getSuperClassName = function(){
-	return this.jsi.callbacks.callCommand(this.name, 'superClassName');
-};
-/** Удалить данный объект из стека ссылок
- * 
- */
-JSI.fo.remove = function(){
-	return this.jsi.callbacks.removeObject(this.name);
-};
-//---------------------------------------------------------------------------------------------------- FLObject STATIC
-/** Создать флеш объект
- * 
- * @param {String} cn
- * @param {Array} a
- * @param {String} jn
- */
-FLObject.create = function(cn, a, jn){
-	var j = JSI.get(jn);
-	if(arguments.length<2 || a==null){
-		a = [];
-	}else if(!(a instanceof Array)){
-		a = [a];
-	};
-	return j.callbacks.createObject(cn, a);
-};
-/** Получить флеш объект по пути к нему
- * 
- * @param {Object} p
- * @param {Object} jn
- */
-FLObject.instance = function(p, t, jn){
-	var j = JSI.get(jn);
-	return j.callbacks.instanceObject(p, t);
-};
-/** Удалить все ссылки на флеш объекты
- * 
- * @param {Object} flc - удалить Flash каллбеки
- * @param {Object} flo - удалить Flash объекты
- * @param {Object} jsc - удалить JavaScript каллбеки
- * @param {Object} jso - удалить JavaScript объекты
- * @param {Object} jn -имя JSI объекта
- */
-FLObject.clear = function(flc, flo, jsc, jso, jn){
-	var l = arguments.length;
-	if(l<1) flc = true;
-	if(l<2) flo = true;
-	if(l<3) jsc = true;
-	if(l<4) jso = true;
-	var j = JSI.get(jn);
-	j.clear(flc, flo);
-	return j.callbacks.objectsClear(jsc, jso);
-};
-/** Получить флеш объект stage
- * 
- * @param {Object} jn
- */
-FLObject.stage = function(jn){
-	var j = JSI.get(jn);
-	return j.callbacks.instanceObject('stage');
-};
-/** Получить флеш объект root timeline
- * 
- * @param {Object} jn
- */
-FLObject.root = function(jn){
-	var j = JSI.get(jn);
-	return j.callbacks.instanceObject('root');
-};
-/** Получить флеш объект ApplicationDomain.currentDomain
- * 
- * @param {Object} jn
- */
-FLObject.applicationDomain = function(jn){
-	var j = JSI.get(jn);
-	return j.callbacks.instanceObject('applicationDomain');
-};
-//---------------------------------------------------------------------------------------------------- FLSimple PUBLIC
-//---------------------------------------------------------------------------------------------------- FLSimple STATIC
+п»ї/*Р”Р»СЏ Р·Р°РјРµРЅС‹ РІ Dreamweaver:\/\/[^\n\r]+[\n\r]+					-			РћРґРЅРѕСЃС‚СЂРѕС‡РЅС‹Р№ РєРѕРјРјРµРЅС‚Р°СЂРёР№\/\*\*(.|[^(\*\/)])+?\*\/			-			РњРЅРѕРіРѕСЃС‚СЂРѕС‡РЅС‹Р№ РєРѕРјРјРµРЅС‚Р°СЂРёР№]]></command><command><![CDATA[*//* * - JSIInjector - РѕР±СЉРµРєС‚ СЃРѕР·РґР°СЋС‰РёР№ СЂРµР°Р»СЊРЅС‹Р№ СѓР·РµР» <script/ >, РІ РєРѕС‚РѕСЂС‹Р№ РІСЃС‚Р°РІР»СЏРµС‚СЃСЏ РІРµСЃСЊ РёСЃРїРѕР»РЅСЏРµРјС‹Р№ РєРѕРґ. РќРµРѕР±С…РѕРґРёРјРѕ РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ Р±РµР· РѕС€РёР±РѕРє "РћС‚РєР°Р·Р°РЅРѕ РІ РґРѕСЃС‚СѓРїРµ" РІ IE. РҐРѕС‚СЏ Р±С‹ СЃРґРµР»Р°С‚СЊ С‚РµСЃС‚. * ^ РќРµС‚ РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё РІ Injector'Рµ, С‚.Рє. СЌС‚Рѕ РЅРµ СЃРїР°СЃР°РµС‚ РѕС‚ РѕС€РёР±РѕРє РґРѕСЃС‚СѓРїР° РІ IE. * /JSIInjector = function(){};JSIInjector.script = '';JSIInjector.add = function(str){	JSIInjector.script += str;};JSIInjector.write = function(){	var d = document;	var h = d.getElementsByTagName('head')[0];	if(!h){		h = d.firstChild;	};	var s = d.createElement('script');	s.type = 'text/javascript';	s.text = JSIInjector.script;	JSIInjector.script = '';	h.appendChild(s);}; // delete JSIInjector;// - РџРѕСЃР»Рµ РІСЃРµС… РІС‹РїРѕР»РЅРµРЅС‹С… СЂР°Р±РѕС‚ РЅСѓР¶РЅРѕ СѓРґР°Р»РёС‚СЊ Injector*//*РџРµСЂРµРїРёСЃС‹РІР°СЋ РїРѕР»РЅРѕСЃС‚СЊСЋ JS РІРЅСѓС‚СЂРµРЅРЅРѕСЃС‚РёРћР±СЉРµРєС‚С‹: + JSI - РѕР±СЉРµРєС‚ С…СЂР°РЅСЏС‰РёР№ С„СѓРЅРєС†РёРё-С€РѕСЂС‚РєР°С‚С‹+РјРµС‚РѕРґС‹ РґР»СЏ РґРѕСЃС‚СѓРїР° Рє РіР»Р°РІРЅС‹Рј РѕР±СЉРµРєС‚Р°Рј JS Рё РїСЂРѕС‡РµР№ 'РІР°Р¶РЅРѕР№' РёРЅС„С‹. + JSIMain - РіР»Р°РІРЅС‹Р№ РѕР±СЉРµРєС‚ + JSIElement - РѕР±СЉРµРєС‚ РґР»СЏ РїРѕРёСЃРєР° С„Р»РµС€ РѕР±СЉРµРєС‚РѕРІ РІ РґРѕРєСѓРјРµРЅС‚Рµ + JSIBrowser - РѕР±СЉРµРєС‚ РґР»СЏ РґР»СЏ Р±С‹СЃС‚СЂРѕРіРѕ РґРѕСЃС‚СѓРїР° Рє РѕСЃРЅРѕРІРЅС‹Рј РЅР°СЃС‚СЂРѕР№РєР°Рј РѕРєРЅР° Рё РґРѕРєСѓРјРµРЅС‚Р° + JSIInstance - РћР±СЉРµРєС‚ СЃРѕР·РґР°СЋС‰РёР№ СЌРєР·РµРјРїР»СЏСЂС‹ РѕР±СЉРµРєС‚РѕРІ Рё РІС‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґС‹/С„СѓРЅРєС†РёРё Р±РµР· СЃРјРµРЅС‹ РѕР±Р»Р°СЃС‚РµР№ РІРёРґРёРјРѕСЃС‚Рё + JSObjects - РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РѕР±СЉРµРєС‚Р°РјРё + JSFunctions - РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ С„СѓРЅРєС†РёСЏРјРё + JSCallbacks - РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РєР°Р»Р»Р±РµРєР°РјРё + JSInclude - РїРѕР·РІРѕР»СЏРµС‚ РєРѕРЅРєСЂРµС‚РЅС‹РјРё С€РѕСЂС‚РєР°С‚Р°РјРё РіСЂСѓР·РёС‚СЊ РєРѕРЅРєСЂРµС‚РЅС‹Рµ С‚РёРїС‹ СЂРµСЃСЃСѓСЂСЃРѕРІ - РІРЅРµРґСЂСЏС‚СЊ JS Рё CSS(РЅР°РґРѕ РїРѕРґСѓРјР°С‚СЊ, С‡С‚Рѕ РµС‰С‘ РіСЂСѓР·РёС‚СЊ) Рё РґРµР»Р°С‚СЊ РґСЂСѓРіРёРµ С€С‚СѓРєРё СЃ СЃРѕР·РґР°РЅРёРµРј С‚РµРіРѕРІ РІ РєРѕРЅС‚РµР№РЅРµСЂРµ <HEAD/ >. * FLObject - РѕР±СЉРµРєС‚ РѕР±С‘СЂС‚РєР° РґР»СЏ РїРµСЂРµРґР°РЅРЅРѕРіРѕ РёР· С„Р»РµС€ РїР»РµРµСЂР° РѕР±СЉРµРєС‚Р°. Р‘СѓРґРµС‚ РёРјРµС‚СЊ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ РјРµС‚РѕРґС‹ Proxy РєР»Р°СЃСЃР° - callProperty, getProperty, setProperty, hasProperty, deleteProperty TODO("." - DONE; "-" - REJECTED; "*" - IN PROGRESS): . РїРµСЂРµРЅРµСЃС‚Рё С‚РѕР»СЊРєРѕ РЅРµРѕР±С…РѕРґРёРјС‹Рµ С„СѓРЅРєС†РёРё . Р”РѕР±Р°РІРёС‚СЊ С€РѕСЂС‚РєР°С‚С‹ СЃ try* РґР»СЏ РѕС‚Р»РѕРІР° РѕС€РёР±РѕРє РёСЃРїРѕР»РЅРµРЅРёСЏ JS РєРѕРґР° Рё callback РґР»СЏ РІРѕР·РІСЂР°С‚Р° СЌС‚РёС… РѕС€РёР±РѕРє РІРѕ Flash, С‡С‚РѕР± РёС… РјРѕР¶РЅРѕ Р±С‹Р»Рѕ Р±РµСЃС€СѓРјРЅРѕ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ. РџРѕС‚РѕРј РїСЂРёРІСЏР·Р°С‚СЊ РІСЃРµ СЌС‚Рё РјРµС‚РѕРґС‹ Рє РєР»СЋС‡Сѓ JSInterface.useExceptionHandling. . Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ РІРёРґ РІС‹Р·РѕРІР° С„СѓРЅРєС†РёРё callLater(obj, func, handler, time=1), РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РІС‹Р·С‹РІР°С‚СЊ func РїРѕ С‚Р°Р№РјР°СѓС‚Сѓ, Р° СЂРµР·СѓР»СЊР°С‚ РІРѕР·РІСЂР°С‰Р°С‚СЊ РІ С…РµРЅРґР»РµСЂ. . Рљ РїСЂРѕС†РµРґСѓСЂРµ callLater РЅСѓР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ Р°РЅР°Р»РѕРі tryCallLater Рё С‚Р°РєРѕР№ Р¶Рµ Р°РЅР°Р»РѕРі РґР»СЏ РµРіРѕ Р°РЅРѕРЅРёРјРЅРѕР№ С„СѓРЅРєС†РёРё С‚Р°Р№РјР°СѓС‚Р° - РњР°СЃСЃРёРІ РїР°СЂР°РјРµС‚СЂРѕРІ РїРµСЂРµРґР°С‘С‚СЃСЏ РєР°Рє РјР°СЃСЃРёРІ Info РѕР±СЉРµРєС‚РѕРІ, РЅСѓР¶РЅРѕ СЃРґРµР»Р°С‚СЊ С‚Р°Рє С‡С‚РѕР± СЌС‚РѕС‚ РјР°СЃСЃРёРІ СЃР°Рј РїРµСЂРµРґР°РІР°Р»СЃСЏ РєР°Рє info РѕР±СЉРµРєС‚, Сѓ РєРѕС‚РѕСЂРѕРіРѕ РІ value РЅР°С…РѕРґРёС‚СЃСЏ РјР°СЃСЃРёРІ Р°СЂРіСѓРјРµРЅС‚РѕРІ. . Р”РѕР±Р°РІРёС‚СЊ СЂРµРµСЃС‚СЂ С„Р»РµС€ РѕР±СЉРµРєС‚РѕРІ РѕР±С‘СЂС‚РѕРє Рё РІРѕР·РІСЂР°С‰Р°С‚СЊ СѓР¶Рµ СЃРѕР·РґР°РЅРЅСѓСЋ РѕР±С‘СЂС‚РєСѓ РїРѕ РёРјРµРЅРё С„Р»РµС€ РѕР±СЉРµРєС‚Р°(РїСѓСЃС‚СЊ РѕРЅРё С…СЂР°РЅСЏС‚СЊСЃСЏ РІ Р°СЃСЃРѕС†РёР°С‚РёРІРЅРѕРј РјР°СЃСЃРёРІРµ Object[name] = target СЃ РєР»СЋС‡Р°РјРё - РёРјРµРЅР°РјРё С„Р»РµС€ РѕР±СЉРµРєС‚РѕРІ). Р’Рѕ С„Р»РµС€Рµ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С‚Р°РєРѕР№ Р¶Рµ СЂРµРµСЃС‚СЂ, СЃРѕС…СЂР°РЅСЏСЋС‰РёР№ РёРјРµРЅР° РїРµСЂРµРЅРµСЃС‘РЅРЅС‹С… РѕР±СЉРµРєС‚РѕРІ Dictionary(weak = true)[object] = name. . РР·РјРµРЅРёС‚СЊ РјРµС…Р°РЅРёР·Рј Р»РѕРІР»Рё РѕС€РёР±РѕРє Рё СЃРґРµР»Р°С‚СЊ РєР°Рє РІ JavaScript - РІРѕР·РІСЂР°С‰Р°С‚СЊ РІРѕ С„Р»РµС€ РѕР±СЉРµРєС‚ {value:*, error:*}, СЌС‚Рѕ РїРѕР·РІРѕР»РёС‚ СѓР±СЂР°С‚СЊ РµС‰С‘ РѕРґРёРЅ РєР°Р»Р»Р±РµРє Рё С‚РµРїРµСЂСЊ РѕС€РёР±РєР° Р±СѓРґРµС‚ РІС‹СЃРєР°РєРёРІР°С‚СЊ РЅРµ РїРѕ С‚РёРєСѓ, Р° РІ РјРѕРјРµРЅС‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ СЃРІРѕР№СЃС‚РІР°/РјРµС‚РѕРґР°. . Р РµС€РёС‚СЊ РїСЂРѕР±Р»РµРјСѓ СЃ try{}catch(e){throw e}, С‡С‚РѕР± РѕС€РёР±РєР° РЅРµ С‚СѓС…Р»Р° РІ catch . Р”РѕР±Р°РІРёС‚СЊ РїСЂРѕРІРµСЂРєСѓ РЅР° РѕР±С‘СЂС‚РєСѓ FLSimple JS РѕР±СЉРµРєС‚Р°, РїСЂРё РєРѕС‚РѕСЂРѕР№ Р»СЋР±РѕР№ РѕР±СЉРµРєС‚ СЃРѕРґРµСЂР¶С‰РёР№СЃСЏ РІ РЅС‘Рј Р±СѓРґРµС‚ РїРµСЂРµРґР°РІР°С‚СЊСЃСЏ РєР°Рє РµСЃС‚СЊ - Р±РµР· СЃСЃС‹Р»РєРё. Рђ РІ AS РЅР°РґРѕ РґРѕР±Р°РІРёС‚СЊ РёРЅС‚РµСЂС„РµР№СЃ, СЃ РјРµС‚РѕРґРѕРј, РєРѕС‚РѕСЂС‹Р№ РІРѕР·РІСЂР°С‰Р°РµС‚ РїСЂРѕСЃС‚РѕР№ РѕР±СЉРµРєС‚ РґР»СЏ РїРµСЂРµРґР°С‡Рё Рё РїСЂРѕРєСЃСЋ РґР»СЏ РїСЂРѕС‚РµРєС‚Р° РѕС‚ РїРµСЂРµРґР°С‡Рё РЅР°РїСЂСЏРјСѓСЋ РѕР±С‹С‡РЅС‹С… РѕР±СЉРµРєС‚РѕРІ Рё РјР°СЃСЃРёРІРѕРІ. . Р’СЃРµС… РїРѕР»СѓС‡Р°РµРјС‹С… РїСЂРѕСЃС‚С‹С… РћР±СЉРµРєС‚РѕРІ Рё РњР°СЃСЃРёРІРѕРІ СЃРґРµР»Р°С‚СЊ РїСЂРѕРІРµСЂРєСѓ РІРіР»СЋР±СЊ, РЅР° РІРѕР·РјРѕР¶РЅС‹Рµ РІР»РѕР¶РµРЅРёСЏ СЃР»РѕР¶РЅС‹С… РѕР±СЉРµРєС‚РѕРІ РЅР°С…РѕРґСЏС‰РёС…СЃСЏ РІ СЃРІРѕР№СЃС‚РІР°С… СЌС‚РёС… РѕР±СЉРµРєС‚РѕРІ. . РџСЂРµРєСЂР°С‚РёС‚СЊ СЃРѕР·РґР°РІР°С‚СЊ РѕР±СЉРµРєС‚С‹ РґР»СЏ РїСЂРѕСЃС‚С‹С… С‚РёРїРѕРІ - РѕРЅРё РІСЃС‘ СЂР°РІРЅРѕ РЅРёРіРґРµ РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ, РЅРѕ СЃРѕР·РґР°СЋС‚ РЅР°РіСЂСѓР·РєСѓ. * РЎРґРµР»Р°С‚СЊ РїСЂРѕРІРµСЂРєСѓ РЅР° РїСЂРѕСЃС‚С‹Рµ РѕР±СЉРµРєС‚С‹ С‚.Рє. (new Number(5) instanceof Object) = true, РЅР°РґРѕ РёСЃРєР»СЋС‡РёС‚СЊ РїРѕРїР°РґР°РЅРёРµ С‚Р°РєРёС… РѕР±СЉРµРєС‚РѕРІ РїРѕ СЃСЃС‹Р»РєРµ. - РњРѕР¶РµС‚ РїСЂРёРІРµСЃС‚Рё Рє Р»РѕРіРёС‡РµСЃРєРёРј РїР°СЂР°РґРѕРєСЃР°Рј. Р›СѓС‡С€Рµ РѕСЃС‚Р°РІРёС‚СЊ РєР°Рє РµСЃС‚СЊ - РѕР±СЉРµРєС‚С‹ Р±СѓРґСѓС‚ РїРµСЂРµРґР°РІР°С‚СЊСЃСЏ РєРѕРјРїР»РµРєСЃРЅРѕ, РЅРµ Р·Р°РІРёСЃРёРјРѕ РѕС‚ РёС… С‚РёРїРѕРІ. . РџСЂРёРІРµСЃС‚Рё Рє РЅРѕСЂРјР°Р»СЊРЅРѕРјСѓ РІРёРґСѓ JSI.__callFunction Рё РґРѕР±Р°РІРёС‚СЊ РјРµС‚РѕРґ Рє JSIInstance РґР»СЏ РІС‹Р·РѕРІР° С„СѓРЅРєС†РёРё РЅР°РїСЂСЏРјСѓСЋ СЃ РЅРµРёР·РІРµСЃС‚РЅС‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ. . РСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІРјРµСЃС‚Рѕ JSI РёРјРµРЅРё Р·РЅР°С‡РµРЅРёРµ ID С„Р»РµС€РєРё, РµСЃР»Рё РѕРЅРѕ Р·Р°РґР°РЅРѕ. . Р”РѕР±Р°РІРёС‚СЊ Рє FLObject РјРµС‚РѕРґС‹ remove() Рё static clear() РґР»СЏ РѕС‚С‡РёСЃС‚РєРё СЃСЃС‹Р»РѕРє - Р”РѕРїРёСЃР°С‚СЊ РєРѕРјРјР°РЅРґС‹, РІРѕ С„Р»РµС€Рµ. Р”РѕР±Р°РІРёС‚СЊ РјРµС‚РѕРґ forEach Рє FLObject'Сѓ, С‡С‚РѕР± РјРѕРЅРѕ Р±С‹Р»Рѕ РїРµСЂРµР±РёСЂР°С‚СЊ СЃРІРѕР№СЃС‚РІР° РѕР±СЉРµРєС‚Р° СЃ С…Р°РЅРґР»РµСЂРѕРј. . Р”РѕР±Р°РІРёС‚СЊ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ СЃРѕР·РґР°РЅРёСЏ РѕР±СЉРµРєС‚Р° РёР· СЃСЃС‹Р»РєРё РЅР° С„СѓРЅРєС†РёСЋ. Рљ РїСЂРёРјРµСЂСѓ, С‚Р°Рє: var obj:JSDynamic = new JSDynamic(JSInterface.document.constructor); * Р”Р»СЏ СЂРµР»РёР·Р° JSInterface 2 РЅСѓР¶РЅРѕ СЃРѕР·РґР°С‚СЊ СЃРїРµС†РёР°Р»СЊРЅС‹Р№ Р»РѕР°РґРµСЂ РґР»СЏ IE, С‡С‚РѕР± РјРѕР¶РЅРѕ Р±С‹Р»Рѕ СЋР·Р°С‚СЊ SWF С„Р°Р№Р»С‹ Р±РµР· HTML СЃС‚СЂР°РЅРёС†С‹. . РЎРјРµРЅРёС‚СЊ С…РѕСЃС‚РµСЂР° РІСЃРµС… JSIMain РѕР±СЉРµРєС‚РѕРІ СЃ JSI, РЅР° JSIHost Рё РІСЃРµ РІС‹Р·РѕРІС‹ РѕР±СЉРµРєС‚РѕРІ JSI[name] РЅР° JSIHost[name], СЃРѕРѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕ. . РџСЂРѕРІРµСЂРёС‚СЊ РїРѕС‡РµРјСѓ РІ РєР°Р»Р»Р±РµРєР°С… РЅРµ СЂР°Р±РѕС‚Р°РµС‚ try.catch Рё РїРµСЂРµРЅР°РїСЂР°РІРёС‚СЊ РѕС€РёР±РєСѓ РІ РјРµС‚РѕРґ Р·Р°РґР°РЅРЅС‹Р№ РІ JSInterface.exceptionHandler . Р Р°Р·РіСЂР°РЅРёС‡РёС‚СЊ СѓРґР°Р»РµРЅРёРµ СЃРѕР·РґР°РЅРЅС‹С… РёРЅСЃС‚Р°РЅСЃРѕРІ, РґР»СЏ РѕС‚С‡РёСЃС‚РєРё РїР°РјСЏС‚Рё: JSInterface.clear(flCallbacks, flObjects, jsCallbacks, jsObjects);FLObject.clear(flCallbacks, flObjects, jsCallbacks, jsObjects);*///---------------------------------------------------------------------------------------------------- РЁРћР РўРљРђРў РћР‘РЄР•РљРў/** CРѕРґРµСЂР¶РёС‚ С€РѕСЂС‚РєР°С‚С‹-РјРµС‚РѕРґС‹ РІС‹РїРѕР»РЅСЏСЋС‰РёРµ РЅРµСЃРєРѕР»СЊРєРѕ РєРѕРјР±РёРЅРёСЂРѕРІР°РЅС‹С… РґРµР№СЃС‚РІРёР№ */JSI = function(){};JSIHost = {};JSI.first;JSI.count = 0;/** Р‘Р°Р·РѕРІРѕРµ РёРјСЏ СЃРѕР·РґР°РІР°РµРјС‹С… СЌРєР·РµРјРїР»СЏСЂРѕРІ РѕР±СЉРµРєС‚Р° */JSI.name = '__jsi_';/** РРЅРґРµРєСЃ СЌРєР·РµРјРїР»СЏСЂРѕРІ РѕР±СЉРµРєС‚Р° */JSI.index = 0;/** РЎРїРёСЃРѕРє РЅР°Р·РІР°РЅРёР№ РјРµС‚РѕРґРѕРІ РѕР±СЉРµРєС‚Р° window, РєРѕС‚РѕСЂС‹Рµ Р±СѓРґСѓС‚ РІС‹Р·РІР°РЅС‹ РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЃРёСЃС‚РµРјС‹ */JSI.isInstalled = false;JSI.installedEventList = ['onJSIInstalled', 'onjsiinstalled'];//---------------------------------------------------------------------------------------------------- JSI PUBLIC//---------------------------------------------------------------------------------------------------- JSI STATIC/** РЎРѕР·РґР°С‚СЊ СЌРєР·РµРјРїР»СЏСЂ РѕСЉРµРєС‚Р°. Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° РЅРµРіРѕ.  *  * @param {String} id * @param {String} url * @return {String} */JSI.create = function(id, url){	var nm = id ? id : JSI.name+String(JSI.index++);	var o = new JSIMain(id, url, nm);	if(!JSI.first){		JSI.first = o;	};	JSIHost[nm] = o;	JSI.count++;	return nm;};/** РџРѕР»СѓС‡РёС‚СЊ СЌРєР·РµРјРїР»СЏСЂ РѕР±СЉРµРєС‚Р° РїРѕ РµРіРѕ СЃСЃС‹Р»РєРµ  *  * @param {String} n * @return {JSIMain} */JSI.get = function(n){	var r;	if(n){		r = JSIHost[n];	}else if(JSI.count==1){		r = JSI.first;	};	return r;};/** РћС‚С‡РёСЃС‚РёС‚СЊ С‚РµРєСѓС‰РёР№ СЃРµР°РЅСЃ JS  *  * @param {String} n * @param {Boolean} c РЈРєР°Р·С‹РІР°РµС‚ РЅР° РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ РѕС‚С‡РёС‰Р°С‚СЊ РєР°Р»Р»Р±РµРєРё(РѕР±СЉРµРєС‚С‹ РѕР±С‘СЂС‚РєРё) */JSI.clear = function(n, c, o){	JSIHost[n].clear(c, o);};/** Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ document. РРјСЏ РјР°РєСЃРёРјР°Р»СЊРЅРѕ СѓРєРѕСЂРѕС‡РµРЅРѕ, С‡С‚РѕР± СѓРјРµРЅСЊС€РёС‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РїРµСЂРµРґР°РІР°РµРјС‹С… РІExternalInterface РІРѕ РІСЂРµРјСЏ С„Р°Р·С‹ JavaScript injection(РЅРµРѕР±С…РѕРґРёРјРѕ, С‡С‚РѕР± СЃРёРјРІРѕР»РѕРІ Р±С‹Р»Рѕ РЅРµ Р±РѕР»СЊС€Рµ 255)  *  * @return {HTMLDocument} */JSI.d = function(){	var d;	try{		d = window['document'];	}catch(e){		d = null;	};	return d;};/** РџСЂРѕРІРµСЂСЏРµС‚, РґРѕСЃС‚СѓРїРµРЅ Р»Рё РѕР±СЉРµРєС‚ document *  * @return {Boolean} */JSI.hasDocument = function(){	return Boolean(JSI.d());};/** РџСЂРѕРІРµСЂСЏРµС‚, РЅРµ, С‘Р±Р°РЅС‹Р№ РІ Р¶РѕРїСѓ С‚СѓРїС‹Рј РїСЂРµРґРјРµС‚РѕРј, РѕСЃС‘Р» Р»Рё С‚РµРєСѓС‰РёР№ Р±СЂР°СѓР·РµСЂ *  * @return {Boolean} */JSI.isIE = function(){	return (navigator.appName.indexOf('Microsoft')>=0);};/** РРЅРґРµРєСЃ СЌРєР·РµРјРїР»СЏСЂРѕРІ РѕР±СЉРµРєС‚ */JSI.onInstalled = function(){	if(!JSI.isInstalled){		var len = JSI.installedEventList.length;		for(var i=0; i<len; i++){			var e = JSI.installedEventList[i];			if(typeof window[e]=='function'){				window[e]();			};		};		JSI.isInstalled = true;	};};//----------------------------- РЎРёСЃС‚РµРјРЅС‹Рµ РѕР±СЉРµРєС‚С‹/** РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ document.  *  * @param {String} jn * @return {String} */JSI.getDocumentLink = function(jn){	return JSIHost[jn].getInfo(JSI.hasDocument() ? JSI.d() : null);};/** РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ window. *  * @param {String} jn * @return {String} */JSI.getWindowLink = function(jn){	return JSIHost[jn].getInfo(window);};/** РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ navigator.  *  * @param {String} jn * @return {String} */JSI.getNavigatorLink = function(jn){	return JSIHost[jn].getInfo(navigator);};/** РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ С„Р»РµС€ РїР»РµРµСЂР°.  *  * @param {String} jn * @return {String} */JSI.getMainLink = function(jn){	var j = JSIHost[jn];	var m = j.main;	return j.getInfo(m);};/** РџРѕР»СѓС‡РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ СЃРѕР±С‹С‚РёСЏ.  *  * @param {String} jn * @return {String} */JSI.getEventLink = function(jn){	var j = JSIHost[jn];	return j.getInfo(event);};//----------------------------- РћР±С‰РёРµ/** РџРѕР»СѓС‡РёС‚СЊ info РѕР±СЉРµРєС‚ РёР· Р·РЅР°С‡РµРЅРёСЏ  *  * @param {String} jn * @param {Object} val * @return {Object} */JSI.getInfo = function(jn, vn){	var val = JSI.eval(vn);	return {value:JSIHost[jn].getInfo(val)};};/**  * @private */JSI.tryGetInfo = function(jn, vn){	var o;	try{		o = JSI.getInfo(jn, vn);	}catch(e){		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, vn)};	};	return o;};/** Р—Р°РјРµРЅР° РѕР±С‹С‡РЅРѕРјСѓ eval, С‚.Рє. РіР»РѕР±Р°Р»СЊРЅР°СЏ С„СѓРЅРєС†РёСЏ eval РІС‹Р·С‹РІР°РµС‚ РѕС€РёР±РєСѓ РІ FireFox'Рµ * "function eval must be called directly, and not by way of a function of another name",  * Рё СЏ СЂРµС€РёР» СЌС‚Сѓ РїСЂРѕР±Р»РµРјСѓ СЃРѕР·РґР°РЅРёРµРј Рё РїРѕСЃР»РµРґСѓСЋС‰РёРј РІС‹РїРѕР»РЅРµРЅРёРµРј Р°РЅРѕРЅРёРјРЅРѕР№ С„СѓРЅРєС†РёРё. *  * @param {String} n РљРѕРґ, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅРѕ РІС‹РїРѕР»РЅРёС‚СЊ. Р’ РѕСЃРЅРѕСЃРЅРѕРј Р±СѓРґРµС‚ РїР°СЂСЃРёС‚СЊ РїСѓС‚Рё РІ С‚РѕС‡РµС‡РЅРѕР№ РЅРѕС‚Р°С†РёРё. */JSI.eval = function(n){	var f = new Function('return '+n+';');	return f();};/** РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє info РѕР±СЉРµРєС‚РѕРІ РёР· Р·РЅР°С‡РµРЅРёР№, СЃ СѓРєР°Р·Р°РЅРёРµРј JSI РѕР±СЉРµРєС‚Р°  *  * @param {JSIMain} j * @param {Array} args * @return {Array} */JSI.convertListToInfoIn = function(j, args){	var ret = [];	if(args){		var len = args.length;		for(var i=0; i<len; i++){			ret[i] = j.getInfo(args[i]);		};	};	return ret;};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РёР· info РѕР±СЉРµРєС‚Р°  *  * @param {String} jn * @param {Object} info * @return {Object} */JSI.getValue = function(jn, o){	var r;	if(o instanceof Object){		r = JSI.getValueIn(JSIHost[jn], o);	}else{		r = o;	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РёР· info РѕР±СЉРµРєС‚Р°, СЃ СѓРєР°Р·Р°РЅРёРµРј JSI РѕР±СЉРµРєС‚Р°  *  * @param {JSIMain} j * @param {Object} info * @return {Object} */JSI.getValueIn = function(j, o){	var r;	if(o instanceof Object && o.constructor==Object){		if(o.isComplex){			r = JSI.getComplexValueIn(j, o);		}else{			r = JSI.getSimpleValueIn(j, o);		};	}else{		r = o;	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РєРѕРјРїР»РµРєСЃРЅРѕРіРѕ С‚РёРїР° * @private * @param {Object} j * @param {Object} o */JSI.getComplexValueIn = function(j, o){	var r;	if(o.side=='JS'){		if(o.type=='function'){			r = j.funcs.getItem(o.value);		}else{			r = j.objects.getItem(o.value);		};	}else{		if(o.type=='function'){			r = j.callbacks.getItemByInfo(o);		}else{			r = new FLObject(j, o);		};	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ РїСЂРѕСЃС‚РѕРіРѕ С‚РёРїР° * @private * @param {Object} j * @param {Object} o */JSI.getSimpleValueIn = function(j, o){	var r;	if(o.type=='array'){		r = JSI.convertListToValueIn(j, o.value);	}else if(o.type=='object'){		r = JSI.convertObjectToValueIn(j, o.value);	}else{		r = o.value;	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёСЏ РёР· СЃРїРёСЃРєР° info РѕР±СЉРµРєС‚РѕРІ, СЃ СѓРєР°Р·Р°РЅРёРµРј JSI РѕР±СЉРµРєС‚Р°  *  * @param {JSIMain} j * @param {Array} args * @return {Array} */JSI.convertListToValueIn = function(j, args){	var r = [];	if(args){		var len = args.length;		for(var i=0; i<len; i++){			r[i] = JSI.getValueIn(j, args[i]);		};	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёСЏ РёР· Р°СЃСЃРѕС†РёР°С‚РёРІРЅРѕРіРѕ РјР°СЃСЃРёРІР°(РѕР±СЉРµРєС‚Р°) info РѕР±СЉРµРєС‚РѕРІ, СЃ СѓРєР°Р·Р°РЅРёРµРј JSI РѕР±СЉРµРєС‚Р°  *  * @param {JSIMain} j * @param {Array} args * @return {Array} */JSI.convertObjectToValueIn = function(j, obj){	var r = {};	if(obj){		for(var p in obj){			r[p] = JSI.getValueIn(j, obj[p]);		};	};	return r;};/** * * @param {String} jn * @param {Object} o * @param {String} p * @return {Object} */JSI.getParamValue = function(jn, o, p){	o = JSI.getValue(jn, o);	var f = JSI.eval('function(o){return o.'+p+'}');	var r = f(o);	return {value:JSIHost[jn].getInfo(r)};};/** * @private */JSI.tryGetParamValue = function(jn, o, p){	var r;	try{		r = JSI.getParamValue(jn, o, p);	}catch(e){		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, o, p)};	};	return r;};//----------------------------- РћР±СЉРµРєС‚С‹/** РџРѕР»СѓС‡РёС‚СЊ РѕР±СЉРµРєС‚ РїРѕ СЃСЃС‹Р»РєРµ РЅР° JSI Рё СЃСЃС‹Р»РєРё РЅР° С‚СЂРµР±СѓРµРјС‹Р№ РѕР±СЉРµРєС‚  *  * @param {String} jn * @param {String} nm * @return {Object} */JSI.getObject = function(jn, nm){	return JSIHost[jn].objects.getItem(nm);};/** РЎРѕР·РґР°С‚СЊ СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР°  *  * @param {String} jn - РРјСЏ СЌРєР·РµРјРїР»СЏСЂР° С„СЂРµР№РјРІРѕСЂРєР° * @param {String} args - РЎС‚СЂРѕРєР° СЃ Р°СЂРіСѓРјРµРЅС‚Р°РјРё, С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ * @param {String} code - РљРѕРґ С„СѓРЅРєС†РёРё * @return {Object} */JSI.createFunction = function(jn, args, code){	var j = JSIHost[jn];	var func = JSI.eval('function('+args+'){'+code+'};');	return {value:j.getInfo(func)};};/**  * @private */JSI.tryCreateFunction = function(jn, args, code){	var o;	try{		o = JSI.createFunction(jn, args, code);	}catch(e){		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, 'Function')};	};	return o;};/** РЎРѕР·РґР°С‚СЊ СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР°  *  * @param {String} jn - РРјСЏ СЌРєР·РµРјРїР»СЏСЂР° С„СЂРµР№РјРІРѕСЂРєР° * @param {String} cn - РРјСЏ РєР»Р°СЃСЃР° СЃРѕР·РґР°РІР°РµРјРѕРіРѕ РѕР±СЉРµРєС‚Р° * @param {Array} args - РЎРїРёСЃРѕРє Р°СЂРіСѓРјРµРЅС‚РѕРІ РїРµСЂРµРґР°РІР°РµРјС‹С… РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ * @return {Object} */JSI.createInstance = function(jn, cn, args){	var j = JSIHost[jn];	var cls = JSI.eval(cn);	args = JSI.convertListToValueIn(j, args);	return {value:j.getInfo(JSIInstance.create(cls, args))};};/**  * @private */JSI.tryCreateInstance = function(jn, cn, args){	var o;	try{		o = JSI.createInstance(jn, cn, args);	}catch(e){		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, cn)};	};	return o;};/** РЎРѕР·РґР°С‚СЊ СЌРєР·РµРјРїР»СЏСЂ РєР»Р°СЃСЃР°  *  * @param {String} jn - РРјСЏ СЌРєР·РµРјРїР»СЏСЂР° С„СЂРµР№РјРІРѕСЂРєР° * @param {String} cn - РРјСЏ РєР»Р°СЃСЃР° СЃРѕР·РґР°РІР°РµРјРѕРіРѕ РѕР±СЉРµРєС‚Р° * @param {Array} args - РЎРїРёСЃРѕРє Р°СЂРіСѓРјРµРЅС‚РѕРІ РїРµСЂРµРґР°РІР°РµРјС‹С… РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ * @return {Object} */JSI.createInstanceByLink = function(jn, nm, t, args){	var j = JSIHost[jn];	var cls;	if(t=='function'){		cls = j.funcs.getItem(nm);	}else{		cls = j.objects.getItem(nm).constructor;	}	args = JSI.convertListToValueIn(j, args);	return {value:j.getInfo(JSIInstance.create(cls, args))};};/**  * @private */JSI.tryCreateInstanceByLink = function(jn, nm, t, args){	var o;	try{		o = JSI.createInstanceByLink(jn, nm, t, args);	}catch(e){		o = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm)};	};	return o;};/** РЈРґР°Р»РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚ *  * @param {String} jn * @param {String} nm */JSI.removeObject = function(jn, nm){	JSIHost[jn].objects.removeItem(nm);};/** РџСЂРѕРІРµСЂРёС‚СЊ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЃСЃС‹Р»РєРё РЅР° РѕР±СЉРµРєС‚ *  * @param {String} jn * @param {String} nm * @return {Boolean} */JSI.isExistsObject = function(jn, nm){	return JSIHost[jn].objects.isExists(nm);};//----------------------------- Р¤СѓРЅРєС†РёРё/** РџРѕР»СѓС‡РёС‚СЊ РѕР±СЉРµРєС‚ С„СѓРЅРєС†РёРё РїРѕ СЃСЃС‹Р»РєРµ  *  * @param {String} jn * @param {String} fn * @return {Function} */JSI.getFunc = function(jn, fn){	return JSIHost[jn].funcs.getItem(fn);};/** РЈРґР°Р»СЏРµС‚ СЃСЃС‹Р»РєСѓ РЅР° С„СѓРЅРєС†РёСЋ *  * @param {String} jn * @param {String} fn * @return {Boolean} */JSI.removeFunc = function(jn, fn){	return JSIHost[jn].funcs.removeItem(fn);};/** РџСЂРѕРІРµСЂСЏРµС‚ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЃСЃС‹Р»РєРё РЅР° С„СѓРЅРєС†РёСЋ *  * @param {String} jn * @param {String} fn * @return {Boolean} */JSI.isExistsFunc = function(jn, fn){	return JSIHost[jn].funcs.isExists(fn);};/** РџСЂРѕРІРµСЂСЏРµС‚ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С„СѓРЅРєС†РёРё РїРµСЂРµРґР°РЅРЅРѕР№ РїРѕ СЃСЃС‹Р»РєРµ Рє СЃРѕРґРµСЂР¶РёРјРѕРјСѓ СЃРІРѕР№СЃС‚РІР° СЃРѕС…СЂР°РЅС‘РЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°. * Р•СЃР»Рё Р¤СѓРЅРєС†РёСЏ РЅРµ Р±С‹Р»Р° СѓРґР°Р»РµРЅР° РёР· СЌС‚РѕС‚РіРѕ СЃРІРѕР№СЃС‚РІР°, С‚Рѕ РѕРЅР° Р±СѓРґРµС‚ РІС‹Р·РІР°РЅР° С‡РµСЂРµР· РёРјСЏ СЃРІРѕР№СЃС‚РІР°, РµСЃР»Рё РЅРµС‚ - Р±СѓРґРµС‚ РІС‹Р·РІР°РЅР° С‡РµСЂРµР· СЃСЃС‹Р»РєСѓ РЅР° С„СѓРЅРєС†РёСЋ * @param {String} jn * @param {String} fn * @param {String} pn * @return {Boolean} */JSI.isCurrentFunc = function(jn, fn, pn){	return JSIHost[jn].funcs.isCurrent(fn, pn);};/** Р’С‹Р·РІР°С‚СЊ С„СѓРЅРєС†РёСЋ РїРѕ СЃСЃС‹Р»РєРµ РЅР° СЌС‚Сѓ Р¶Рµ С„СѓРЅРєС†РёСЋ  *  * @param {String} jn * @param {String} fn * @param {String} pn * @param {Array} args * @return {Object} */JSI.callFunction = function(jn, fn, pn, args){	var j = JSIHost[jn];	var f = j.funcs.getItemObject(fn);	return {value:j.getInfo(JSI.__callFunction(j, f, fn, pn, JSI.convertListToValueIn(j, args)))};};/**  * @private */JSI.tryCallFunction = function(jn, fn, pn, args){	var r;	try{		r = JSI.callFunction(jn, fn, pn, args);	}catch(e){		var j = JSIHost[jn];		var f = j.funcs.getItemObject(fn);		r = {value:null, error:JSICallbacks.getErrorObject(j, e, pn, f.name)};	};	return r;};/**  * @private * @param {JSIMain} j * @param {Object} f * @param {String} fn * @param {String} pn * @param {Array} args * @return {Object} */JSI.__callFunction = function(j, f, fn, pn, args){	var val;	if(pn){		val = f.func.apply(j.objects.getItem(pn), args);	}else{		var p = f.parent;		var n = f.name;		if(p && n && j.funcs.isCurrent(fn, p)){			val = JSIInstance.callMethod(j.objects.getItem(p), n, args);		}else{			val = JSIInstance.callFunction(f.func, args);		};	};	return val;};/** РџРѕР»СѓС‡РёС‚СЊ JS-С„СѓРЅРєС†РёСЋ, РѕР±С‘СЂС‚РєСѓ С„Р»РµС€РѕРІРѕРіРѕ РєР°Р»Р±РµРєР°  *  * @param {String} jn * @param {String} cn * @return {Function} */JSI.getCallback = function(jn, cn){	var j = JSIHost[jn];	return j.callbacks.getItem(cn);};/** Р’С‹Р·РѕРІ С„СѓРЅРєС†РёРё callLater(obj, func, handler, time=1), РєРѕС‚РѕСЂС‹Р№ РІС‹Р·С‹РІР°РµС‚ func РїРѕ С‚Р°Р№РјР°СѓС‚Сѓ, Р° СЂРµР·СѓР»СЊС‚Р°С‚ РІРѕР·РІСЂР°С‰Р°С‚СЊ РІ С…РµРЅРґР»РµСЂ. * {String} jn РЎСЃС‹Р»РєР° РЅР° РѕР±СЉРµРєС‚ JSIMain * {Object,String} nm РЎСЃС‹Р»РєР° РёР»Рё СЃР°Рј РѕР±СЉРµРєС‚, РІ РєРѕС‚РѕСЂРѕРј РЅР°С…РѕРґРёС‚СЃСЏ РЅРµРѕР±С…РѕРґРёРјР°СЏ С„СѓРЅРєС†РёСЏ * {String} hn РРјСЏ С„СѓРЅРєС†РёРё * {Array} a РњР°СЃСЃРёРІ Р°СЂРіСѓРјРµРЅС‚РѕРІ С„СѓРЅРєС†РёРё * {String} cn РЎСЃС‹Р»РєР° РЅР° РєР°Р»Р±РµРє, РІ РєРѕС‚РѕСЂС‹Р№ Р±СѓРґСѓС‚ РїРµСЂРµРґР°РЅС‹ СЂРµР·СѓР»СЊС‚Р°С‚С‹ СЂР°Р±РѕС‚С‹ С„СѓРЅРєС†РёРё * {Number} t РўР°Р№РјР°СѓС‚ С‡РµСЂРµР· РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РІС‹РїРѕР»РЅРµРЅР° С„СѓРЅРєС†РёСЏ */JSI.callLater = function(jn, nm, hn, a, cn, t){	var j = JSIHost[jn];	var f = JSI.__getCallLater(j);	JSI.__callLater(f, j, nm, hn, a, cn);	setTimeout(f, t);};/** * @private */JSI.__callLater = function(f, j, nm, hn, a, cn){	if(typeof nm == 'string'){		nm = j.objects.getItem(nm);	};	f._o = nm;	f._hn = hn;	f._a = a;	if(cn){		f._c = j.callbacks.getItem(cn);	};};/** * @private */JSI.__getCallLater = function(j){	var f = function(){		var c = arguments.callee;		var r = JSIInstance.callMethod(c._o,  c._hn, c._a);		if (c._c){			c._c(r);		};	};	return f;};/**  * @private */JSI.tryCallLater = function(jn, nm, hn, a, cn, t){	var j = JSIHost[jn];	var f = JSI.__tryGetCallLater(j);	JSI.__callLater(f, j, nm, hn, a, cn);	setTimeout(f, t);};/** * @private */JSI.__tryGetCallLater = function(j){	var f = function(){		var c = arguments.callee;		var r;		try{			r = JSIInstance.callMethod(c._o,  c._hn, c._a);		}catch(e){			c._j.callbacks.throwException(e, c._o, c._hn);		};		if (c._c){			c._c(r);		};	};	f._j = j;	return f;};//----------------------------- РЎРІРѕР№СЃС‚РІР°/** РџРѕР»СѓС‡РёС‚СЊ СЃРІРѕР№СЃС‚РІРѕ  *  * @param {String} jn * @param {String} nm * @param {String} pn * @return {Object} */JSI.getProperty = function(jn, nm, t, pn){	var j = JSIHost[jn];	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);	var r;	if(pn in o){		r = o[pn];	};	return {value:j.getInfo(r, nm, pn)};};/**  * @private */JSI.tryGetProperty = function(jn, nm, t, pn){	var r;	try{		r = JSI.getProperty(jn, nm, t, pn);	}catch(e){		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};	};	return r;};/** РџСЂРѕРІРµСЂРёС‚СЊ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЃРІРѕР№СЃС‚РІР°  *  * @param {String} jn * @param {String} nm * @param {String} pn * @return {Boolean} */JSI.hasProperty = function(jn, nm, t, pn){	var j = JSIHost[jn];	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);	return {value:(pn in o)};};/**  * @private */JSI.tryHasProperty = function(jn, nm, t, pn){	var r;	try{		r = JSI.hasProperty(jn, nm, t, pn);	}catch(e){		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};	};	return r;};/** РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ СЃРІРѕР№СЃС‚РІР°  *  * @param {String} jn * @param {String} nm * @param {String} pn * @param {Object} info */JSI.setProperty = function(jn, nm, t, pn, info){	var j = JSIHost[jn];	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);	o[pn] = JSI.getValueIn(j, info);	return {value:null};};/**  * @private */JSI.trySetProperty = function(jn, nm, t, pn, info){	var r;	try{		r = JSI.setProperty(jn, nm, t, pn, info);	}catch(e){		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};	};	return r;};/** РЈРґР°Р»РёС‚СЊ СЃРІРѕР№СЃС‚РІРѕ  *  * @param {String} jn * @param {String} nm * @param {String} pn * @return {Boolean} */JSI.deleteProperty = function(jn, nm, t, pn){	var j = JSIHost[jn];	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);	return {value:delete o[pn]};};/**  * @private */JSI.tryDeleteProperty = function(jn, nm, t, pn){	var r;	try{		r = JSI.deleteProperty(jn, nm, t, pn);	}catch(e){		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, pn)};	};	return r;};/** Р’С‹Р·РІР°С‚СЊ СЃРІРѕР№СЃС‚РІРѕ, РєР°Рє РјРµС‚РѕРґ  *  * @param {String} jn * @param {String} nm * @param {String} hn * @param {Array} args * @return {Object} */JSI.callProperty = function(jn, nm, t, hn, args){	var j = JSIHost[jn];	var o = (t=='function' ? j.funcs : j.objects).getItem(nm);	var r;	if(JSIFunctions.isFunction(o[hn])){		r = JSI.callPropertyAsFunc(j, o, hn, args);	}else{		r = j.getInfo(o[hn], nm, hn);	};	return {value:r};};/**  * @private */JSI.tryCallProperty = function(jn, nm, t, hn, args){	var r;	try{		r = JSI.callProperty(jn, nm, t, hn, args);	}catch(e){		r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, nm, hn)};	};	return r;};/** Р’С‹Р·РІР°С‚СЊ РјРµС‚РѕРґ РїРѕ СЃСЃС‹Р»РєРµ РЅР° РѕР±СЉРµРєС‚  *  * @param {JSIMain} j * @param {Object} o * @param {String} hn * @param {Array} args * @return {Object} */JSI.callPropertyAsFunc = function(j, o, hn, args){	args = JSI.convertListToValueIn(j, args);	return j.getInfo(JSIInstance.callMethod(o, hn, args));};/** РџРµСЂРµР±СЂР°С‚СЊ СЃРІРѕР№СЃС‚РІР° РѕР±СЉРµРєС‚Р°, РѕС‚РїСЂР°РІР»СЏСЏ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ СЃРІРѕР№СЃС‚РІРµ РІ РєР°Р»Р»Р±РµРє С„СѓРЅРєС†РёСЋ - РёРјСЏ, info  *  * @param {Object} jn * @param {Object} nm * @param {Object} cn */JSI.forEach = function(jn, nm, cn){	var j = JSIHost[jn];	var o = j.objects.getItem(nm);	var fem = JSICallbacks.forEachMethod;	var m = j.main;	for(var p in o){		m[fem](cn, p, j.getInfo(o[p]));	};};/** РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РґРѕСЃС‚СѓРїРЅС‹С… СЃРІРѕР№СЃС‚РІ РѕР±СЉРµРєС‚Р°, РїРѕ СЃСЃС‹Р»РєРµ  *  * @param {String} jn * @param {String} nm * @return {Array} */JSI.getPropertyList = function(jn, nm){	var j = JSIHost[jn];	var o = j.objects.getItem(nm);	var list = [];	for(var p in o){		list.push(p);	};	return list;};//---------------------------------------------------------------------------------------------------- РџРћР›РЈР§Р•РќРР• РЎРЎР«Р›РљР РќРђ РћР‘РЄР•РљРў Р¤Р›Р•РЁРљР Р”Р›РЇ РљРђР›Р›Р‘Р•РљРћР’/** OР±СЉРµРєС‚ РґР»СЏ РїРѕРёСЃРєР° С„Р»РµС€ РѕР±СЉРµРєС‚РѕРІ РІ РґРѕРєСѓРјРµРЅС‚Рµ. */JSIElement = function(){};JSIElement.noIENodeName = 'embed';//---------------------------------------------------------------------------------------------------- JSIElement PUBLIC//---------------------------------------------------------------------------------------------------- JSIElement STATIC/** РџРѕР»СѓС‡РёС‚СЊ object/embed СЌР»РµРјРµРЅС‚ DOM СЃС‚СЂСѓРєС‚СѓСЂС‹ РїРѕ РµРіРѕ ID РёР»Рё URL  *  * @param {String} id * @param {String} url * @return {HTMLElement} */JSIElement.get = function(id, url){	var r;	if(id){		var d = JSI.d();		r = JSI.isIE() ? d[id] : JSIElement.getNOIE(d, id);		if(!r){			r = d.getElementById(id);		};	};	if(!r){		r = JSIElement.find(url);	};	return r;};/** * @private * @param {Object} d * @param {Object} id */JSIElement.getNOIE = function(d, id){	var n = 'embed';	var d = JSI.d();	var r = JSIElement.getEmbed(window[id]);	if(!r){		r = JSIElement.getEmbed(d[id]);	};	if(!r){		r = JSIElement.getEmbed(d.all[id]);	};	return r;};/** * @private * @param {Object} node */JSIElement.isEmbed = function(node){	if(node instanceof HTMLElement && node.nodeName.toLowerCase()==JSIElement.noIENodeName){		return true;	}else{		return false;	};};/** * @private * @param {Object} v */JSIElement.getEmbed = function(v){	var r;	if(v){		if(JSIElement.isEmbed(v)){			r = v;		}else if('length' in v){			var l = v.length;			for(var i=0; i<l; i++){				if(JSIElement.isEmbed(v[i])){					r = v[i];					break;				};			};		};	};	return r;};/** РќР°Р№С‚Рё СЌР»РµРјРµРЅС‚ РїРѕ РµРіРѕ URL  *  * @param {String} url * @return {HTMLElement} */JSIElement.find = function(url){	if(JSI.isIE()){		return JSIElement.findIE(url);	}else{		return JSIElement.findNOIE(url);	};};/** РС‰РµС‚ СЌР»РµРјРµРЅС‚ РІ СЃР»СѓС‡Р°Рµ, РµСЃР»Рё Р±СЂР°СѓР·РµСЂ IE  *  * @param {String} url * @return {HTMLElement} */JSIElement.findIE = function(url){	var r;	var list = JSI.d().getElementsByTagName('object');	var len = list.length;	for(var i=0; i<len; i++){		var o = list[i];		if(JSIElement.findIEIsValid(o.childNodes, url)){			r = o;			break;		};	};	if(!r){		r = list[0];	};	return r;};/** РёС‰РµС‚ РІ РїР°СЂР°РјРµС‚СЂР°С… С‚РµРіР° <object> РїР°СЂР°РјРµС‚СЂ СЃ РёРјРµРЅРµРј movie Рё СЃРІРµСЂСЏРµС‚ Р·РЅР°С‡РµРЅРёРµ URL РЅР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ  *  * @param {NodeList} list * @param {String} url * @return {Boolean} */JSIElement.findIEIsValid = function(list, url){	var len = list.length;	for(var i=0; i<len; i++){		var a = list[i].attributes;		if(a.name.value=='movie'){			if(a.value.value==url){				return true;			}else{				return false;			};		};	};	return false;};/** РС‰РµС‚ СЌР»РµРјРµРЅС‚ <embed> РІ СЃР»СѓС‡Р°СЏС…, РєРѕРіРґР° С‚РµРєСѓС‰РёР№ Р±СЂР°СѓР·РµСЂ РЅРµ СЏРІР»СЏРµС‚СЃСЏ IE  *  * @param {String} url * @return {HTMLElement} */JSIElement.findNOIE = function(url){	var r;	var list = JSI.d().getElementsByTagName('embed');	var len = list.length;	for(var i=0; i<len; i++){		var o = list[i];		var a = o.attributes.src;		if(a && a.value==url){			r = o;			break;		};	};	if(!r){		r = list[0];	};	return r;};//---------------------------------------------------------------------------------------------------- РџРћР›РЈР§Р•РќРР• РЎРЎР«Р›РљР РќРђ РћР‘РЄР•РљРў Р¤Р›Р•РЁРљР Р”Р›РЇ РљРђР›Р›Р‘Р•РљРћР’/** РћР±РµСЃРїРµС‡РёРІР°РµС‚ Р±С‹СЃС‚СЂС‹Р№ РґРѕСЃС‚СѓРї Рє СЃР°РјС‹Рј РЅРµРѕР±С…РѕРґРёРјС‹Рј СЃРІРѕР№СЃС‚РІР°Рј РѕРєРЅР° Рё РґРѕРєСѓРјРµРЅС‚Р°. */JSIBrowser = function(){};//---------------------------------------------------------------------------------------------------- JSIBrowser PUBLIC//---------------------------------------------------------------------------------------------------- JSIBrowser STATIC/** РџСЂРѕРІРµСЂСЏРµС‚ Рё РІРѕСЃСЃРѕР·РґР°С‘С‚ С‚РµРіРё <head><title></title></head> РґР»СЏ Р±РµР·РїСЂРѕР±Р»РµРјРЅРѕРіРѕ Р·Р°РґР°РЅРёСЏ Р·Р°РіРѕР»РѕРІРєР° РѕРєРЅР°. РџР°С‚С‡ РґР»СЏ Opera. */JSIBrowser.presetTitle = function(){	var d = JSI.d();	var f = d.getElementsByTagName;	if(d){		if(!f.call(d,'head').length){			d.appendChild(d.createElement('head'));		};		if(!f.call(d,'title').length){			f.call(d,'head')[0].appendChild(d.createElement('title'));		};	};};/** РџРѕР»СѓС‡РёС‚СЊ Р·Р°РіРѕР»РѕРІРѕРє РґРѕРєСѓРјРµРЅС‚Р° */JSIBrowser.getTitle = function(){	return JSI.hasDocument() ? JSI.d().title : '';};/** Р—Р°РґР°С‚СЊ Р·Р°РіРѕР»РѕРІРѕРє РґРѕРєСѓРјРµРЅС‚Р°  *  * @param {String} p */JSIBrowser.setTitle = function(p){	if(JSI.hasDocument()){		JSI.d().title = p;	};};/** РџРѕР»СѓС‡РёС‚СЊ СЃС‚Р°С‚СѓСЃ РѕРєРЅР° */JSIBrowser.getStatus = function(){	return window.status;};/** Р—Р°РґР°С‚СЊ СЃС‚Р°С‚СѓСЃ РѕРєРЅР°  *  * @param {String} p */JSIBrowser.setStatus = function(p){	window.status = p;};/** РџРѕР»СѓС‡РёС‚СЊ СЃС‚Р°С‚СѓСЃ РѕРєРЅР° РїРѕ СѓРјР»РѕС‡Р°РЅРёСЋ */JSIBrowser.getDefaultStatus = function(){	return window.defaultStatus;};/** Р—Р°РґР°С‚СЊ СЃС‚Р°С‚СѓСЃ РѕРєРЅР° РїРѕ СѓРјР»РѕС‡Р°РЅРёСЋ  *  * @param {String} p */JSI.setDefaultStatus = function(p){	window.defaultStatus = p;};/** РџРѕР»СѓС‡РёС‚СЊ СЃС‚СЂРѕРєСѓ Р°РґСЂРµСЃР° */JSIBrowser.getLocation = function(){	if(JSI.hasDocument()){		return JSI.d().location.href;	}else{		return window.location.href;	};};/** РџРѕР»СѓС‡РёС‚СЊ СЃС‚СЂРѕРєСѓ Р°РґСЂРµСЃСЃР° РѕРєРЅР° */JSIBrowser.getTopLocation = function(){	var p = window.top;	if(JSI.hasDocument()){		return p.document.location.href;	}else{		return p.location.href;	};};/** РџРѕР»СѓС‡РёС‚СЊ С…РµС€ С‚РµРєСѓС‰РµРіРѕ Р°РґСЂРµСЃР° */JSIBrowser.getLocationHash = function(){	if(JSI.hasDocument()){		return JSI.d().location.hash;	}else{		return window.location.hash;	};};/** Р—Р°РґР°С‚СЊ С…РµС€ С‚РµРєСѓС‰РµРіРѕ Р°РґСЂРµСЃР°  *  * @param {String} p */JSIBrowser.setLocationHash = function(p){	if(JSI.hasDocument()){		JSI.d().location.hash = p;	}else{		window.location.hash = p;	};};/** РџРѕР»СѓС‡РёС‚СЊ СЃС‚СЂРѕРєСѓ РєСѓРєРё */JSIBrowser.getCookieString = function(){	return JSI.d().cookie;};/** Р—Р°РґР°С‚СЊ СЃС‚СЂРѕРєСѓ РєСѓРєРё  *  * @param {String} p */JSIBrowser.setCookieString = function(p){	JSI.d().cookie = p;};//---------------------------------------------------------------------------------------------------- РЎРћР—Р”РђРќРР• Р­РљР—Р•РњРџР›РЇР РћР’/** РћР±СЉРµРєС‚ СЃРѕР·РґР°СЋС‰РёР№ СЌРєР·РµРјРїР»СЏСЂС‹ РѕР±СЉРµРєС‚РѕРІ Рё РІС‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёРё Р±РµР· СЃРјРµРЅС‹ РѕР±Р»Р°СЃС‚РµР№ РІРёРґРёРјРѕСЃС‚Рё */JSIInstance = function(){};//---------------------------------------------------------------------------------------------------- JSIBrowser PUBLIC//---------------------------------------------------------------------------------------------------- JSIBrowser STATIC/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ Р»СЋР±С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create = function(cls, args){	var r;	if(args){		r = JSIInstance['create'+args.length](cls, args);	}else{		r = JSIInstance.create0(cls);	};	return r;};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod = function(o, hn, args){	var r;	if(args){		r = JSIInstance['callMethod'+args.length](o, hn, args);	}else{		r = JSIInstance.callMethod0(o, hn);	};	return r;};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ РЅР°РїСЂСЏРјСѓСЋ, РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё. *  * @param {Function} f * @param {Array} args */JSIInstance.callFunction = function(f, args){	var r;	if(args){		r = JSIInstance['callFunction'+args.length](f, args);	}else{		r = JSIInstance.callFunction0(f);	};	return r;};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create0 = function(cls, args){	return new cls();};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create1 = function(cls, args){	return new cls(args[0]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create2 = function(cls, args){	return new cls(args[0], args[1]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create3 = function(cls, args){	return new cls(args[0], args[1], args[2]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create4 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create5 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create6 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create7 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create8 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create9 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create10 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create11 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create12 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create13 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create14 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);};/** РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР° СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} cls * @param {Array} args */JSIInstance.create15 = function(cls, args){	return new cls(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod0 = function(o, hn, args){	return o[hn]();};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod1 = function(o, hn, args){	return o[hn](args[0]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod2 = function(o, hn, args){	return o[hn](args[0], args[1]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod3 = function(o, hn, args){	return o[hn](args[0], args[1], args[2]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod4 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod5 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod6 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod7 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod8 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod9 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod10 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod11 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod12 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod13 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod14 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);};/** Р’С‹Р·С‹РІР°РµС‚ РјРµС‚РѕРґ РїРѕРґ РґРёРЅР°РјРёС‡РµСЃРєРёРј РёРјРµРЅРµРј СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ  *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callMethod15 = function(o, hn, args){	return o[hn](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction0 = function(f, args){	return f();};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction1 = function(f, args){	return f(args[0]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction2 = function(f, args){	return f(args[0], args[1]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction3 = function(f, args){	return f(args[0], args[1], args[2]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction4 = function(f, args){	return f(args[0], args[1], args[2], args[3]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction5 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction6 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction7 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction8 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction9 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction10 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction11 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction12 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction13 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction14 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13]);};/** Р’С‹Р·С‹РІР°РµС‚ С„СѓРЅРєС†РёСЋ СЃ N-С‹Рј РєРѕР»-РІРѕРј Р°СЂРіСѓРјРµРЅС‚РѕРІ РЅРµ РјРµРЅСЏСЏ РµС‘ РѕР±Р»Р°СЃС‚Рё РІРёРґРёРјРѕСЃС‚Рё *  * @param {Object} o * @param {String} hn * @param {Array} args */JSIInstance.callFunction15 = function(f, args){	return f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);};//---------------------------------------------------------------------------------------------------- Р“Р›РђР’РќР«Р™ РћР‘РЄР•РљРў РЎРРЎРўР•РњР«/** РљРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ РІСЃРµР№ СЃРёСЃС‚РµРјС‹.  *  * @param {String} i * @param {String} u * @param {String} n */JSIMain = function(i, u, n){	this.id = i;	this.url = u;	this.name = n;	this.funcs = new JSIFunctions(this);	this.objects = new JSIObjects(this);	this.callbacks = new JSICallbacks(this);	this.getDocProps();};/** РЁРѕСЂС‚РєР°С‚ РїСЂРѕС‚РѕС‚РёРїР° JSIMain */JSI.mp = JSIMain.prototype;/** * @private */JSI.mp.getDocProps = function(){	if(JSI.hasDocument()){		this.tag = JSIMain.getTag();		this.main = JSIElement.get(this.id, this.url);	};};/** РЁРѕСЂС‚РєР°С‚ РґР»СЏ СѓРєР°Р·Р°С‚РµР»СЏ Р±Р°СѓР·РµСЂР° */JSIMain.ieBrowser = JSI.isIE();/** РћР±СЉРµРєС‚ СЃРѕРґРµСЂР¶Р°С‰РёР№ СЃРІРѕР№СЃС‚РІР° РїРѕ СЃС‚СЂРѕРєРѕРІС‹Рј Р·РЅР°С‡РµРЅРёСЏРј РїСЂРѕСЃС‚С‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С…. */JSIMain.simple = {};JSIMain.simple['number'] = true;JSIMain.simple['string'] = true;JSIMain.simple['boolean'] = true;//---------------------------------------------------------------------------------------------------- JSIMain PUBLIC/** РЈРґР°Р»РёС‚СЊ РІСЃРµ РїСЂРёРѕР±СЂРµС‚С‘РЅРЅС‹Рµ Р·РЅР°РЅРёСЏ *  * @param {Object} c - СѓРґР°Р»РёС‚СЊ Flash РєР°Р»Р»Р±РµРєРё * @param {Object} o - СѓРґР°Р»РёС‚СЊ Flash РѕР±СЉРµРєС‚С‹ */JSI.mp.clear = function(c, o){	if(c){		this.callbacks.clear();	};	if(o){		this.objects.clear();		this.funcs.clear();	};};/** РџРѕР»СѓС‡РёС‚СЊ СЂР°Р·РІС‘СЂРЅСѓС‚СѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ Р·РЅР°С‡РµРЅРёРё. Р•СЃР»Рё Р·РЅР°С‡РµРЅРёРµРј Р°СЂРіСѓРјРµРЅС‚Р° СЏРІР»СЏРµС‚СЃСЏ РѕР±СЉРµРєС‚, С‚Рѕ РІРјРµСЃС‚Рѕ РЅРµРіРѕ, РІ РІРѕР·РІСЂР°С‰Р°РµРјРѕРј РѕР±СЉРµРєС‚Рµ Р±СѓРґРµС‚ РЅР°С…РѕРґРёС‚СЊСЃСЏ СЃСЃС‹Р»РєР° РЅР° СЌС‚РѕС‚ РѕР±СЉРµРєС‚.  * @param {Object} val - Р—РЅР°С‡РµРЅРёРµ РґР»СЏ РєРѕС‚РѕСЂРѕРіРѕ СЃРѕР±РёСЂР°РµС‚СЃСЏ РёРЅС„РѕСЂРјР°С†РёСЏ * @param {String} p - РЎСЃС‹Р»РєР° РЅР° РѕР±СЉРµРєС‚ СЂРѕРґРёС‚РµР»СЊ РґР»СЏ С‚РµРєСѓС‰РµРіРѕ Р·РЅР°С‡РµРЅРёСЏ *Р”Р»СЏ С„СѓРЅРєС†РёР№ * @param {String} n - РРјСЏ РїР°СЂР°РјРµС‚СЂР° РІ РєРѕС‚РѕСЂРѕРј СЃРѕРґРµСЂР¶РёС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ *Р”Р»СЏ С„СѓРЅРєС†РёР№ * @return {Object}*/JSI.mp.getInfo = function(v, p, n){	var o;	if(v instanceof Object || typeof v == 'object'){		if(v instanceof FLSimple){			o = this.getSimpleInfo(v);		}else if(v instanceof FLObject){			o = v.info;		}else{			o = this.getComplexInfo(v, p, n);		};	}else{		o = v;	};	return o;};/** РџРѕР»СѓС‡РёС‚СЊ РёРЅС„Рѕ Рѕ СЃР»РѕР¶РЅРѕРј РѕР±СЉРµРєС‚Рµ СЃРѕ СЃСЃС‹Р»РєРѕР№ РЅР° РЅРµРіРѕ. *  * @param {Object} v * @param {String} p * @param {String} n * @return {Object} */JSI.mp.getComplexInfo = function(v, p, n){	var o = JSIMain.__getInfo(v);	if(o.isComplex){		if(o.type=='function'){			if('jsDynamicInfo' in v){				return v.jsDynamicInfo;			}else{				o.value = this.funcs.addItem(v, p, n);			};		}else{			o.value = this.objects.addItem(v);		};	};	return o;};/** РџРѕР»СѓС‡РёС‚СЊ РёРЅС„Рѕ Рѕ РїСЂРѕСЃС‚РѕРј РѕР±СЉРµРєС‚Рµ, РЅРѕ РµСЃР»Рё РІ РЅС‘Рј СЃРѕРґРµСЂР¶РјРёС‚СЃСЏ СЃСЃС‹Р»РєР° РЅР° СЃР»РѕР¶РЅС‹Р№ РѕР±СЉРµРєС‚, С‚Рѕ РѕРЅ Р±СѓРґРµС‚ РїРµСЂРµРґР°РЅ РїРѕ СЃСЃС‹Р»РєРµ, РєР°Рє РїРѕР»Р°РіР°РµС‚СЃСЏ. *  * @param {Object} v * @return {Object} */JSI.mp.getSimpleInfo = function(v){	var o = v.data;	if(o instanceof Array){		o = this.getSimpleArray(o);	}else if(o instanceof Object){		o = this.getSimpleObject(o);	};	return {value:o, type:JSIMain.getType(o), isComplex:false, side:'JS'};};/** РџРѕР»СѓС‡РёС‚СЊ РґСѓР±Р»РёРєР°С‚ РѕР±СЉРµРєС‚Р° СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ СЃР»РѕР¶РЅС‹С… РѕР±СЉРµРєС‚Р°С… РЅР°С…РѕРґСЏС‰РёС…СЃСЏ РІ РЅС‘Рј, РїРѕРґРіРѕС‚РѕРІР»РµРЅРЅС‹С… Рє РїРµСЂРµРЅРѕСЃРєРµ РІРѕ С„Р»РµС€ СЃСЂРµРґСѓ. *  * @param {Object} v * @return {Object} */JSI.mp.getSimpleObject = function(v){	var r = {};	for(var p in v){		r[p] = this.getInfo(v[p]);	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ РґСѓР±Р»РёРєР°С‚ РјР°СЃСЃРёРІР° СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ СЃР»РѕР¶РЅС‹С… РѕР±СЉРµРєС‚Р°С… РЅР°С…РѕРґСЏС‰РёС…СЃСЏ РІ РЅС‘Рј, РїРѕРґРіРѕС‚РѕРІР»РµРЅРЅС‹С… Рє РїРµСЂРµРЅРѕСЃРєРµ РІРѕ С„Р»РµС€ СЃСЂРµРґСѓ. *  * @param {Array} v * @return {Array} */JSI.mp.getSimpleArray = function(v){	var r = [];	var l = v.length;	for(var i=0; i<l; i++){		r[i] = this.getInfo(v[i]);	};	return r;};/** РџРѕР»СѓС‡РёС‚СЊ С€Р°Р±Р»РѕРЅ СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ Рѕ Р·РЅР°С‡РµРЅРёРё.  * @private * @param {Object} val * @return {Object} */JSIMain.__getInfo = function(val){	return {value:val, type:JSIMain.getType(val), isComplex:JSIMain.isComplex(val), side:'JS'};};/** РџРѕР»СѓС‡РёС‚СЊ С‚РёРї Р·РЅР°С‡РµРЅРёСЏ  *  * @param {Object} o * @return {String} */JSIMain.getType = function(o){	var t = typeof o;	if(t == 'object'){		if(o){			if(o instanceof Array){				t = 'array';			}else if(JSIMain.ieBrowser){				t = JSIMain.getIEString(o, t);			};		}else{			t = 'void';		};	}else if(o.constructor==Object){		t = 'object';	};	return t;};/** РџРѕР»СѓС‡Р°РµС‚ РґРѕСЃС‚РѕРІРµСЂРЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ, РѕР±СЉРµРєС‚ Р±С‹Р» РїРµСЂРµРґР°РЅ РёР»Рё С„СѓРЅРєС†РёСЏ. * Р’ IE, РЅРµРєРѕС‚РѕСЂС‹Рµ С„СѓРЅРєС†РёРё РІ РѕРїРµСЂР°С†РёРё typeof РІРѕР·РІСЂР°С‰Р°СЋС‚ "object", Р° СЌС‚РѕС‚ СЃРїРѕСЃРѕР± РґР°С‘С‚ РіР°СЂР°РЅС‚РёСЋ РїРѕР»СѓС‡РµРЅРёСЏ С‚РѕС‡РЅРѕРіРѕ С‚РёРїР°. * @param {Object} o * @param {String} t * @return {String} */JSIMain.getIEString = function(o, t){	if('toString' in o){		var p = o.toString().indexOf('function');		if(p>=0 && p<3){			t = 'function';		};	};	return t;};/** РџСЂРѕРІРµСЂСЏРµС‚ РєРѕРјРїР»РµРєСЃРЅРѕРіРѕ Р»Рё С‚РёРїР° Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРґР°РЅРѕРµ РІ РєР°С‡РµСЃС‚РІРµ Р°СЂРіСѓРјРµРЅС‚Р°  *  * @param {Object} o * @return {Boolean} */JSIMain.isComplex = function(o){	return (!Boolean(!o || JSIMain.simple[typeof o]) || o instanceof Array);};//---------------------------------------------------------------------------------------------------- JSIMain STATIC/** РџРѕР»СѓС‡РёС‚СЊ С‚СЌРі, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅ РєР°Рє РєРѕРЅС‚РµР№РЅРµСЂ РґР»СЏ СЃРѕР·РґР°РІР°РµРјС‹С…, РІ РїСЂРѕС†РµСЃСЃРµ СЂР°Р±РѕС‚С‹ СЃРёСЃС‚РµРјС‹, РІСЂРµРјРµРЅРЅС‹С… СѓР·Р»РѕРІ  * @return {HTMLElement} */JSIMain.getTag = function(){	var d = JSI.d();	var hd = d.getElementsByTagName('head')[0];	if(!hd){		hd = d.createElement('head');		d.firstChild.appendChild(hd);	};	return hd;};//----------------------------------- РћР‘РЄР•РљРў РљРћРќРўР РћР›РР РЈР®Р©РР™ РЎРЎР«Р›РљР РќРђ JS Р¤РЈРќРљР¦РР Р’РќРЈРўР Р Р¤Р›Р•РЁ РџР›Р•Р•Р Рђ/** *  * @param {Object} i */JSIFunctions = function(i){	this.jsi = i;	this.index = 0;	this.items = {};};/** РЁРѕСЂС‚РєР°С‚ РїСЂРѕС‚РѕС‚РёРїР° JSIFunctions */JSI.fp = JSIFunctions.prototype;/** Р‘Р°Р·РѕРІР°СЏ С‡Р°СЃС‚СЊ СЃСЃС‹Р»РєРё РЅР° С„СѓРЅРєС†РёСЋ. РЎСЃС‹Р»РєР° СЃРѕСЃС‚РѕРёС‚ РёР· Р±Р°Р·РѕРІРѕРіРѕ РёРјРµРЅРё Рё РЅРѕРјРµСЂР° СЃСЃС‹Р»РєРё. РљР°Р¶РґР°СЏ СЃСЃС‹Р»РєР° СѓРЅРёРєР°Р»СЊРЅР°. */JSIFunctions.base = 'func_';//---------------------------------------------------------------------------------------------------- JSIFunctions PUBLIC/** РџСЂРѕРІРµСЂСЏРµС‚, С„СѓРЅРєС†РёСЏ Р±С‹Р»Р° РІС‹Р·РІР°РЅР° РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РёР· РѕР±СЉРµРєС‚Р° РёР»Рё РїРѕ СЃСЃС‹Р»РєРµ. * @param {Function} fn - Р¤СѓРЅРєС†РёСЏ * @param {String} pn - РЎСЃС‹Р»РєР° РЅР° РѕР±СЉРµРєС‚ РІ РєРѕС‚РѕСЂРѕРј РЅР°С…РѕРґРёР»Р°СЃСЊ С„СѓРЅРєС†РёСЏ * @param {String} nm - РРјСЏ СЃРІРѕР№СЃС‚РІР° РІ РєРѕС‚РѕСЂРѕРј РЅР°С…РѕРґРёР»Р°СЃСЊ С„СѓРЅРєС†РёСЏ * @return {String} */JSI.fp.addItem = function(fn, pn, nm){	var n = this.findItem(fn, pn, nm);	if(!n){		n = JSIFunctions.base+String(this.index++);		this.items[n] = {func:fn, parent:pn, name:nm};		};	return n;};/** РџРѕР»СѓС‡РёС‚СЊ С„СѓРЅРєС†РёСЋ РїРѕ СЃСЃС‹Р»РєРµ *  * @param {Function} fn РЎСЃС‹Р»РєР° РЅР° С„СѓРЅРєС†РёСЋ * @param {String} pn РЎСЃС‹Р»РєР° РЅР° РѕР±СЉРµРєС‚ РєРѕРЅС‚РµР№РЅРµСЂ * @param {String} nm РРјСЏ СЃРІРѕР№СЃС‚РІР°, РІ РєРѕС‚РѕСЂРѕРј СЃРѕРґРµСЂР¶Р°Р»Р°СЃСЊ С„СѓРЅРєС†РёСЏ. */JSI.fp.findItem = function(fn, pn, nm){	for(var p in this.items){		var o = this.items[p];		if(o.func==fn && o.parent==pn && o.name==nm){			return p;		};	};	return '';};/** РџРѕР»СѓС‡РёС‚СЊ С„СѓРЅРєС†РёСЋ СЃ СѓРєР°Р·Р°РЅРёРµРј РѕР±СЉРµРєС‚Р° *  * @param {Function} fn * @param {Object} pt РћР±СЉРµРєС‚ РІ РєРѕС‚РѕСЂРѕРј СЃРѕРґРµСЂР¶Р°Р»Р°СЃСЊ С„СѓРЅРєС†РёСЏ * @param {String} nm */JSI.fp.addItemByTarget = function(fn, pt, nm){	return this.addItem(fn, this.jsi.objects.addItem(pt), nm);};/** РџРѕР»СѓС‡РёС‚СЊ С„СѓРЅРєС†РёСЋ РїРѕ СЃСЃС‹Р»РєРµ.  *  * @param {String} n * @return {Function} */JSI.fp.getItem = function(n){	var o = this.items[n];	if(o){		return o.func;	}else{		return null;	};};/** РџРѕР»СѓС‡РёС‚СЊ РѕР±СЉРµРєС‚ С„СѓРЅРєС†РёРё РїРѕ СЃСЃС‹Р»РєРµ.  *  * @param {String} n * @return {Object} */JSI.fp.getItemObject = function(n){	return this.items[n];};/** РЈРґР°Р»РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° С„СѓРЅРєС†РёСЋ  *  * @param {String} n */JSI.fp.removeItem = function(n){	delete this.items[n];};/** РЈРґР°Р»РёС‚СЊ РІСЃРµ СЃСЃС‹Р»РєРё РЅР° С„СѓРЅРєС†РёРё */JSI.fp.clear = function(){	for(var p in this.items){		delete this.items[p];	};};/** РџСЂРѕРІРµСЂРёС‚СЊ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЃСЃС‹Р»РєРё  *  * @param {String} n * @return {Boolean} */JSI.fp.isExists = function(n){	return Boolean(this.items[n]);};/** *  * @param {String} fn * @param {Object} pt * @return {Boolean} */JSI.fp.isCurrentByTarget = function(fn, pt){	return this.isCurrent(fn, this.jsi.objects.addItem(pt));};/** *  * @param {String} fn * @param {String} pn * @return {Boolean} */JSI.fp.isCurrent = function(fn, pn){	var jo = this.jsi.objects;	var o = this.getItem(fn);	var p = jo.getItem(o.parent);	var t = jo.getItem(pn);	if(p===t && t[o.name]===o.func){		return true;	}else{		return false;	};};//---------------------------------------------------------------------------------------------------- JSIFunctions STATIC/** РџСЂРѕРІРµСЂРёС‚СЊ, РЅРµ СЏРІР»СЏРµС‚СЃСЏ Р»Рё РѕР±СЉРµРєС‚ С„СѓРЅРєС†РµР№  *  * @param {Object} o * @return {Boolean} */JSIFunctions.isFunction = function(o){	if(o){		var t = typeof o;		if(t=='function'){			return true;		}else if(JSIMain.ieBrowser && t=='object'){			var pos = String(o).indexOf('function');			if(pos>=0 && pos<3){				return true;			};		};	};	return false;};//----------------------------------- РћР‘РЄР•РљРў РљРћРќРўР РћР›РР РЈР®Р©РР™ РЎРЎР«Р›РљР РќРђ JS РћР‘РЄР•РљРўР« Р’РќРЈРўР Р Р¤Р›Р•РЁ РџР›Р•Р•Р Рђ/**   *  * @param {JSIMain} i */JSIObjects = function(i){	this.jsi = i;	this.index = 0;	this.items = {};};/** РЁРѕСЂС‚РєР°С‚ РїСЂРѕС‚РѕС‚РёРїР° JSIObjects */JSI.op = JSIObjects.prototype;/** Р‘Р°Р·РѕРІР°СЏ С‡Р°СЃС‚СЊ СЃСЃС‹Р»РєРё РЅР° РѕР±СЉРµРєС‚. РЎРЎС‹Р»РєР° СЃРѕСЃС‚РѕРёС‚ РёР· Р±Р°Р·РѕРІРѕРіРѕ РёРјРµРЅРё Рё РЅРѕРјРµСЂР° СЃСЃС‹Р»РєРё. РљР°Р¶РґР°СЏ СЃСЃС‹Р»РєР° СѓРЅРёРєР°Р»СЊРЅР°. */JSIObjects.base = 'obj_';//---------------------------------------------------------------------------------------------------- JSIObjects PUBLIC/** Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚. Р•СЃР»Рё СЃСЃС‹Р»РєР° РґР»СЏ СЌС‚РѕРіРѕ РѕР±СЉРµРєС‚Р° СѓР¶Рµ СЃРѕР·РґР°РЅР°, С‚Рѕ РѕРЅР° Р±СѓРґРµС‚ РІРѕР·РІСЂР°С‰РµРЅР°.  *  * @param {Object} o */JSI.op.addItem = function(o){	for(var p in this.items){		if(this.items[p]===o){			return p;		};	};	var name = JSIObjects.base+String(this.index++);	this.items[name] = o;	return name;};/** РџРѕР»СѓС‡РёС‚СЊ РѕР±СЉРµРєС‚ РїРѕ СЃСЃС‹Р»РєРµ.  *  * @param {String} n */JSI.op.getItem = function(n){	return this.items[n];};/** РџРѕР»СѓС‡РёС‚СЊ С‚РёРї Р·РЅР°С‡РµРЅРёСЏ РїРѕ СЃСЃС‹Р»РєРµ  *  * @param {String} n */JSI.op.getItemType = function(n){	return typeof this.items[n];};/** РЈРґР°Р»РёС‚СЊ СЃСЃС‹Р»РєСѓ РЅР° РѕР±СЉРµРєС‚  *  * @param {String} n */JSI.op.removeItem = function(n){	delete this.items[n];};/** РЈРґР°Р»РёС‚СЊ РІСЃРµ СЃСЃС‹Р»РєРё РЅР° РѕР±СЉРµРєС‚С‹ */JSI.op.clear = function(){	for(var p in this.items){		delete this.items[p];	};};/** РџСЂРѕРІРµСЂРёС‚СЊ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЃСЃС‹Р»РєРё  *  * @param {String} n */JSI.op.isExists = function(n){	return Boolean(this.items[n]);};//---------------------------------------------------------------------------------------------------- JSIObjects STATIC//----------------------------------- РћР‘РЄР•РљРў РљРћРќРўР РћР›РР РЈР®Р©РР™ РљРђР›Р›Р‘Р•РљР/** РћР±СЉРµРєС‚ СЃРѕР·РґР°С‘С‚ С„СѓРЅРєС†РёРё РѕР±С‘СЂС‚РєРё РїРѕР·РІРѕР»СЏСЋС‰РёРµ РІС‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґС‹ РѕР±СЉРµРєС‚РѕРІ РїРѕ СЃСЃС‹Р»РєР°Рј, РІРµСЃС‚Рё РёСЃС‚РѕСЂРёСЋ РёР»Рё РІС‹Р·С‹РІР°С‚СЊ РєР°Р»Р±РµРєРё */JSICallbacks = function(i){	this.objects = {};	this.jsi = i;};/** РЁРѕСЂС‚РєР°С‚ РїСЂРѕС‚РѕС‚РёРїР° JSICallbacks */JSI.cp = JSICallbacks.prototype;JSICallbacks.getJSINameMethod = 'getJSIName';JSICallbacks.forEachMethod = 'jsiCaller_ForEachMethod';JSICallbacks.callbackMethod = 'jsiCaller_CallMethod';JSICallbacks.exceptionMethod = 'jsiCaller_ThrowException';JSICallbacks.objectCreateMethod = 'jsiCaller_Object_CreateMethod';JSICallbacks.objectInstanceMethod = 'jsiCaller_Object_InstanceMethod';JSICallbacks.objectCallMethod = 'jsiCaller_Object_CallMethod';JSICallbacks.objectCallCommand = 'jsiCaller_Object_CallCommand';JSICallbacks.objectHasMethod = 'jsiCaller_Object_HasMethod';JSICallbacks.objectGetMethod = 'jsiCaller_Object_GetMethod';JSICallbacks.objectSetMethod = 'jsiCaller_Object_SetMethod';JSICallbacks.objectDeleteMethod = 'jsiCaller_Object_DeleteMethod';JSICallbacks.objectRemoveMethod = 'jsiCaller_Object_RemoveMethod';JSICallbacks.objectsClear = 'jsiCaller_Objects_Clear';//---------------------------------------------------------------------------------------------------- JSICallbacks PUBLIC/** РџСЂРёРјРµРЅСЏРµС‚ С„СѓРЅРєС†РёСЋ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР° *  * @param {String} cn Callback name * @param {String} on Object link value * @param {String} hn Handler function name*/JSI.cp.addItem = function(cn, on, hn){	var obj = this.jsi.objects.getItem(on);	if(cn){		obj[hn] = this.getItem(cn);	}else{		delete obj[hn];	};};/** РЎРѕР·РґР°С‘С‚ С„СѓРЅРєС†РёСЋ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°, РёСЃРїРѕР»СЊР·СѓРµС‚ РѕР±СЉРµРєС‚ document  * @private * @param {String} cn */JSI.cp.getItem = function(cn){	if(cn){		return JSICallbacks.getHandler(this.jsi, cn);	}else{		return null;	};};/** РЎРѕР·РґР°С‘С‚ С„СѓРЅРєС†РёСЋ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°, РґРѕР±Р°РІР»СЏСЏ СЃСЃС‹Р»РєСѓ РЅР° info РѕР±СЉРµРєС‚ *  * @param {String} cn */JSI.cp.getItemByInfo = function(info){	var f = this.getItem(info.value);	if(f){		f.jsDynamicInfo = info;	};	return f;};/** РЈРґР°Р»РёС‚СЊ С„СѓРЅРєС†РёСЋ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°  *  * @param {String} on * @param {String} hn */JSI.cp.removeItem = function(on, hn){	var obj = this.jsi.objects.getItem(on);	obj[hn] = null;	delete obj[hn];};JSI.cp.clear = function(){	for(var p in this.objects){		delete this.objects[p];	};};/** РћС‚РїСЂР°РІР»СЏРµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РѕС€РёР±РєРµ РІРѕ С„Р»РµС€ РїР»РµРµСЂ *  * @param {Error} e РћР±СЉРµРєС‚ РїСЂРѕРёР·РѕС€РµРґС€РµР№ РѕС€РёР±РєРё * @param {Object,String} nm РЎС‹Р»РєР° РЅР° РѕР±СЉРµРєС‚ РёР»Рё СЃР°Рј РѕР±СЉРµРєС‚ РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ СЃРІРѕР№СЃС‚РІР° РєРѕС‚РѕСЂРѕРіРѕ РїСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° * @param {String} pn РРјСЏ СЃРІРѕР№СЃС‚РІР° РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ РєРѕС‚РѕСЂРѕРіРѕ РїСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°*/JSI.cp.throwException = function(e, nm, pn){	var m = this.jsi.main;	m[JSICallbacks.exceptionMethod](JSICallbacks.getErrorObject(this.jsi, e, nm, pn));};//--------------------------------------------- For FLObject/** РџРѕР»СѓС‡Р°РµС‚ РѕР±СЉРµРєС‚ РѕР±С‘СЂС‚РєСѓ РЅР° С„Р»РµС€ РѕР±СЉРµРєС‚ РїРѕ РµРіРѕ СЃСЃС‹Р»РєРµ. *  * @param {Object} on СЃСЃС‹Р»РєР° РЅР° С„Р»РµС€ РѕР±СЉРµРєС‚ */JSI.cp.addObject = function(on){	var obj = this.getObject(on);	if(!obj){		obj = new FLObject(this.jsi, on);		this.objects[on] = obj;	};};/** РџРѕР»СѓС‡РёС‚СЊ Р·Р°РєРµС€РёСЂРѕРІР°РЅС‹Р№ РѕР±СЉРµРєС‚ РѕР±С‘СЂС‚РєСѓ РїРѕ СЃСЃС‹Р»РєРµ РЅР° С„Р»РµС€ РѕР±СЉРµРєС‚, РµСЃР»Рё РѕРЅ РµСЃС‚СЊ. *  * @param {Object} on */JSI.cp.getObject = function(on){	return this.objects[on];};/** РЈРґР°Р»РёС‚СЊ РѕР±СЉРµРєС‚ РѕР±С‘СЂС‚РєСѓ РїРѕ СЃСЃС‹Р»РєРµ РЅР° С„Р»РµС€ РѕР±СЉРµРєС‚ *  * @param {Object} on */JSI.cp.removeObject = function(on){	delete this.objects[on];};/** РЎРѕР·РґР°С‚СЊ С„Р»РµС€ РѕР±СЉРµРєС‚ *  * @param {String} cn * @param {Array} a */JSI.cp.createObject = function(cn, a){	var r = this.jsi.main[JSICallbacks.objectCreateMethod](cn, JSI.convertListToInfoIn(this.jsi, a));	return this.getReturnedValue(r);};/** РџРѕР»СѓС‡РёС‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ С„Р»РµС€ РѕР±СЉРµРєС‚ С‡РµСЂРµР· РїСѓС‚СЊ(С‚РѕС‡РµС‡РЅР°СЏ РЅРѕС‚Р°С†РёСЏ) *  * @param {Object} p */JSI.cp.instanceObject = function(p, t){	if(t && t instanceof FLObject){		t = t.info;	};	var r = this.jsi.main[JSICallbacks.objectInstanceMethod](p, t);	return this.getReturnedValue(r);};/** РЈРґР°Р»РёС‚СЊ РѕР±СЉРµРєС‚ РёР· СЃС‚РµРєР° СЃСЃС‹Р»РѕРє *  * @param {Object} p */JSI.cp.removeObject = function(p){	this.jsi.main[JSICallbacks.objectRemoveMethod](p);};/** РћС‚С‡РёСЃС‚РёС‚СЊ СЃС‚РµРє СЃСЃС‹Р»РѕРє С„Р»РµС€ РѕР±СЉРµРєС‚РѕРІ *  * @param {Object} c - СѓРґР°Р»РёС‚СЊ JavaScript РєР°Р»Р»Р±РµРєРё * @param {Object} o - СѓРґР°Р»РёС‚СЊ JavaScript РѕР±СЉРµРєС‚С‹ */JSI.cp.objectsClear = function(c, o){	this.jsi.main[JSICallbacks.objectsClear](c, o);};/** Р’С‹Р·РІР°С‚СЊ СЃРІРѕР№СЃС‚РІРѕ/РјРµС‚РѕРґ РѕР±СЉРµРєС‚Р° *  * @param {String} nm * @param {String} pn * @param {Array} a * @param {String} u */JSI.cp.callProperty = function(nm, pn, a, u){	var r = this.jsi.main[JSICallbacks.objectCallMethod](nm, pn, JSI.convertListToInfoIn(this.jsi, a), u);	return this.getReturnedValue(r);};/** Р’С‹Р·РІР°С‚СЊ РєРѕРјР°РЅРґСѓ, РѕРїСЂРµРґРµР»С‘РЅРЅСѓСЋ РІРѕ С„Р»РµС€ РїР»РµРµСЂРµ *  * @param {String} nm * @param {String} cn * @param {Array} a */JSI.cp.callCommand = function(nm, cn, a){	if(!a){		a = [];	};	if(!(a instanceof Array)){		a  [a];	};	var r = this.jsi.main[JSICallbacks.objectCallCommand](nm, cn, JSI.convertListToInfoIn(this.jsi, a));	return this.getReturnedValue(r);};/** РџСЂРѕРІРµСЂРёС‚СЊ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЃРІРѕР№СЃС‚РІР° Сѓ С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {String} nm * @param {String} pn * @param {String} u */JSI.cp.hasProperty = function(nm, pn, u){	var r = this.jsi.main[JSICallbacks.objectHasMethod](nm, pn, u);	return this.getReturnedValue(r);};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ Сѓ СЃРІРѕР№СЃС‚РІР° С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {String} nm * @param {String} pn * @param {String} u */JSI.cp.getProperty = function(nm, pn, u){	var r = this.jsi.main[JSICallbacks.objectGetMethod](nm, pn, u);	return this.getReturnedValue(r);};/** РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р·РЅР°С‡РµРЅРёРµ СЃРІРѕР№СЃС‚РІР° С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {String} nm * @param {String} pn * @param {Object} v * @param {String} u */JSI.cp.setProperty = function(nm, pn, v, u){	var r = this.jsi.main[JSICallbacks.objectSetMethod](nm, pn, this.jsi.getInfo(v), u);	return this.getReturnedValue(r);};/** РЈРґР°Р»РёС‚СЊ СЃРІРѕР№СЃС‚РІРѕ С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {String} nm * @param {String} pn * @param {String} u */JSI.cp.deleteProperty = function(nm, pn, u){	var r = this.jsi.main[JSICallbacks.objectDeleteMethod](nm, pn, u);	return this.getReturnedValue(r);};/** Р’С‹Р·РІР°С‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ РїРѕР»СѓС‡РµРЅРЅРѕРµ РёР· С„Р»РµС€ РїР»РµРµСЂР° *  * @param {Object} o */JSI.cp.throwObjectError = function(o){	var e = new Error(o.message);	e.flId = o.id;	e.flDef = o.def;	e.flName = o.name;	e.flStackTrace = o.stackTrace;	throw e;};/** РџСЂРѕР»СѓС‡РёС‚СЊ РєРѕСЂСЂРµРєС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РёР· С„Р»РµС€ РїР»РµРµСЂР°. *  * @param {Object} r */JSI.cp.getReturnedValue = function(r){	if('error' in r){		this.throwObjectError(r.error);	}else{		return JSI.getValueIn(this.jsi, r.value);	};	var u;	return u;};//---------------------------------------------------------------------------------------------------- JSICallbacks STATIC/** РџРѕР»СѓС‡РёС‚СЊ С„СѓРЅРєС†РёСЋ РѕР±СЂР°С‚РЅРѕРіРѕ РІС‹Р·РѕРІР°, РёСЃРїРѕР»СЊР·СѓРµС‚ РѕР±СЉРµРєС‚ document  * @private * @param {JSIMain} j * @param {String} n */JSICallbacks.getHandler = function(j, n){	var f = function(){		var a = arguments;		var c = a.callee;		var m = c._jsi.main;		return m[JSICallbacks.callbackMethod](c._jsi.getInfo(this), c._n, JSI.convertListToInfoIn(c._jsi, a));	};	f._jsi = j;	f._n = n;	return f;};/** *  * @param {Error} e * @param {Object} o * @param {String} pn */JSICallbacks.getErrorObject = function(j, e, nm, pn){	var o = {		message:e.message,		number:e.number,		description:e.description,		fileName:e.fileName,		lineNumber:e.lineNumber,		name:e.name,		stack:e.stack,		property:pn	};	JSICallbacks.__errTarget(j, o, nm);	JSICallbacks.__errFL(e, o);	return o;};/** * @private * @param {Object} j * @param {Object} o * @param {Object} nm */JSICallbacks.__errTarget = function(j, o, nm){	if(j && nm){		if(typeof nm == 'string'){			if(j.objects.isExists(nm)){				o.target = j.getInfo(j.objects.getItem(nm));			}else{				o.target = nm;			};		}else{			o.target = j.getInfo(nm);		};	};};/** * @private * @param {Object} e * @param {Object} o */JSICallbacks.__errFL = function(e, o){	if('flId' in e){		o.flId = e.flId;		o.flDef = e.flDef;		o.flName = e.flName;		o.flStackTrace = e.flStackTrace;	};};//----------------------------------- РћР‘РЄР•РљРў Р—РђР“Р РЈР–РђР®Р©РР™ Р”РћРџРћР›РќРРўР•Р›Р¬РќР«Р• РћР‘РЄР•РљРўР«/** *  *  */JSIInclude = function(){};//---------------------------------------------------------------------------------------------------- JSIInclude PUBLIC//---------------------------------------------------------------------------------------------------- JSIInclude STATIC/** Р—Р°РґР°С‚СЊ Р·Р°РіСЂСѓР·РєСѓ JavaScript С„Р°Р№Р»Р° *  * @param {String} jn * @param {String} url * @param {String} func * @param {String} type */JSIInclude.loadJavaScript = function(jn, url, func, type){	var j = JSIHost[jn];	if(!type){		type = 'text/javascript';	};	var el = JSIInclude.getJSEl(url, type);	if(func){		JSIInclude.getCH(j, el, func);	};	el.src = url;	j.tag.appendChild(el);	return j.getInfo(el);};/** * @private * @param {Object} jn * @param {Object} url * @param {Object} func * @param {Object} type */JSIInclude.tryLoadJavaScript = function(jn, url, func, type){	var o;	try{		o = JSIInclude.loadJavaScript(jn, url, func, type);	}catch(e){		var j = JSIHost[jn];		j.callbacks.throwException(e, null, '');	};	return o;};/** РџРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Р№ HTML-СЌР»РµРјРµРЅС‚ SCRIPT * @private * @param {JSIMain} j * @param {String} name * @param {String} url * @param {String} type */JSIInclude.getJSEl = function(url, type){	var el = JSI.d().createElement('script');	el.type = type;	return el;};/** Р—Р°РґР°С‚СЊ Р·Р°РіСЂСѓР·РєСѓ CSS С„Р°Р№Р»Р° *  * @param {String} jn * @param {String} url * @param {String} func * @param {String} type */JSIInclude.loadCSS = function(jn, url, func, type){	var j = JSIHost[jn];	if(!type){		type = 'text/css';	};	var el = JSIInclude.getCSSEl(url, type);	if(func){		JSIInclude.getCH(j, el, func);	};	el.href = url;	j.tag.appendChild(el);	return j.getInfo(el);};/** * @private * @param {Object} jn * @param {Object} url * @param {Object} func * @param {Object} type */JSIInclude.tryLoadCSS = function(jn, url, func, type){	var o;	try{		o = JSIInclude.loadCSS(jn, url, func, type);	}catch(e){		var j = JSIHost[jn];		j.callbacks.throwException(e, null, '');	};	return o;};/** РџРѕР»СѓС‡РёС‚СЊ РЅРѕРІС‹Р№ HTML-СЌР»РµРјРµРЅС‚ LINK * @private * @param {JSIMain} j * @param {String} name * @param {String} url * @param {String} type */JSIInclude.getCSSEl = function(url, type){	var el = JSI.d().createElement('link');	el.rel = 'stylesheet';	el.type = type;	return el;};/** РџРѕР»СѓС‡РёС‚СЊ С…Р°РЅРґР»РµСЂ РЅР° СЃРѕР±С‹С‚РёРµ Р·Р°РіСЂСѓР·РєРё * @private * @param {JSIMain} j * @param {HTMLElement} el * @param {String} func */JSIInclude.getCH = function(j, el, func){	var f = function(){		var a = arguments;		JSIInclude.callCH(this, a.callee._h, a);		JSIInclude.clearCH(this);	};	f._h = j.callbacks.getItem(func);	if(JSI.isIE()){		el.onreadystatechange = f;	}else{		el.onload = f;	};	return f;};/** Р’С‹Р·РІР°С‚СЊ С„Р»РµС€ С„СѓРЅРєС†РёСЋ РїРѕ С‚Р°Р№РјР°СѓС‚Сѓ * @private * @param {HTMLElement} el * @param {Function} func * @param {Array} args */JSIInclude.callCH = function(el, func, args){	var f = function(){		var c = arguments.callee;		c._f.apply(c._e, c._a);	};	f._e = el;	f._f = func;	f._a = args;	setTimeout(f, 1);};/** РЈРґР°Р»РёС‚СЊ С…Р°РЅРґР»РµСЂ СЃРѕР±С‹С‚РёСЏ * @private * @param {HTMLElement} el * @param {Function} func * @param {Array} args */JSIInclude.clearCH = function(el){	if(JSI.isIE()){		el.onreadystatechange = null;	}else{		el.onload = null;	};};//----------------------------------- РћР‘РЄР•РљРў РћР‘РЃР РўРљРђ Р”Р›РЇ JavaScript РћР‘РЄР•РљРўРћР’ РџР•Р Р•Р”РђР’РђР•РњР«РҐ РќРђРџР РЇРњРЈР®/** *  * @param {Object} v */FLSimple = function(v){	this.data = v;};//----------------------------------- РћР‘РЄР•РљРў РћР‘РЃР РўРљРђ Р”Р›РЇ Р’РЎР•РҐ РћР‘РЄР•РљРўРћР’ РР— FLASH РЎР Р•Р”Р«/** *  * @param {Object} j * @param {Object} n */FLObject = function(j, i){	this.jsi = j;	this.info = i;	this.name = i.value;};JSI.fo = FLObject.prototype;//---------------------------------------------------------------------------------------------------- FLObject PUBLIC/** Р’С‹Р·РІР°С‚СЊ СЃРІРѕР№СЃС‚РІРѕ/РјРµС‚РѕРґ РёР· С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {Object} n * @param {Object} a * @param {Object} u */JSI.fo.call = function(n, a, u){	if (!a) {		a = [];	};	if(arguments.length<=2){		u = '';	};	return this.jsi.callbacks.callProperty(this.name, n, a, u);};/** РџСЂРѕРІРµСЂРёС‚СЊ РЅР°Р»РёС‡РёРµ СЃРІРѕР№СЃС‚РІР° РІРѕ С„Р»РµС€ РѕР±СЉРµРєС‚Рµ *  * @param {Object} n * @param {Object} u */JSI.fo.has = function(n, u){	if(arguments.length==1){		u = '';	};	return this.jsi.callbacks.hasProperty(this.name, n, u);};/** РџРѕР»СѓС‡РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ СЃРІРѕР№СЃС‚РІР° РёР· С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {Object} n * @param {Object} u */JSI.fo.get = function(n, u){	if(arguments.length==1){		u = '';	};	return this.jsi.callbacks.getProperty(this.name, n, u);};/** РЈСЃС‚Р°РЅРѕРІРёС‚СЊ СЃРІРѕР№СЃС‚РІРѕ РІРѕ С„Р»РµС€ РѕР±СЉРµРєС‚Рµ *  * @param {Object} n * @param {Object} v * @param {Object} u */JSI.fo.set = function(n, v, u){	if(arguments.length<=2){		u = '';	};	return this.jsi.callbacks.setProperty(this.name, n, v, u);};/** РЈРґР°Р»РёС‚СЊ СЃРІРѕР№СЃС‚РІРѕ РёР· С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {Object} n * @param {Object} u */JSI.fo.del = function(n, u){	if(arguments.length==1){		u = '';	};	return this.jsi.callbacks.deleteProperty(this.name, n, u);};/** РџРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Р№ С„Р»РµС€ РѕР±СЉРµРєС‚ РЅРµ РєР°Рє СЃСЃС‹Р»РєСѓ, Р° РЅР°РїСЂСЏРјСѓСЋ - СЃ РїРѕСЃР»РµРґСѓСЋС‰РµР№ РїР°СЃС‚РµСЂРёР·Р°С†РёРµР№ Рё РїРѕС‚РµСЂРµР№ СЃРІСЏР·Рё СЃ С„Р»РµС€ РѕРєСЂСѓР¶РµРЅРёРµРј. *  */JSI.fo.getAsSimple = function(){	return this.jsi.callbacks.callCommand(this.name, 'asSimple');};/** РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє СЃРІРѕР№СЃС‚РІ С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  * @param {String} ac - R,W,RW,D(С‚РѕР»СЊРєРѕ РґРёРЅР°РјРёС‡РµСЃРєРёРµ, РЅРµ РѕР±СЉСЏРІР»РµРЅРЅС‹Рµ СЃРІРѕР№СЃС‚РІР°) */JSI.fo.getPropertyList = function(ac){	return this.jsi.callbacks.callCommand(this.name, 'propertyList', arguments);};/** РџРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РјРµС‚РѕРґРѕРІ С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  */JSI.fo.getMethodList = function(){	return this.jsi.callbacks.callCommand(this.name, 'methodList');};/** РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ РєР»Р°СЃСЃР° С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  */JSI.fo.describeType = function(){	return this.jsi.callbacks.callCommand(this.name, 'describeType');};/** РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ РєР»Р°СЃСЃР° С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  */JSI.fo.getClassName = function(){	return this.jsi.callbacks.callCommand(this.name, 'className');};/** РџРѕР»СѓС‡РёС‚СЊ РёРјСЏ СЃСѓРїРµСЂ РєР»Р°СЃСЃР° С„Р»РµС€ РѕР±СЉРµРєС‚Р° *  */JSI.fo.getSuperClassName = function(){	return this.jsi.callbacks.callCommand(this.name, 'superClassName');};/** РЈРґР°Р»РёС‚СЊ РґР°РЅРЅС‹Р№ РѕР±СЉРµРєС‚ РёР· СЃС‚РµРєР° СЃСЃС‹Р»РѕРє *  */JSI.fo.remove = function(){	return this.jsi.callbacks.removeObject(this.name);};//---------------------------------------------------------------------------------------------------- FLObject STATIC/** РЎРѕР·РґР°С‚СЊ С„Р»РµС€ РѕР±СЉРµРєС‚ *  * @param {String} cn * @param {Array} a * @param {String} jn */FLObject.create = function(cn, a, jn){	var j = JSI.get(jn);	if(arguments.length<2 || a==null){		a = [];	}else if(!(a instanceof Array)){		a = [a];	};	return j.callbacks.createObject(cn, a);};/** РџРѕР»СѓС‡РёС‚СЊ С„Р»РµС€ РѕР±СЉРµРєС‚ РїРѕ РїСѓС‚Рё Рє РЅРµРјСѓ *  * @param {Object} p * @param {Object} jn */FLObject.instance = function(p, t, jn){	var j = JSI.get(jn);	return j.callbacks.instanceObject(p, t);};/** РЈРґР°Р»РёС‚СЊ РІСЃРµ СЃСЃС‹Р»РєРё РЅР° С„Р»РµС€ РѕР±СЉРµРєС‚С‹ *  * @param {Object} flc - СѓРґР°Р»РёС‚СЊ Flash РєР°Р»Р»Р±РµРєРё * @param {Object} flo - СѓРґР°Р»РёС‚СЊ Flash РѕР±СЉРµРєС‚С‹ * @param {Object} jsc - СѓРґР°Р»РёС‚СЊ JavaScript РєР°Р»Р»Р±РµРєРё * @param {Object} jso - СѓРґР°Р»РёС‚СЊ JavaScript РѕР±СЉРµРєС‚С‹ * @param {Object} jn -РёРјСЏ JSI РѕР±СЉРµРєС‚Р° */FLObject.clear = function(flc, flo, jsc, jso, jn){	var l = arguments.length;	if(l<1) flc = true;	if(l<2) flo = true;	if(l<3) jsc = true;	if(l<4) jso = true;	var j = JSI.get(jn);	j.clear(flc, flo);	return j.callbacks.objectsClear(jsc, jso);};/** РџРѕР»СѓС‡РёС‚СЊ С„Р»РµС€ РѕР±СЉРµРєС‚ stage *  * @param {Object} jn */FLObject.stage = function(jn){	var j = JSI.get(jn);	return j.callbacks.instanceObject('stage');};/** РџРѕР»СѓС‡РёС‚СЊ С„Р»РµС€ РѕР±СЉРµРєС‚ root timeline *  * @param {Object} jn */FLObject.root = function(jn){	var j = JSI.get(jn);	return j.callbacks.instanceObject('root');};/** РџРѕР»СѓС‡РёС‚СЊ С„Р»РµС€ РѕР±СЉРµРєС‚ ApplicationDomain.currentDomain *  * @param {Object} jn */FLObject.applicationDomain = function(jn){	var j = JSI.get(jn);	return j.callbacks.instanceObject('applicationDomain');};//---------------------------------------------------------------------------------------------------- FLSimple PUBLIC//---------------------------------------------------------------------------------------------------- FLSimple STATIC
