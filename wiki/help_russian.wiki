@@ -2,11 +2,11 @@
 = JSInterface 2 =
 
 #sidebar TableOfContents
- * [help_russian#Введение Введение]
- * [help_russian#Основы Основы]
- * [help_russian#Внутри Внутри]
- * [help_russian#С_чем_предстоит_работать С чем предстоит работать]
- * [help_russian#Примеры Примеры]
+ * [help_russian Введение Введение]
+ * [help_russian Основы Основы]
+ * [help_russian Внутри Внутри]
+ * [help_russian С_чем_предстоит_работать С чем предстоит работать]
+ * [help_russian Примеры Примеры]
 Работа в среде Flash Player'а
 Работа в !JavaScript среде
  * [#Обработка_ошибок Обработка ошибок]
