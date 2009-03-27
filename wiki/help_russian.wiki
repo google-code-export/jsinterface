@@ -1,8 +1,8 @@
 #labels Featured,Phase-Design,Phase-Implementation
 = JSInterface 2 =
 
- * [help_russian intro Введение]
- * [help_russian basics Основы]
+ * [help_russian#intro Введение]
+ * [help_russian#basics Основы]
  * [help_russian Внутри Внутри]
  * [help_russian С_чем_предстоит_работать С чем предстоит работать]
  * [help_russian Примеры Примеры]
