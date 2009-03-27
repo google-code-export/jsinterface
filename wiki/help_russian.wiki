@@ -1,316 +1,306 @@
-#summary One-sentence summary of this page.
-
-= Introduction =
-
-JSInterface 2
-
-Введение
-Библиотека JSInterface – позволяет управлять HTML окружением SWF приложения, находящегося на HTML страничке.  С его помощью вы можете получить доступ к любому JavaScript объекту, выполнять JavaScript функции, создавать JavaScript объекты и функции. Кроме стандартных возможностей JSInterface имеет набор методов быстрого доступа к часто используемым функциям – установка заголовка, якоря или статуса страницы, загрузка JavaScript или CSS файла, выполнение функции по таймауту. JSInterface позволяет «переносить» объекты и функции из JavaScript среды в среду Flash player'а и обращаться к ним, как будто это происходит в JavaScript коде – в реальном времени. Та же создавать и получать доступ вы можете и к объектам, созданным в ActionScript и управлять ими из JavaScript.
-Пример JavaScript кода: 
-	// JavaScript
-	window.location.hash = 'hello_world';
-	alert("Hello world!");
-	document.onclick = function(){
-		alert("Click!");
-	}
-
-Пример ActionScript 3 кода выполняющего аналогичные задачи:
-	// ActionScript 3	
-	package {
-		import aw.external.JSInterface;
-		import aw.external.jsinterface.objects.JSWindow;
-		import flash.display.Sprite;
-		[SWF(width=10,height=10)]
-		public class Test extends Sprite{
-			public function Test():void{
-				super();
-				JSInterface.initialize(this);
- 				
-				// JSInterface code starts here
-				var window:JSWindow = JSInterface.window;
-				window.location.hash = 'hello_world';
-				window.alert("Hello world!");
-				window.document.onclick = function(...args):void{
-					JSInterface.window.alert("Click!");
-				}
-			}
-		}
-	}
-
-Я постарался максимально точно повторить JavaScript синтаксис, насколько это мне позволил ActionScript 3(и мои знания, несомненно), это было необходимо для облегчения переноса JavaScript инструкций в тело ActionScript программы. Так же, это поможет быстрее адаптироваться разработчикам уже имевшим дело с JavaScript и избавит от лишних вопросов и документаций. 
-
-Основы
-Работа JSInterface сводится к вызовам методов call и addCallback класса ExternalInterface, который является фундаментом всей библиотеки. С помощью этих методов и нехитрого протокола происходит обмен данными между SWF приложением и его окружением. Но ExternalInterface, при переносе объектов, не вкладывает информацию о конкретном типе объекта, а при копировании свойств объекта учитываются только перечисляемые свойства. Поэтому для ExternalInterface всегда будут верны эти правила:
-1.	Вместо сложных объектов вы передаёте их копии типа Object, никак не связанные с оригинальными объектами.
-2.	Используются только динамически добавленные свойства объекта, т.е. объявленные свойства не передаются.
-3.	Данные получаемые из JavaScript не сохраняют связь с оригинальными объектами, т.е. нельзя получить ссылку на JavaScript объект или функцию.
-Эти ограничения приводят к тому, что необходимо самому создавать копии объектов перед передачей данных и приходится реализовывать дополнительные интерфейсы для реализации более тесного взаимодействия. JSInterface поможет решить все эти проблемы:
-1.	Сложные объекты можно передавать напрямую в JavaScript, это даёт возможность получать самую адекватную информацию, влиять на их поведение, вызывая их методы или изменять значения их свойств.
-2.	При передаче ссылки на объект в JavaScript среду или при получении ссылки на JavaScript объект сохраняется связь с оригинальными объектами и сохраняется возможность запросить любое свойство или метод по имени.
-3.	Можно модерировать  способ передачи объектов – по ссылке, или в виде копии.
-На самом деле, JSInterface не переносит объекты – он создаёт иллюзию «живого общения» с объектом из другой среды за счёт объектов-оболочек, которые создаются для подмены передаваемых объектов. Объект-оболочка создаётся для оповещения о любых действиях над объектом, чтоб перенести эти действия на оригинальный объект. Таким образом, JSInterface позволяет получать доступ как к JavaScript объектам в среде Flash Player’а, так и Flash объектам в JavaScript среде.
-JSInterface разделяет объекты на два типа – сложные и простые. Основная разница между ними в том, что простые объекты передаются обычным способом, дублированием значения. А сложные объекты не передаются, вместо них создаются объекты-оболочки типичные для данной среды, которые являются представителями этих объектов. Эти объекты-оболочки не содержат никаких данных исходного объекта, но каждая оболочка связана со своим объектом через уникальный ключ и получает данные у объекта источника только по запросу. Таким образом все изменения произошедшие в объекте источнике будут отображены и в объекте-оболочке. А при обычном копировании(как в случае простых типов) данные исходного объекта копируются сразу и больше не связаны с объектом источником.
-•	Простые ActionScript объекты – String, Number, int, uint, Boolean, Array, Object. Простыми считаются экземпляры этих классов, но не их производных. К примеру, обычный массив - простой тип, но класс унаследованный от массива будет уже сложным типом.
-		// ActionScript 3
-	var number:Number = new Number();
-	var integer:int = 123;
-	var string:String = new String("some string");
-	var boolean:Boolean = false;
-	var object:Object = {};
-	var array:Array = new Array();
-•	Сложные ActionScript объекты – любые другие объекты, производные от Object и Array. Конечно же, простые объекты тоже являются производными от Object, но они заранее описаны как простые.
-		// ActionScript 3
-	import flash.display.Sprite;
-	import flash.utils.Dictionary;
-	var sprite:Sprite = new Sprite();
-	var dictionary:Dictionary = new Dictionary();
-	var object:ExtendedObject = new ExtendedObject();
-	var array:ExtendedArray = new ExtendedArray();
-•	Простые JavaScript значения – String, Number, Boolean в случае использования литерала:
-		// JavaScript
-	var integer = 5;
-	var boolean = true;
-	var string  = "this is a string";
-•	Любые JavaScript объекты – String, Number, Boolean, Array, Object и их производные. Даже тип Boolean, если его экземпляр был создан через оператор "new", то он считается объектом(в нашем случае, сложным объектом):
-		// JavaScript
-	var integer = new Number(5);
-	var boolean = new Boolean(true);
-	var string  = new String("this is a string");
-Хоть и граница между простыми и сложными объектами достаточно чёткая, разработчик имеет возможность нарушать эти правила и передавать любые объекты именно так, как ему нужно. Это правило можно обойти, используя специальные макеры – JSSimple, JSComplex, FLSimple.
-
-Внутри
-JSInterface позволяет управлять объектами в обе стороны – как из среды Flash Player’а так и из JavaScript среды. В обеих средах при инициализации JSInterface создаются стеки для передаваемых сложных объектов. Такие стеки содержат ссылки на оригинальные объекты, к ним обращается JSInterface всякий раз, когда происходит обращение к этому объекту через его объект-оболочку. Каждый объект в стеке идентифицируется по уникальному ключу, который хранится в информации передаваемой объекту-оболочке. Такой ключ передается в каждой операции над объектом. Процесс передачи данных приблизительно одинаковый для передачи в обе стороны.
-Для создания объекта в другой среде последовательность действий:
-•	Создание объекта-оболочки.
-•	Отправка запроса  в среду создаваемого объекта на создание нового объекта.
-•	Создание оригинального объекта.
-•	Сбор информации об оригинальном объекте, регистрация его в стеке передаваемых объектов.
-•	Возврат информации об оригинальном объекте в объект-оболочку и завершение инициализации оболочки. 
-Для изменения значения свойства объекта из другой среды, последовательность действий:
-•	Объект-оболочка получает запрос.
-•	Обработка полученных данных, в качестве значения свойства.
-•	Отправка нового значения свойства, имени свойства, ключа оригинального объекта с указанием типа операции.
-•	Применение нового значения свойству оригинального объекта.
-•	Возврат в среду инициировавшую операцию сведений о прошедшей операции и произошедших ошибках (в случае разрешения трансляции сообщений об ошибках).
-Для вызова метода объекта из другой среды, последовательность действий: 
-•	Объект-оболочка получает запрос.
-•	Обработка полученных данных, в качестве аргументов функции.
-•	Отправка аргументов функции, имени функции, ключа оригинального объекта с указанием типа операции.
-•	Вызов метода оригинального объекта с использованием аргументов
-•	Возврат в среду инициировавшую операцию сведений о прошедшей операции, возвращённого значения, произошедших ошибках (в случае разрешения трансляции сообщений об ошибках).
-•	Возврат значения выполнения метода.
-Все эти операции происходят благодаря простому протоколу передачи данных между средами. Этот протокол достаточно прост, чтоб быть максимально быстрым, на сколько это возможно. Этот протокол содержит служебные данные о передаваемой информации, значения простых типов, информацию о сложных объектах и информацию о произошедших ошибках.
-Так же, все операции, проходящие через JSInterface модерируемые, это значит, что конечный результат всегда будет следствием обработки данных полученных из другой среды в формате протокола JSInterface. Модерацию проходят входящие данные и исходящие данные – результат выполнения операции.  Она необходима, чтоб отслеживать передачу сложных объектов и вовремя их заменять на служебные данные, так же – для разбора и вызов сообщений об ошибках. Благодаря такой модерации все внутренние процессы JSInterface тщательно скрываются, а пользователь получает то, что должен.
-
-С чем предстоит работать
-Вся библиотека, как и многие другие, состоит из набора классов. Вам предстоит работать только с некоторыми из них:
-JSInterface – основной класс содержащий в себе методы быстрого доступа и ссылки на основные JavaScript  объекты: window, document, navigator, event и DOM объект OBJECT/EMBED тега, через который была объявлена эта программа. Подробнее с доступными методами можно ознакомиться в сгенерированной ASDoc  документации.
-JSDynamic – класс работающий с JavaScript объектами. Он хранит в себе мета-данные о JavaScript объекте и связывает каждый запрос на получение/запись/вызов с этим объектом. В полной версии компонента добавлено большое количество производных классов наследующихся от этого класса, которые повторяют DOM объекты и облегчат работу с JavaScript объектами.
-JSFunction – этот класс имеет всего один статический метод, который служит для создания JavaScript функций. Суть состоит в том, что вы передаёте в него тело функции и принимаемые аргументы через запятую, а он возвращает вам полноценную функцию. Каждый вызов такой функции будет сопровождаться вызовом созданной JavaScript функции.
-JSSImple, IJSSImple – Класс маркер и интерфейс позволяющие передавать любое значение как простой тип данных, без обработки.
-JSComplex – Класс маркер обеспечивающий передачу любого значения в виде сложного объекта.
-FLObject – JavaScript класс, экземпляры которого являются объектами-оболочками для сложных объектов приходящих из среды Flash Player’а.
-FLSimple – JavaScript класс, для объектов маркеров, указывающих на то, что JavaScript объект необходимо передавать как простой тип данных.
-Остальные классы носят служебный характер и предназначены для обслуживания системы, это всякого рода менеджеры и слушатели.
-
-Примеры
-Для начала работы с JSInterface, необходимо загрузить и установить SWC библиотеку JSInterface. Загрузить библиотеку можно с этой странички, в разделе “Downloads”. Есть два варианта библиотеки – full и lite. Отличаются они только тем, что в full версии присутствуют дополнительные классы для работы с JavaScript объектами, а в lite версии за связь с JavaScript объектами отвечают объекты класса JSDynamic. Оба варианта библиотеки бесплатны и все классы доступны в виде исходных кодов, в разделе “Sources”. В примерах будут использованы классы из полной версии библиотеки, но их можно адаптировать и под lite версию заменив типы JavaScript объектов на JSDynamic – это не вызовет ошибки т.к. все такие классы производные от JSDynamic.
-Для использования, JSInterface нужно инициализировать
-	// ActionScript 3
-	import aw.external.JSInterface;
-JSInterface.initialize(this);
-Это единственное необходимое условие для использования библиотеки. Любые обращения к JavaScript объектам до инициализации приведут к ошибке.
-После инициализации можно создавать JavaScript объекты
-	// ActionScript 3
-	var obj:JSDynamic = new JSDynamic('Object');
-В ActionScript вы не можете создавать JavaScript объекты непосредственно через класс объекта – вы должны использовать для этих целей класс JSDynamic и передавать ему имя класса JavaScript объекта и список аргументов принимаемых конструктором.
-Получать доступ к JavaScript объектам
-	// ActionScript 3
-	var body:JSDynamic = JSInterface.getInstance('window.document.body');
-Вместо JavaScript объекта вы получите объект типа JSDynamic, или его производную, через который будет происходить обмен данными с оригинальным JavaScript объектом. Полученный объект служит как прокси – он переадресовывает все вызовы(get,set,has,call,delete) свойств и методов объекта на оригинальный JavaScript объект и возвращает результат. При использовании такого объекта можно делать всё тоже, что и с обычным JavaScript объектом и получать такие же результаты. 
-Поскольку функции и методы, это тоже объекты, то и на них ссылки вы можете получить
-	// ActionScript 3
-	var byTagName:Function = body.getElementsByTagName;
-В данном случае вы получите ссылку не на объект JSDynamic, а обычную функцию, которую можно выполнить. Это специальная функция, которая при каждом вызове будет передавать полученные аргументы в оригинальную JavaScript функцию, и возвращать её результат.
-Получать и задавать значения, удалять и проверять наличие свойств JavaScript объекта
-// ActionScript 3
-body.attributes.getNamedItem('bgcolor').value = '#ff0000';
-body.document.onclick = function(...args):void{
-		JSInterface.window.alert("Click!");
-}
-Все эти действия выполняются, так же как и для обычных объектов с помощью обычных операторов. Поскольку, все свойства JavaScript объектов перечисляемые, их можно обойти с помощью обычного цикла for…in или for each…in и в среде Flash Player’а.
-Вызвать JavaScript функции и методы JavaScript объектов
-	// ActionScript 3
-var object:JSElement = byTagName('object')[0];
-if(object) object.click();
-var embed:JSElement = byTagName('embed')[0];
-if(embed) embed.click();
-Все вызовы методов и функций будут переадресованы оригинальным объектам и функциям – будут продублированы и результаты выполнения возвращены.
-Создавать JavaScript функции
-	// ActionScript 3
-var func:Function = JSFunction.create('alert(arg1);', 'arg1');
-func('Hello world!');
-Загружать в HTML окружение JavaScript или CSS файлы
-	// ActionScript 3
-	JSInterface.loadCSS("style.css");
-	JSInterface.loadJavaScript("script.js", this.loadJavaScriptComplete);
-	...
-	protected function loadJavaScriptComplete(event:JSDynamic=null):void{
-		...
-	}
-Файлы будут загружены,  а JavaScript будет выполнен, непосредственно в HTML документе.
-В итоге, разработчик работает с обычными объектами, свойствами и функциями. Он делает всё как обычно, за исключением некоторых нюансов, к примеру, создание объекта – требует указания типа в параметре вместо указания класса напрямую. 
-В совокупности эти простые операции позволяют просто интегрировать JavaScript среду со средой FlashPlayer'а, создавая между ними тесную связь. В разделе "Downloads" можно скачать примеры такой интеграции и посмотреть насколько просто использовать JSInterface и насколько мощным средством он может быть.
-Больше примеров находится в разделе «Downloads».
-Работа в среде Flash Player'а
-Все передаваемые JavaScript объекты проявятся, в среде Flash Player’а, в виде объектов типа JSDynamic. Такой объект-оболочка передаёт любой запрос на получение значения свойства, вызов метода и другие запросы, оригинальному JavaScript объекту и возвращает результат. JSDynamic построен на базе класса flash.utils.Proxy, поэтому для работы его объектам не нужны дополнительные методы и свойства – можно напрямую обращаться к предполагаемым свойствам и методам JavaScript объекта.
-В полной версии библиотеки дополнительно поставляется набор классов имитирующих JavaScript объекты. Эти классы описывают стандартные свойства и методы JavaScript объектов и расширяют JSDynamic (используют те же механизмы). Эти классы могут быть полезны для определения типа получаемого объекта, ведь в полной версии JSInterface сопоставляет типы к возвращаемым значениям, согласно спецификации. К примеру, достоверно известно, что метод Document.createElement() возвращает объект HTMLElement и поэтому метод JSDocument.createElement() всегда будет возвращать JSHTMLElement(либо NULL, в случае неудачи). Все типы возвращаемых значений свойств и методов JavaScript объектов, которые можно отследить, по спецификации уже описаны в JSInterface и не нужно их определять.
-
-	// ActionScript 3
-	import aw.external.JSInterface;
-	import aw.external.jsinterface.objects.JSArray;
-	import aw.external.jsinterface.objects.JSHTMLElement;
-
-	JSInterface.initialize(this);
-	var jsArray:JSArray = new JSArray(5);
-	jsArray.length = 3;
-	jsArray[0] = 1;
-	jsArray[1] = 2;
-	trace(jsArray); // 1,2,
-	var element:JSHTMLElement = JSInterface.document.createElement('div');
-	element.appendChild(JSInterface.document.createElement('label'));
-	JSInterface.document.getElementsByTagName('body')[0].appendChild(element);
-	trace(element.innerHTML); // <label></label>
-Класс TypeMap позволяет привязывать определённые типы объектов-оболочек к свойствам и к методам, в качестве возвращаемого значения.  Единственное условие использования собственного типа, это использовать тип дочерний от JSDynamic.
-Кроме использования цепочки объектов в точечной нотации, для получения к нему доступа, можно использовать метод JSInterface.getInstance(). Этот метод принимает в качестве параметров строку содержащую путь к объекту в стиле JavaScript и объект Class указывающий тип возвращаемого объекта. Второй параметр необъодим т.к. JSInterface не может определить самостоятельно тип возвращаемого значения. И даже если тип будет отличатся, то произойдёт JavaScript ошибка, на стадии выполнения и только если вызвать несуществующий метод или другие "неправомерные" действия.
-
-	// ActionScript 3
-	import aw.external.JSInterface;
-	import aw.external.jsinterface.objects.JSHTMLElement;
-
-	JSInterface.initialize(this);
-	var element:JSHTMLElement = JSInterface.getInstance('document.getElementsByTagName("body")[0]', JSHTMLElement);
-trace(element.innerHTML); // <script language="JavaScript" type...
-JSInterface имеет свойства позволяющие получить доступ к основным объектам из JavaScript среды:
-•	window - Главный объект в структуре JavaScript объектов на HTML странице. Он используется как хранилище всех глобальных объектов и функций и через этот объект можно получить ко всем им доступ.
-•	document - Корневой объект DOM структуры HTML документа.
-•	navigator  - Объект window.navigator.
-•	event - Объект window.event.
-•	main - JavaScript объект тега описывающего текущее flash приложение.
-
-Функции в JavaScript и в среде Flash Player'а являются объектами и при получении ссылки на функцию( и только - при вызове объект не создаётся) для них, как и для всех объектов, создаются объекты JSDynamic. Но в итоге пользователь получает ссылку на функцию, которая связана с созданным ранее  объектом JSDynamic, для этой функции. При необходимости, можно получить доступ к объекту JavaScript функции, чтоб получить доступ к его методам и свойствам. Это может понадобится, к примеру, для получения доступа к статическим методам и свойствам JavaScript класса.
-JSinterface позволяет создавать JavaScript функции с помощью метода JSFunction.create(), который, в качестве параметров, принимает код функции и список названий параметров. Список названий параметров не обязателен.
-
-	// ActionScript 3
-	import aw.external.JSInterface;
-	import aw.external.jsinterface.JSDynamic;
-	import aw.external.jsinterface.JSFunction;
-	
-	JSInterface.initialize(this);
-	var cls:Function = JSFunction.create(
-		'this.toString = function(){' + 
-			'return this._flObject.call("toString");' + 
-		'};'
-	);
-	var flObject:Function = JSInterface.window.FLObject;
-	var flObjectClass:JSDynamic = JSDynamic.convertFunctionToObject(flObject);
-	flObjectClass.registerWrapper('flash.display.Sprite', cls, false, null, true);
-Для передачи объектов в JavaScript среду созданы два дополнительные типа объектов-маркеров:
-JSComplex - Объект указывающий на то, что переданный объект должен передаваться как сложный тип, не зависимо от его типа.
-	// ActionScript 3
-	package {
-		import aw.external.JSInterface;
-		import flash.display.Sprite;
-	
-		public class Test extends Sprite{
-			private const _jsSettings:Object = {};
-			public function Test():void{
-				super();
-				JSInterface.initialize(this);
-				JSInterface.window.fillSettings(new JSComplex(_jsSettings));
-			}
-		}
-}
-JSSimple - Объект указывающий на то, что переданный объект должен передаваться как простой тип(т.е. напрямую, как через ExternalInterface), не зависимо от его типа.
-	// ActionScript 3
-	import aw.external.JSInterface; 
-	import mx.rpc.events.ResultEvent;
-	protected function resultEventHandler(event:ResultEvent):void{
-		JSInterface.initialize(this);
-		JSInterface.window.getRemoteData(new JSSimple(event.result));
-	}
-JSSimple содержит набор статических методов для указания конкретных типов, которые будут передаваться в JavaScript среду, как простые объекты.
-
-	// ActionScript 3
-	import aw.external.JSInterface;
-	import aw.external.jsinterface.JSSimple;
-	
-	JSInterface.initialize(this);
-	JSSimple.addSimpleType(SomeDynamicObject);
-	...
-	var object:SomeDynamicObject;
-	if(JSSimple.isSimpleType(SomeDynamicObject)){
-		JSInterface.window.getSimpleType(object);
-	}else{
-		JSInterface.window.getSimpleType(new JSSimple(object));
-	}
-Так же, JSInterface имеет интерфейс IJSSimple, который описывает всего один метод, возвращающий объект(или любой другой тип данных) передаваемый как простой тип. Данные полученные через этот метод не перепроверяются и считаются простыми типом.
-
-Работа в JavaScript среде
-JSInterface, при инициализации, внедряет в JavaScript среду служебные классы и объекты. Одни из таких классов FLObject и FLSimple:
-FLObject – объект-оболочка для всех объектов сложных типов, переданных из среды Flash Player’а. Объекты этого класса имеют несколько методов обеспечивающих взаимодействие с оригинальными объектами.
-•	get – получение значения свойства
-•	set – установка значения свойства
-•	has – проверка существования свойства
-•	delete – удаление свойства
-•	call – вызов метода
-Всегда, если отправлять объект сложного типа в JavaScript среду он будет представлен объектом FLObject, через который происходит связь с оригинальным объектом. FLObject содержит дополнительные средства позволяющие манипулировать переданными объектами и получать о них дополнительную информацию. К примеру, нельзя просто перебрать свойства оригинального объекта - у оболочки нет этих свойств, но можно получить список имеющихся свойств.
-Так же, FLObject позволяет создавать собственные объекты-оболочки для конкретных типов объектов из среды Flash Player'а. Это обозначает, что всякий раз при передаче объекта такого типа, вместо FLObject будет передаваться объект пользовательского класса. Но этот объект должен связываться с оригинальным объектом из среды Flash Player'а с помощью объекта FLObject, который будет передан ему при создании.
-Следующим этапом развития JSInterface, скорее всего, будет дублирование структуры классов из среды FlashPlayer'а для использования их в JavaScript среде. Точно так же, как были созданы объекты-оболочки для объектов из JavaScript среды.
-FLSimple – Класс маркер обеспечивает передачу объекта в среду Flash Player’а в качестве простого типа данных, без преобразований.
-
-	// JavaScript
-	var w = 100;
-	var h = 20;
-	var matrix = FLObject.create('flash.geom.Matrix');
-	matrix.call('createGradientBox', [w, h, Math.PI/2]);
-	var root = FLObject.root();
-	var sprite = FLObject.create('flash.display.Sprite');
-	var g = sprite.get('graphics');
-	g.call('beginGradientFill', [
-		'linear', 
-		new FLSimple([0xaaaaaa, 0x666666]), 
-		new FLSimple([1, 1]), 
-		new FLSimple([0, 255]), 
-		matrix
-	]);
-	g.call('drawRoundRect', [0, 0, w, h, 8]);
-	g.call('endFill');
-	var txt = FLObject.create('flash.text.TextField');
-	txt.set('width', w);
-	txt.set('height', h);
-	txt.set('htmlText', '<p align="center"><font face="Verdana" size="10">Hello world!</font></p>');
-	sprite.call('addChild', [txt]);
-	root.call('addChild', [sprite]);
-
-Обработка ошибок
-JSInterface позволяет получать информацию о ошибках происходящих в среде с которой происходит работа. Такую адресацию ошибок можно включать и отключать - с отключенным механизмом передачи ошибок JSInterface быстрее работает, но этот механизм позволяет облегчить поиск и их исправление. Для ошибок из JavaScript среды доступна опция отображения через вывод - ошибки не будут вызваны, а просто отображены в output. Все свойства по управлению ошибками находятся в основном классе проекта - JSInterface.
-
-Управление памятью
-Самая важная часть проекта, это возможность управления выделяемой памятью. И если в других проектах это приятное дополнение, по в данном случае - неприятная необходимость. В простых случаях, когда JSInterface используется для не сложных задач в этом не будет необходимости. А в проектах при реализации сложных задач с большим потоком данных необходимо следить за отчисткой сохранённых объектов. Суть такой отчистки заключается в том, что все объекты передаваемые как сложные типы сохраняются в стеках и не удаляются когда они уже не нужны. Так при интенсивной работе с объектами сложных типов стеки, со временем, могут забрать много памяти. Для отчистки стеков у каждого объекта-оболочки есть метод JSDynamic.js_interface::remove() и FLObject.remove() - после выполнения этого метода разрывается связь между оригинальным объектом и его оболочкой и эта оболочка становится негодной.
-Если работу с JSInterface можно разделить на независимые этапы, то можно воспользоваться методами глобальной отчистки JSInterface.clear() и FLObject.clear(), но после такой отчистки все связи стираются. Оба эти метода делают одно и то же, только один в среде Flash Palyer'а, а другой - в JavaScript среде.
-
-= Дополнительные средства =
-*PropertyInspector* - Набор классов позволяющих получить информацию о членах класса, его методах и свойствах.
-*EvalUtils* - Позволяет использовать строковые выражения в качестве указателей на объекты. Использует стандартную точечную нотацию и поддерживает вызов функций, стандартные операторы(в том числе и оперкатор присваивания), E4X(за исключением E4X фильтров). В проекте используется как замена инструкции eval.
-*ClassUtils* - Работает с объектами классов, содержит дополнительные методы для работы с ними.
-*JSON* - Обработчик JSON, преобразовывает набор объектов в строку в формате JSON и обратно. Не использует дополнительных библиотек и создавался с напором на скорость работы.
-
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+<p align="center"><strong>JSInterface 2</strong></p>
+<p align="center"><strong>Введение</strong><br />
+  Библиотека JSInterface &ndash; позволяет управлять HTML окружением SWF  приложения, находящегося на HTML страничке.&nbsp;  С его помощью вы можете получить доступ к любому JavaScript объекту, выполнять JavaScript  функции, создавать JavaScript объекты и функции. Кроме стандартных возможностей  JSInterface имеет набор методов быстрого доступа к часто используемым функциям  &ndash; установка заголовка, якоря или статуса страницы, загрузка JavaScript или CSS  файла, выполнение функции по таймауту. JSInterface позволяет &laquo;переносить&raquo;  объекты и функции из JavaScript среды в среду Flash player'а и обращаться к  ним, как будто это происходит в JavaScript коде &ndash; в реальном времени. Та же  создавать и получать доступ вы можете и к объектам, созданным в ActionScript и  управлять ими из JavaScript.<br />
+  Пример JavaScript кода: <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// </em><em>JavaScript</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; window.location.hash = 'hello_world'; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alert(&quot;Hello world!&quot;); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; document.onclick = <strong>function</strong>(){ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; alert(&quot;Click!&quot;); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } </p>
+<p>Пример ActionScript  3 кода выполняющего аналогичные задачи:<br />
+  <em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // ActionScript 3</em><strong> </strong><br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; package</strong> { <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import</strong> aw.external.JSInterface; <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import</strong> aw.external.jsinterface.objects.JSWindow; <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; import</strong> flash.display.Sprite; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [SWF(width=10,height=10)] <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public</strong> <strong>class</strong> Test <strong>extends</strong> Sprite{ <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public</strong> <strong>function</strong> Test():<strong>void</strong>{ <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; super</strong>(); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>);<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// JSInterface code starts here</em> <br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var</strong> window:JSWindow = JSInterface.window; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; window.location.hash = <strong>'hello_world'</strong>; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; window.alert(<strong>&quot;Hello  world!&quot;</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; window.document.onclick  = <strong>function</strong>(...args):<strong>void</strong>{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.window.alert(<strong>&quot;Click!&quot;</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } </p>
+<p>Я постарался максимально точно повторить JavaScript синтаксис,  насколько это мне позволил ActionScript 3(и мои знания, несомненно), это было  необходимо для облегчения переноса JavaScript инструкций в тело ActionScript  программы. Так же, это поможет быстрее адаптироваться разработчикам уже имевшим  дело с JavaScript и избавит от лишних вопросов и документаций. J</p>
+<p align="center"><strong>Основы</strong><br />
+  Работа JSInterface сводится к вызовам методов call и addCallback класса  ExternalInterface, который является фундаментом всей библиотеки. С помощью этих  методов и нехитрого протокола происходит обмен данными между SWF приложением и  его окружением. Но ExternalInterface, при переносе объектов, не вкладывает  информацию о конкретном типе объекта, а при копировании свойств объекта  учитываются только перечисляемые свойства. Поэтому для ExternalInterface всегда  будут верны эти правила:</p>
+<ul>
+  <li>Вместо сложных объектов вы передаёте  их копии типа Object, никак не связанные с оригинальными объектами.</li>
+  <li>Используются только динамически  добавленные свойства объекта, т.е. объявленные свойства не передаются.</li>
+  <li>Данные получаемые из JavaScript не  сохраняют связь с оригинальными объектами, т.е. нельзя получить ссылку на  JavaScript объект или функцию.</li>
+</ul>
+<p>Эти ограничения приводят к тому, что необходимо самому создавать копии  объектов перед передачей данных и приходится реализовывать дополнительные  интерфейсы для реализации более тесного взаимодействия. JSInterface поможет  решить все эти проблемы:</p>
+<ul>
+  <li>Сложные объекты можно передавать  напрямую в JavaScript, это даёт возможность получать самую адекватную  информацию, влиять на их поведение, вызывая их методы или изменять значения их  свойств.</li>
+  <li>При передаче ссылки на объект в  JavaScript среду или при получении ссылки на JavaScript объект сохраняется  связь с оригинальными объектами и сохраняется возможность запросить любое  свойство или метод по имени.</li>
+  <li>Можно модерировать&nbsp; способ передачи объектов &ndash; по ссылке, или в  виде копии.</li>
+</ul>
+<p>На самом деле, JSInterface не переносит объекты &ndash; он создаёт иллюзию  &laquo;живого общения&raquo; с объектом из другой среды за счёт объектов-оболочек, которые создаются  для подмены передаваемых объектов. Объект-оболочка создаётся для оповещения о  любых действиях над объектом, чтоб перенести эти действия на оригинальный  объект. Таким образом, JSInterface позволяет получать доступ как к JavaScript  объектам в среде Flash Player&rsquo;а, так и Flash объектам в JavaScript среде.<br />
+  JSInterface разделяет объекты на два типа &ndash; сложные и простые. Основная  разница между ними в том, что простые объекты передаются обычным способом, дублированием  значения. А сложные объекты не передаются, вместо них создаются  объекты-оболочки типичные для данной среды, которые являются представителями  этих объектов. Эти объекты-оболочки не содержат никаких данных исходного  объекта, но каждая оболочка связана со своим объектом через уникальный ключ и  получает данные у объекта источника только по запросу. Таким образом все  изменения произошедшие в объекте источнике будут отображены и в  объекте-оболочке. А при обычном копировании(как в случае простых типов) данные  исходного объекта копируются сразу и больше не связаны с объектом источником.</p>
+<ul>
+  <li>Простые ActionScript объекты &ndash; String,  Number, int, uint, Boolean, Array, Object. Простыми считаются экземпляры этих  классов, но не их производных. К примеру, обычный массив - простой тип, но  класс унаследованный от массива будет уже сложным типом.</li>
+</ul>
+<p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> number:Number = <strong>new</strong> Number(); <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> integer:int = 123; <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> string:String  = <strong>new</strong> String(<strong>&quot;some string&quot;</strong>); <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> boolean:Boolean = <strong>false</strong>; <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> object:Object = {}; <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> array:Array = <strong>new</strong> Array();</p>
+<ul>
+  <li>Сложные ActionScript объекты &ndash;  любые другие объекты, производные от Object и Array. Конечно же, простые  объекты тоже являются производными от Object, но они заранее описаны как  простые.</li>
+</ul>
+<p><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp; <strong>import</strong> flash.display.Sprite; <br />
+  <strong>&nbsp;&nbsp;&nbsp; import</strong> flash.utils.Dictionary; <br />
+  <strong>&nbsp;&nbsp;&nbsp; var</strong> sprite:Sprite = <strong>new</strong> Sprite(); <br />
+  <strong>&nbsp;&nbsp;&nbsp; var</strong> dictionary:Dictionary = <strong>new</strong> Dictionary(); <br />
+  <strong>&nbsp;&nbsp;&nbsp; var</strong> object:ExtendedObject = <strong>new</strong> ExtendedObject(); <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> array:ExtendedArray = <strong>new</strong> ExtendedArray();</p>
+<ul>
+  <li>Простые JavaScript значения &ndash; String,  Number, Boolean в случае использования литерала:</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// </em><em>JavaScript</em> <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> integer  = 5; <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> boolean  = <strong>true</strong>; <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> string &nbsp;= <strong>&quot;this is a string&quot;</strong>;</p>
+<ul>
+  <li>Любые JavaScript объекты &ndash; String,  Number, Boolean, Array, Object и их производные. Даже тип Boolean, если его  экземпляр был создан через оператор &quot;new&quot;, то он считается объектом(в  нашем случае, сложным объектом):</li>
+</ul>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// </em><em>JavaScript</em> <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> integer  = <strong>new</strong> Number(5); <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> boolean  = <strong>new</strong> Boolean(<strong>true</strong>); <br />
+  &nbsp;&nbsp;&nbsp; <strong>var</strong> string &nbsp;= <strong>new</strong> String(<strong>&quot;this  is a string&quot;</strong>);<br />
+  Хоть и граница между простыми и сложными объектами достаточно чёткая,  разработчик имеет возможность нарушать эти правила и передавать любые объекты  именно так, как ему нужно. <em>Это правило  можно обойти, используя специальные макеры &ndash; JSSimple, JSComplex, FLSimple.</em></p>
+<p align="center"><strong>Внутри</strong><br />
+  JSInterface позволяет управлять объектами в обе стороны &ndash; как из среды  Flash Player&rsquo;а так и из JavaScript среды. В обеих средах при инициализации  JSInterface создаются стеки для передаваемых сложных объектов. Такие стеки  содержат ссылки на оригинальные объекты, к ним обращается JSInterface всякий раз,  когда происходит обращение к этому объекту через его объект-оболочку. Каждый  объект в стеке идентифицируется по уникальному ключу, который хранится в  информации передаваемой объекту-оболочке. Такой ключ передается в каждой  операции над объектом. Процесс передачи данных приблизительно одинаковый для  передачи в обе стороны.<br />
+  Для создания объекта в другой среде последовательность действий:</p>
+<ul>
+  <li>Создание объекта-оболочки.</li>
+  <li>Отправка запроса&nbsp; в среду создаваемого объекта на создание  нового объекта.</li>
+  <li>Создание оригинального объекта.</li>
+  <li>Сбор информации об оригинальном  объекте, регистрация его в стеке передаваемых объектов.</li>
+  <li>Возврат информации об оригинальном  объекте в объект-оболочку и завершение инициализации оболочки. </li>
+</ul>
+<p>Для изменения значения свойства объекта из другой среды,  последовательность действий:</p>
+<ul>
+  <li>Объект-оболочка получает запрос.</li>
+  <li>Обработка полученных данных, в  качестве значения свойства.</li>
+  <li>Отправка нового значения свойства,  имени свойства, ключа оригинального объекта с указанием типа операции.</li>
+  <li>Применение нового значения  свойству оригинального объекта.</li>
+  <li>Возврат в среду инициировавшую  операцию сведений о прошедшей операции и произошедших ошибках (в случае  разрешения трансляции сообщений об ошибках).</li>
+</ul>
+<p>Для вызова метода объекта из другой среды, последовательность действий: </p>
+<ul>
+  <li>Объект-оболочка получает запрос.</li>
+  <li>Обработка полученных данных, в  качестве аргументов функции.</li>
+  <li>Отправка аргументов функции, имени  функции, ключа оригинального объекта с указанием типа операции.</li>
+  <li>Вызов метода оригинального объекта  с использованием аргументов</li>
+  <li>Возврат в среду инициировавшую  операцию сведений о прошедшей операции, возвращённого значения, произошедших  ошибках (в случае разрешения трансляции сообщений об ошибках).</li>
+  <li>Возврат значения выполнения  метода.</li>
+</ul>
+<p>Все эти операции происходят благодаря простому протоколу передачи  данных между средами. Этот протокол достаточно прост, чтоб быть максимально  быстрым, на сколько это возможно. Этот протокол содержит служебные данные о  передаваемой информации, значения простых типов, информацию о сложных объектах  и информацию о произошедших ошибках.<br />
+  Так же, все операции, проходящие через JSInterface модерируемые, это  значит, что конечный результат всегда будет следствием обработки данных  полученных из другой среды в формате протокола JSInterface. Модерацию проходят  входящие данные и исходящие данные &ndash; результат выполнения операции. &nbsp;Она необходима, чтоб отслеживать передачу  сложных объектов и вовремя их заменять на служебные данные, так же &ndash; для  разбора и вызов сообщений об ошибках. Благодаря такой модерации все внутренние  процессы JSInterface тщательно скрываются, а пользователь получает то, что  должен.</p>
+<p align="center"><strong>С  чем предстоит работать</strong><br />
+  Вся библиотека, как и многие другие, состоит из набора классов. Вам  предстоит работать только с некоторыми из них:<br />
+  <strong>JSInterface</strong> &ndash; основной класс содержащий в себе методы быстрого доступа и ссылки на  основные JavaScript&nbsp; объекты: window,  document, navigator, event и DOM объект OBJECT/EMBED тега, через который была  объявлена эта программа. Подробнее с доступными методами можно ознакомиться в  сгенерированной ASDoc&nbsp; документации.<br />
+  <strong>JSDynamic</strong> &ndash; класс работающий с JavaScript объектами. Он хранит в себе  мета-данные о JavaScript объекте и связывает каждый запрос на  получение/запись/вызов с этим объектом. В полной версии компонента добавлено  большое количество производных классов наследующихся от этого класса, которые  повторяют DOM объекты и облегчат работу с JavaScript объектами.<br />
+  <strong>JSFunction</strong> &ndash; этот класс имеет всего один статический метод, который служит для  создания JavaScript функций. Суть состоит в том, что вы передаёте в него тело  функции и принимаемые аргументы через запятую, а он возвращает вам полноценную  функцию. Каждый вызов такой функции будет сопровождаться вызовом созданной  JavaScript функции.<br />
+  <strong>JSSImple</strong>,<strong> IJSSImple</strong> &ndash; Класс маркер и  интерфейс позволяющие передавать любое значение как простой тип данных, без  обработки.<br />
+  <strong>JSComplex</strong> &ndash; Класс маркер обеспечивающий передачу любого значения в виде сложного  объекта.<br />
+  <strong>FLObject</strong> &ndash; JavaScript класс, экземпляры которого являются объектами-оболочками  для сложных объектов приходящих из среды Flash Player&rsquo;а.<br />
+  <strong>FLSimple</strong> &ndash; JavaScript класс, для объектов маркеров, указывающих на то, что  JavaScript объект необходимо передавать как простой тип данных.<br />
+  Остальные классы носят служебный характер и предназначены для  обслуживания системы, это всякого рода менеджеры и слушатели.</p>
+<p align="center"><strong>Примеры</strong><br />
+  Для начала работы с JSInterface, необходимо загрузить и установить SWC  библиотеку JSInterface. Загрузить библиотеку можно с этой странички, в разделе &ldquo;Downloads&rdquo;.  Есть два варианта библиотеки &ndash; full и lite. Отличаются они только тем, что в  full версии присутствуют дополнительные классы для работы с JavaScript  объектами, а в lite версии за связь с JavaScript объектами отвечают объекты  класса JSDynamic. <em>Оба варианта библиотеки  бесплатны и все классы доступны в виде исходных кодов, в разделе &ldquo;Sources&rdquo;.</em> В примерах будут использованы классы из полной версии библиотеки, но их можно  адаптировать и под lite версию заменив типы JavaScript объектов на JSDynamic &ndash;  это не вызовет ошибки т.к. все такие классы производные от JSDynamic.<br />
+  Для использования, <strong>JSInterface нужно  инициализировать</strong><br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  JSInterface.initialize(<strong>this</strong>);<br />
+  Это единственное необходимое условие для использования библиотеки.  Любые обращения к JavaScript объектам до инициализации приведут к ошибке.<br />
+  После инициализации можно <strong>создавать  JavaScript объекты</strong><br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  <strong>var</strong> obj:JSDynamic = <strong>new</strong> JSDynamic(<strong>'Object'</strong>);<br />
+  В ActionScript вы не можете создавать JavaScript объекты  непосредственно через класс объекта &ndash; вы должны использовать для этих целей  класс JSDynamic и передавать ему имя класса JavaScript объекта и список  аргументов принимаемых конструктором.<br />
+  <strong>Получать доступ к JavaScript  объектам</strong><br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  <strong>var</strong> body:JSDynamic = JSInterface.getInstance(<strong>'window.document.body'</strong>);<br />
+  Вместо JavaScript объекта вы получите объект типа JSDynamic, или его  производную, через который будет происходить обмен данными с оригинальным  JavaScript объектом. Полученный объект служит как прокси &ndash; он переадресовывает  все вызовы(get,set,has,call,delete) свойств и методов объекта на оригинальный  JavaScript объект и возвращает результат. При использовании такого объекта  можно делать всё тоже, что и с обычным JavaScript объектом и получать такие же  результаты. <br />
+  Поскольку функции и методы, это тоже объекты, то и на них ссылки вы можете  получить<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  <strong>var</strong> byTagName:Function = body.getElementsByTagName;<br />
+  В данном случае вы получите ссылку не на объект JSDynamic, а обычную  функцию, которую можно выполнить. Это специальная функция, которая при каждом  вызове будет передавать полученные аргументы в оригинальную JavaScript функцию,  и возвращать её результат.<br />
+  <strong>Получать и задавать значения</strong>, удалять и проверять наличие свойств JavaScript объекта<br />
+  <em>// ActionScript 3</em> <br />
+  body.attributes.getNamedItem(<strong>'bgcolor'</strong>).value  = <strong>'#ff0000'</strong>; <br />
+  body.document.onclick  = <strong>function</strong>(...args):<strong>void</strong>{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.window.alert(<strong>&quot;Click!&quot;</strong>); <br />
+  }<br />
+  Все эти действия выполняются, так же как и для обычных объектов с  помощью обычных операторов. Поскольку, все свойства JavaScript объектов  перечисляемые, их можно обойти с помощью обычного цикла for&hellip;in или for each&hellip;in  и в среде Flash Player&rsquo;а.<br />
+  <strong>Вызвать JavaScript функции</strong> и методы JavaScript объектов<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  <strong>var</strong> object:JSElement = byTagName(<strong>'object'</strong>)[0]; <br />
+  <strong>if</strong>(object)  object.click(); <br />
+  <strong>var</strong> embed:JSElement = byTagName(<strong>'embed'</strong>)[0]; <br />
+  <strong>if</strong>(embed)  embed.click();<br />
+  Все вызовы методов и функций будут переадресованы оригинальным объектам  и функциям &ndash; будут продублированы и результаты выполнения возвращены.<br />
+  <strong>Создавать JavaScript функции</strong><br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  <strong>var</strong> func:Function = JSFunction.create(<strong>'alert(arg1);'</strong>, <strong>'arg1'</strong>); <br />
+  func(<strong>'Hello  world!'</strong>);<br />
+  <strong>Загружать в HTML окружение  JavaScript или CSS файлы</strong><br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.loadCSS(<strong>&quot;style.css&quot;</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.loadJavaScript(<strong>&quot;script.js&quot;</strong>, <strong>this</strong>.loadJavaScriptComplete); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ... <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>protected</strong> <strong>function</strong> loadJavaScriptComplete(event:JSDynamic=<strong>null</strong>):<strong>void</strong>{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ... <br />
+  }<br />
+  Файлы будут загружены,&nbsp; а  JavaScript будет выполнен, непосредственно в HTML документе.<br />
+  В итоге, разработчик работает с обычными объектами, свойствами и  функциями. Он делает всё как обычно, за исключением некоторых нюансов, к  примеру, создание объекта &ndash; требует указания типа в параметре вместо указания  класса напрямую. <br />
+  В совокупности эти простые операции позволяют просто интегрировать  JavaScript среду со средой FlashPlayer'а, создавая между ними тесную связь. В  разделе &quot;Downloads&quot; можно скачать примеры такой интеграции и  посмотреть насколько просто использовать JSInterface и насколько мощным средством  он может быть.<br />
+  <em>Больше примеров находится в  разделе &laquo;Downloads&raquo;.</em><br />
+  <strong>Работа  в среде Flash Player'а</strong><br />
+  Все передаваемые JavaScript объекты проявятся, в среде Flash Player&rsquo;а,  в виде объектов типа JSDynamic. Такой объект-оболочка передаёт любой запрос на  получение значения свойства, вызов метода и другие запросы, оригинальному JavaScript  объекту и возвращает результат. JSDynamic построен на базе класса  flash.utils.Proxy, поэтому для работы его объектам не нужны дополнительные  методы и свойства &ndash; можно напрямую обращаться к предполагаемым свойствам и  методам JavaScript объекта.<br />
+  В полной версии библиотеки дополнительно поставляется набор классов  имитирующих JavaScript объекты. Эти классы описывают стандартные свойства и  методы JavaScript объектов и расширяют JSDynamic (используют те же механизмы).  Эти классы могут быть полезны для определения типа получаемого объекта, ведь в  полной версии JSInterface сопоставляет типы к возвращаемым значениям, согласно  спецификации. К примеру, достоверно известно, что метод Document.createElement()  возвращает объект HTMLElement и поэтому метод JSDocument.createElement() всегда  будет возвращать JSHTMLElement(либо NULL, в случае неудачи). Все типы  возвращаемых значений свойств и методов JavaScript объектов, которые можно  отследить, по спецификации уже описаны в JSInterface и не нужно их определять.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.jsinterface.objects.JSArray; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.jsinterface.objects.JSHTMLElement;<strong> </strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> jsArray:JSArray = <strong>new</strong> JSArray(5); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jsArray.length = 3; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jsArray[0] = 1; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; jsArray[1] = 2; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>trace</strong>(jsArray); <em>// 1,2,</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> element:JSHTMLElement = JSInterface.document.createElement(<strong>'div'</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; element.appendChild(JSInterface.document.createElement(<strong>'label'</strong>)); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.document.getElementsByTagName(<strong>'body'</strong>)[0].appendChild(element); <br />
+  <strong>trace</strong>(element.innerHTML); <em>//  &lt;label&gt;&lt;/label&gt;</em><br />
+  Класс TypeMap  позволяет привязывать определённые типы объектов-оболочек  к свойствам и к методам, в качестве возвращаемого значения.&nbsp; Единственное условие использования  собственного типа, это использовать тип дочерний от JSDynamic.<br />
+  Кроме использования цепочки объектов в точечной нотации, для получения  к нему доступа, можно использовать метод JSInterface.getInstance(). Этот метод принимает  в качестве параметров строку содержащую путь к объекту в стиле JavaScript и  объект Class указывающий тип возвращаемого объекта. Второй параметр необъодим  т.к. JSInterface не может определить самостоятельно тип возвращаемого значения.  И даже если тип будет отличатся, то произойдёт JavaScript ошибка, на стадии  выполнения и только если вызвать несуществующий метод или другие  &quot;неправомерные&quot; действия.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.jsinterface.objects.JSHTMLElement;<strong> </strong></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> element:JSHTMLElement = JSInterface.getInstance(<strong>'document.getElementsByTagName(&quot;body&quot;)[0]'</strong>, JSHTMLElement); <br />
+  <strong>trace</strong>(element.innerHTML); <em>// &lt;script language=&quot;JavaScript&quot; type...</em><br />
+  JSInterface имеет свойства позволяющие получить доступ к основным  объектам из JavaScript среды:</p>
+<ul>
+  <li>window - Главный объект в  структуре JavaScript объектов на HTML странице. Он используется как хранилище  всех глобальных объектов и функций и через этот объект можно получить ко всем  им доступ.</li>
+  <li>document - Корневой объект DOM  структуры HTML документа.</li>
+  <li>navigator &nbsp;- Объект window.navigator.</li>
+  <li>event - Объект window.event.</li>
+  <li>main - JavaScript объект тега  описывающего текущее flash приложение.</li>
+</ul>
+<p>Функции в JavaScript и в среде Flash Player'а являются объектами и при  получении ссылки на функцию( и только - при вызове объект не создаётся) для  них, как и для всех объектов, создаются объекты JSDynamic. Но в итоге  пользователь получает ссылку на функцию, которая связана с созданным ранее&nbsp; объектом JSDynamic, для этой функции. При  необходимости, можно получить доступ к объекту JavaScript функции, чтоб  получить доступ к его методам и свойствам. Это может понадобится, к примеру,  для получения доступа к статическим методам и свойствам JavaScript класса.<br />
+  JSinterface позволяет создавать  JavaScript функции с помощью метода JSFunction.create(), который, в качестве параметров, принимает код функции и список названий  параметров. Список названий параметров не обязателен.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.jsinterface.JSDynamic; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.jsinterface.JSFunction; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> cls:Function = JSFunction.create( <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>'this.toString  = function(){'</strong> + <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>'return this._flObject.call(&quot;toString&quot;);'</strong> + <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>'};'</strong> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> flObject:Function = JSInterface.window.FLObject; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> flObjectClass:JSDynamic = JSDynamic.convertFunctionToObject(flObject); <br />
+  flObjectClass.registerWrapper(<strong>'flash.display.Sprite'</strong>, cls, <strong>false</strong>, <strong>null</strong>, <strong>true</strong>);<br />
+  Для передачи объектов в JavaScript среду созданы два дополнительные  типа объектов-маркеров: <br />
+  <strong>JSComplex</strong> - Объект указывающий на то, что переданный объект должен передаваться  как сложный тип, не зависимо от его типа.<br />
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>package</strong> { <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> flash.display.Sprite; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>public</strong> <strong>class</strong> Test <strong>extends</strong> Sprite{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>private</strong> <strong>const</strong> _jsSettings:Object = {}; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>public</strong> <strong>function</strong> Test():<strong>void</strong>{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>super</strong>(); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.window.fillSettings(<strong>new</strong> JSComplex(_jsSettings)); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br />
+  }<br />
+  <strong>JSSimple</strong> - Объект указывающий на то, что переданный объект должен передаваться  как простой тип(т.е. напрямую, как через ExternalInterface), не зависимо от его  типа.<br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> mx.rpc.events.ResultEvent; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>protected</strong> <strong>function</strong> resultEventHandler(event:ResultEvent):<strong>void</strong>{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.window.getRemoteData(<strong>new</strong> JSSimple(event.result)); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+  JSSimple содержит набор статических методов для указания конкретных  типов, которые будут передаваться в JavaScript среду, как простые объекты.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// ActionScript 3</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.JSInterface; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>import</strong> aw.external.jsinterface.JSSimple; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.initialize(<strong>this</strong>); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSSimple.addSimpleType(SomeDynamicObject); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ... <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> object:SomeDynamicObject; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>if</strong>(JSSimple.isSimpleType(SomeDynamicObject)){ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.window.getSimpleType(object); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<strong>else</strong>{ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JSInterface.window.getSimpleType(<strong>new</strong> JSSimple(object)); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <br />
+  Так же, JSInterface имеет интерфейс IJSSimple, который описывает всего  один метод, возвращающий объект(или любой другой тип данных) передаваемый как  простой тип. Данные полученные через этот метод не перепроверяются и считаются  простыми типом.</p>
+<p align="center"><strong>Работа  в JavaScript среде</strong><br />
+  JSInterface, при инициализации, внедряет в JavaScript среду служебные  классы и объекты. Одни из таких классов FLObject и FLSimple:<br />
+  <strong>FLObject</strong> &ndash; объект-оболочка для всех объектов сложных типов, переданных из среды  Flash Player&rsquo;а. Объекты этого класса имеют несколько методов обеспечивающих  взаимодействие с оригинальными объектами.</p>
+<ul>
+  <li>get &ndash; получение значения свойства</li>
+  <li>set &ndash; установка значения свойства</li>
+  <li>has &ndash; проверка существования  свойства</li>
+  <li>delete &ndash; удаление свойства</li>
+  <li>call &ndash; вызов метода</li>
+</ul>
+<p>Всегда, если отправлять объект сложного типа в JavaScript среду он  будет представлен объектом FLObject, через который происходит связь с  оригинальным объектом. FLObject содержит дополнительные средства позволяющие  манипулировать переданными объектами и получать о них дополнительную  информацию. К примеру, нельзя просто перебрать свойства оригинального объекта -  у оболочки нет этих свойств, но можно получить список имеющихся свойств.<br />
+  Так же, FLObject позволяет создавать собственные объекты-оболочки для  конкретных типов объектов из среды Flash Player'а. Это обозначает, что всякий  раз при передаче объекта такого типа, вместо FLObject будет передаваться объект  пользовательского класса. Но этот объект должен связываться с оригинальным  объектом из среды Flash Player'а с помощью объекта FLObject, который будет  передан ему при создании.<br />
+  Следующим этапом развития JSInterface, скорее всего, будет дублирование  структуры классов из среды FlashPlayer'а для использования их в JavaScript  среде. Точно так же, как были созданы объекты-оболочки для объектов из  JavaScript среды.<br />
+  <strong>FLSimple</strong> &ndash; Класс маркер обеспечивает передачу объекта в среду Flash Player&rsquo;а в  качестве простого типа данных, без преобразований.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <em>// </em><em>JavaScript</em> <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> w = 100; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> h = 20; <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> matrix = FLObject.create('flash.geom.Matrix'); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; matrix.call('createGradientBox',  [w, h, Math.PI/2]); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> root = FLObject.root(); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> sprite = FLObject.create('flash.display.Sprite'); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> g = sprite.get('graphics'); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g.call('beginGradientFill',  [ <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'linear', <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>new</strong> FLSimple([0xaaaaaa, 0x666666]), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>new</strong> FLSimple([1, 1]), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>new</strong> FLSimple([0, 255]), <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; matrix <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g.call('drawRoundRect',  [0, 0, w, h, 8]); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g.call('endFill'); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>var</strong> txt = FLObject.create('flash.text.TextField'); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; txt.set('width', w); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; txt.set('height', h); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; txt.set('htmlText', '&lt;p align=&quot;center&quot;&gt;&lt;font  face=&quot;Verdana&quot; size=&quot;10&quot;&gt;Hello  world!&lt;/font&gt;&lt;/p&gt;'); <br />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sprite.call('addChild', [txt]); <br />
+  root.call('addChild', [sprite]);</p>
+<p align="center"><strong>Обработка  ошибок</strong><br />
+  JSInterface позволяет получать информацию о ошибках происходящих в  среде с которой происходит работа. Такую адресацию ошибок можно включать и  отключать - с отключенным механизмом передачи ошибок JSInterface быстрее  работает, но этот механизм позволяет облегчить поиск и их исправление. Для  ошибок из JavaScript среды доступна опция отображения через вывод - ошибки не  будут вызваны, а просто отображены в output. Все свойства по управлению  ошибками находятся в основном классе проекта - <strong>JSInterface</strong>. </p>
+<p align="center"><strong>Управление  памятью</strong><br />
+  Самая важная часть проекта, это возможность управления выделяемой  памятью. И если в других проектах это приятное дополнение, по в данном случае -  неприятная необходимость. В простых случаях, когда JSInterface используется для  не сложных задач в этом не будет необходимости. А в проектах при реализации  сложных задач с большим потоком данных необходимо следить за отчисткой  сохранённых объектов. Суть такой отчистки заключается в том, что все объекты  передаваемые как сложные типы сохраняются в стеках и не удаляются когда они уже  не нужны. Так при интенсивной работе с объектами сложных типов стеки, со  временем, могут забрать много памяти. Для отчистки стеков у каждого  объекта-оболочки есть метод JSDynamic.js_interface::remove() и FLObject.remove() - после выполнения этого метода разрывается связь между оригинальным  объектом и его оболочкой и эта оболочка становится негодной.<br />
+  Если работу с JSInterface можно разделить на независимые этапы, то  можно воспользоваться методами глобальной отчистки JSInterface.clear() и FLObject.clear(), но  после такой отчистки все связи стираются. Оба эти метода делают одно и то же,  только один в среде Flash Player'а, а другой - в JavaScript среде.</p>
+<p align="center"><strong>Дополнительные  средства</strong><br />
+  <strong>PropertyInspector</strong> - Набор классов позволяющих получить информацию о членах класса, его  методах и свойствах.<br />
+  <strong>EvalUtils</strong> - Позволяет использовать строковые выражения в качестве указателей на  объекты. Использует стандартную точечную нотацию и поддерживает вызов функций,  стандартные операторы(в том числе и оперкатор присваивания), E4X(за исключением  E4X фильтров). В проекте используется как замена инструкции eval.<br />
+  <strong>ClassUtils</strong> - Работает с объектами классов, содержит дополнительные методы для  работы с ними.<br />
+  <strong>JSON</strong> - Обработчик JSON, преобразовывает набор объектов в строку в формате JSON и  обратно. Не использует дополнительных библиотек и создавался с напором на  скорость работы.</p>
