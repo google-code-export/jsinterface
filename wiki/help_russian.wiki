@@ -7,7 +7,7 @@
  * [http://code.google.com/p/jsinterface/wiki/help_russian#work_with С чем предстоит работать]
  * [http://code.google.com/p/jsinterface/wiki/help_russian#examples Примеры]
  * [http://code.google.com/p/jsinterface/wiki/help_russian#flash Работа в среде Flash Player'а]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#javascript Работа в !JavaScript среде]
+ * [http://code.google.com/p/jsinterface/wiki/help_russian#javascript Работа в JavaScript среде]
  * [http://code.google.com/p/jsinterface/wiki/help_russian#errors Обработка ошибок]
  * [http://code.google.com/p/jsinterface/wiki/help_russian#memory Управление памятью]
  * [http://code.google.com/p/jsinterface/wiki/help_russian#addition Дополнительные средства]
