@@ -2,7 +2,7 @@ package{
 	import aw.external.JSInterface;
 	import aw.external.jsinterface.JSCore;
 	import aw.external.jsinterface.JSDynamic;
-	import aw.errors.JSError;
+	import aw.external.jsinterface.objects.JSXMLHttpRequest;
 	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -42,7 +42,7 @@ package{
 		 */
 		protected function createJSRequest():void{
 			if('XMLHttpRequest' in JSInterface.window){
-				this.jsRequest = new JSDynamic("XMLHttpRequest");
+				this.jsRequest = new JSXMLHttpRequest();
 		    }else if('ActiveXObject' in JSInterface.window){
 				this.jsRequest = new JSDynamic("ActiveXObject", "Msxml2.XMLHTTP");
 				if(!this.jsRequest) this.jsRequest = new JSDynamic("ActiveXObject", "Microsoft.XMLHTTP");

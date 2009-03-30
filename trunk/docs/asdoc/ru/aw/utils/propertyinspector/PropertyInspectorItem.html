@@ -1,0 +1,742 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
+<meta content="PropertyInspectorItem,aw.utils.propertyinspector.PropertyInspectorItem,ACCESS_ATTR_NAME,ANY_RETURN_TYPE_NAME,CONST_NODE_NAME,GETSET_NODE_NAME,METHOD_NODE_NAME,NAME_ATTR_NAME,PROTOTYPE_NODE_NAME,READWRITE_VALUE,READ_VALUE,RETURNTYPE_ATTR_NAME,TYPE_ATTR_NAME,URI_ATTR_NAME,VAR_NODE_NAME,VOID_RETURN_TYPE_NAME,WRITE_VALUE,isDynamic,methods,properties,getByName,getMethodsByType,getProperties,getPropertiesByContainer,getPropertiesByType,isExists,isProperty" name="keywords">
+<title>aw.utils.propertyinspector.PropertyInspectorItem</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'PropertyInspectorItem - API Documentation';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../index-list.html')" href="../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../index.html?aw/utils/propertyinspector/PropertyInspectorItem.html&amp;aw/utils/propertyinspector/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;PropertyInspectorItem</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class PropertyInspectorItem"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">aw.utils.propertyinspector</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class PropertyInspectorItem</td>
+</tr>
+</table>
+<p></p> 
+ Объекты этого класса содержат информацию о классах находящихся в системе.
+ Можно инстанциировать объекты этого класса напрямую через конструктор, но рекоммендуется это делать, через методы класса PropertyInspector, в котором существует механизм кеширования информации.
+ <p></p>
+<br>
+<span class="label">Example</span>
+<br>Пример получения ссылки на объект PropertyInspectorItem
+<div class='listing'><pre>
+package {
+ import aw.utils.PropertyInspector;
+ import aw.utils.propertyinspector.PropertyInspectorItem;
+ 
+ import flash.display.MovieClip;
+ import flash.display.Sprite;
+ import flash.geom.Rectangle;
+
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   var pii:PropertyInspectorItem = PropertyInspector.getInfo(MovieClip);
+   // Динамический ли объект
+   trace(pii.isDynamic);
+   // методы возвращающие объекты типа Rectangle
+   trace(pii.getMethodsByType(Rectangle));
+   // получить объект PropertyItem, содержащий информацию о свойстве объекта
+   pii.getByName('width');
+  }
+ }
+}
+</pre></div>
+ Для получения информации о статических членах класса используются методы в пространстве имён static_ns.
+ 
+ <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../../utils/PropertyInspector.html" target="">aw.utils.PropertyInspector</a>
+<br>aw.utils.propertyinspector.static_ns</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isDynamic">isDynamic</a> : Boolean<div class="summaryTableDescription">[read-only] 
+  Указывает на возможность задавать динамические свойства для объектов описываемого класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#methods">methods</a> : Array<div class="summaryTableDescription">[read-only] 
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#properties">properties</a> : Array<div class="summaryTableDescription">[read-only] 
+  Массив объектов PropertyItem, описывающих свойства, принадлежащие экземплярам класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#PropertyInspectorItem()">PropertyInspectorItem</a>(o:Class)</div>
+<div class="summaryTableDescription"> 
+  Создаёт объект содержащий всю информацию о классе и его членах.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getByName()">getByName</a>(name:*):<a href="../propertyinspector/PropertyItem.html">PropertyItem</a>
+</div>
+<div class="summaryTableDescription"> 
+  Получить объект PropertyItem, по имени члена класса принадлежащего экземпляру класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getMethodsByType()">getMethodsByType</a>(cls:Class):Array</div>
+<div class="summaryTableDescription"> 
+  Возвращает список методов принадлежащих экземпляру класса возвращающих определённый тип данных.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getProperties()">getProperties</a>(acc:int = -1):Array</div>
+<div class="summaryTableDescription"> 
+  Возвращает список свойств принадлежащих экземпляру класса по уровню доступа.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPropertiesByContainer()">getPropertiesByContainer</a>(cont:int = -1):Array</div>
+<div class="summaryTableDescription"> 
+  Возвращает список свойств принадлежащих экземпляру класса по виду члена класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPropertiesByType()">getPropertiesByType</a>(cls:Class):Array</div>
+<div class="summaryTableDescription"> 
+  Возвращает список методов принадлежащих экземпляру класса возвращающих определённый тип данных.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isExists()">isExists</a>(name:*):Boolean</div>
+<div class="summaryTableDescription"> 
+  Проверяет существование члена класса, принадлежащего экземпляру класса, по его имени.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isProperty()">isProperty</a>(name:*):Boolean</div>
+<div class="summaryTableDescription"> 
+  Возврашает TRUE, если переданное имя свойства и FALSE - если имя метода.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ACCESS_ATTR_NAME">ACCESS_ATTR_NAME</a> : String = "access"<div class="summaryTableDescription">[static] 
+  Имя атрибута содержащего тип члена класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ANY_RETURN_TYPE_NAME">ANY_RETURN_TYPE_NAME</a> : String = "*"<div class="summaryTableDescription">[static] 
+  Значение указывающее любое возвращаемое значение.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CONST_NODE_NAME">CONST_NODE_NAME</a> : String = "constant"<div class="summaryTableDescription">[static] 
+  Имя узла описывающего константу, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GETSET_NODE_NAME">GETSET_NODE_NAME</a> : String = "accessor"<div class="summaryTableDescription">[static] 
+  Имя узла описывающего GET/SET метод, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#METHOD_NODE_NAME">METHOD_NODE_NAME</a> : String = "method"<div class="summaryTableDescription">[static] 
+  Имя узла описывающего метод, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#NAME_ATTR_NAME">NAME_ATTR_NAME</a> : String = "name"<div class="summaryTableDescription">[static] 
+  Имя атрибута содержащего имя члена класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PROTOTYPE_NODE_NAME">PROTOTYPE_NODE_NAME</a> : String = "factory"<div class="summaryTableDescription">[static] 
+  
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#READ_VALUE">READ_VALUE</a> : String = "readonly"<div class="summaryTableDescription">[static] 
+  Значение указывающее уровень доступа "только для чтения".</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#READWRITE_VALUE">READWRITE_VALUE</a> : String = "readwrite"<div class="summaryTableDescription">[static] 
+  Значение указывающее уровень доступа "запись/чтение".</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#RETURNTYPE_ATTR_NAME">RETURNTYPE_ATTR_NAME</a> : String = "returnType"<div class="summaryTableDescription">[static] 
+  Имя атрибута содержащего тип возвращаемого значения членом класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_ATTR_NAME">TYPE_ATTR_NAME</a> : String = "type"<div class="summaryTableDescription">[static] 
+  Имя атрибута содержащего тип возвращаемого значения членом класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#URI_ATTR_NAME">URI_ATTR_NAME</a> : String = "uri"<div class="summaryTableDescription">[static] 
+  Имя атрибута содержащего URI пространства имён в котором находится имя члена класса.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VAR_NODE_NAME">VAR_NODE_NAME</a> : String = "variable"<div class="summaryTableDescription">[static] 
+  Имя узла описывающего переменную, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VOID_RETURN_TYPE_NAME">VOID_RETURN_TYPE_NAME</a> : String = "void"<div class="summaryTableDescription">[static] 
+  
+  Значение указывающее на отстутствие возвращаемого значения.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#WRITE_VALUE">WRITE_VALUE</a> : String = "writeonly"<div class="summaryTableDescription">[static] 
+  Значение указывающее уровень доступа "только для записи".</div>
+</td><td class="summaryTableOwnerCol">PropertyInspectorItem</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="isDynamic"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isDynamic</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>isDynamic:Boolean</code>&nbsp;&nbsp;[read-only]<p> 
+  Указывает на возможность задавать динамические свойства для объектов описываемого класса.
+  Возвращает TRUE, если экземпляры класса способны создавать динамические свойства.   
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get isDynamic():Boolean</code>
+<br>
+</div>
+<a name="methods"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">methods</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>methods:Array</code>&nbsp;&nbsp;[read-only]<p> 
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get methods():Array</code>
+<br>
+</div>
+<a name="properties"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">properties</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>properties:Array</code>&nbsp;&nbsp;[read-only]<p> 
+  Массив объектов PropertyItem, описывающих свойства, принадлежащие экземплярам класса.
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get properties():Array</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="PropertyInspectorItem()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PropertyInspectorItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function PropertyInspectorItem(o:Class)</code><p> 
+  Создаёт объект содержащий всю информацию о классе и его членах.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Class</code></td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="getByName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getByName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getByName(name:*):<a href="../propertyinspector/PropertyItem.html">PropertyItem</a></code><p> 
+  Получить объект PropertyItem, по имени члена класса принадлежащего экземпляру класса.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../propertyinspector/PropertyItem.html">PropertyItem</a></code> &mdash; 
+                        PropertyItem 
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="getMethodsByType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getMethodsByType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getMethodsByType(cls:Class):Array</code><p> 
+  Возвращает список методов принадлежащих экземпляру класса возвращающих определённый тип данных.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cls</span>:Class</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getProperties()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getProperties</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getProperties(acc:int = -1):Array</code><p> 
+  Возвращает список свойств принадлежащих экземпляру класса по уровню доступа.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">acc</span>:int</code> (default = <code>-1</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getPropertiesByContainer()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPropertiesByContainer</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getPropertiesByContainer(cont:int = -1):Array</code><p> 
+  Возвращает список свойств принадлежащих экземпляру класса по виду члена класса.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cont</span>:int</code> (default = <code>-1</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getPropertiesByType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPropertiesByType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getPropertiesByType(cls:Class):Array</code><p> 
+  Возвращает список методов принадлежащих экземпляру класса возвращающих определённый тип данных.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cls</span>:Class</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+</div>
+<a name="isExists()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isExists</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function isExists(name:*):Boolean</code><p> 
+  Проверяет существование члена класса, принадлежащего экземпляру класса, по его имени.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="isProperty()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isProperty</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function isProperty(name:*):Boolean</code><p> 
+  Возврашает TRUE, если переданное имя свойства и FALSE - если имя метода. Работает с членами класса принадлежащими экземпляру класса.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="ACCESS_ATTR_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ACCESS_ATTR_NAME</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ACCESS_ATTR_NAME:String = "access"</code><p> 
+  Имя атрибута содержащего тип члена класса.
+  
+  
+  </p></div>
+<a name="ANY_RETURN_TYPE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ANY_RETURN_TYPE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ANY_RETURN_TYPE_NAME:String = "*"</code><p> 
+  Значение указывающее любое возвращаемое значение.
+  
+  
+  </p></div>
+<a name="CONST_NODE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CONST_NODE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CONST_NODE_NAME:String = "constant"</code><p> 
+  Имя узла описывающего константу, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </p></div>
+<a name="GETSET_NODE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GETSET_NODE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GETSET_NODE_NAME:String = "accessor"</code><p> 
+  Имя узла описывающего GET/SET метод, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </p></div>
+<a name="METHOD_NODE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">METHOD_NODE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const METHOD_NODE_NAME:String = "method"</code><p> 
+  Имя узла описывающего метод, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </p></div>
+<a name="NAME_ATTR_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">NAME_ATTR_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const NAME_ATTR_NAME:String = "name"</code><p> 
+  Имя атрибута содержащего имя члена класса.
+  
+  
+  </p></div>
+<a name="PROTOTYPE_NODE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PROTOTYPE_NODE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PROTOTYPE_NODE_NAME:String = "factory"</code><p> 
+  
+  
+  
+  </p></div>
+<a name="READ_VALUE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">READ_VALUE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const READ_VALUE:String = "readonly"</code><p> 
+  Значение указывающее уровень доступа "только для чтения".
+  
+  
+  </p></div>
+<a name="READWRITE_VALUE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">READWRITE_VALUE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const READWRITE_VALUE:String = "readwrite"</code><p> 
+  Значение указывающее уровень доступа "запись/чтение".
+  
+  
+  </p></div>
+<a name="RETURNTYPE_ATTR_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">RETURNTYPE_ATTR_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const RETURNTYPE_ATTR_NAME:String = "returnType"</code><p> 
+  Имя атрибута содержащего тип возвращаемого значения членом класса.
+  
+  
+  </p></div>
+<a name="TYPE_ATTR_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TYPE_ATTR_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TYPE_ATTR_NAME:String = "type"</code><p> 
+  Имя атрибута содержащего тип возвращаемого значения членом класса.
+  
+  
+  </p></div>
+<a name="URI_ATTR_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">URI_ATTR_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const URI_ATTR_NAME:String = "uri"</code><p> 
+  Имя атрибута содержащего URI пространства имён в котором находится имя члена класса.
+  
+  
+  </p></div>
+<a name="VAR_NODE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">VAR_NODE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const VAR_NODE_NAME:String = "variable"</code><p> 
+  Имя узла описывающего переменную, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+  
+  
+  </p></div>
+<a name="VOID_RETURN_TYPE_NAME"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">VOID_RETURN_TYPE_NAME</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const VOID_RETURN_TYPE_NAME:String = "void"</code><p> 
+  
+  Значение указывающее на отстутствие возвращаемого значения.
+  
+  </p></div>
+<a name="WRITE_VALUE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">WRITE_VALUE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const WRITE_VALUE:String = "writeonly"</code><p> 
+  Значение указывающее уровень доступа "только для записи".
+  
+  
+  </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

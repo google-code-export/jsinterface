@@ -1,0 +1,1023 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="print.css" type="text/css" media="print">
+<meta content="FLObject,info,jsi,name,applicationDomain,call,clear,create,del,describeType,getAsSimple,getClassName,getMethodList,getPropertyList,getSuperClassName,has,hasRegisteredWrapper,instance,registerWrapper,remove,root,stage,unregisterAllWrappers,unregisterWrapper,get,set" name="keywords">
+<title>FLObject</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="asdoc.js"></script><script type="text/javascript" language="javascript" src="cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FLObject - API Documentation';
+				var baseRef = '';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('all-classes.html')" href="package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('all-classes.html')" href="class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('index-list.html')" href="all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="index.html?FLObject.html&amp;class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FLObject</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FLObject"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">Top Level</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FLObject</td>
+</tr>
+</table>
+<p></p>
+  Объект прообраз объектов передаваемых из среды Flash Player'а в JavaScript среде. 
+  Работает аналогичным образом с JSDynamic, только со стороны JavaScript.
+  Если на HTML странице расположен только один экземпляр Flash Player'а(говоря проще, 
+  запущена только одна flashка) с инициализированным JSInterface, то параметр указывающий 
+  имя экземпляра JavaScript менеджера JSInterface можно не указывать - он будет 
+  использован по-умолчанию.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#info">info</a> : Object<div class="summaryTableDescription">
+   Информация о переданном flash объекте
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#jsi">jsi</a> : String<div class="summaryTableDescription">
+   Имя экземпляра JavaScript менеджера JSInterface
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#name">name</a> : String<div class="summaryTableDescription">
+   Строковая ссылка, имя flash объекта в стеке переданных объектов.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FLObject()">FLObject</a>(j:String, i:Object)</div>
+<div class="summaryTableDescription">
+   Объекты FLObject создаются автоматически каждый раз, когда в JavaScript среду передаётся объект из среды Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#applicationDomain()">applicationDomain</a>(jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Получить объект ApplicationDomain.currentDomain из среды Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#call()">call</a>(n:String, a:Array, u:String = ""):*</div>
+<div class="summaryTableDescription"> 
+   Вызвать свойство/метод из flash объекта
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#clear()">clear</a>(flc:Boolean = true, flo:Boolean = true, jsc:Boolean = true, jso:Boolean = true, jn:String = ""):void</div>
+<div class="summaryTableDescription">[static] 
+   Удалить все ссылки на сохранённые в стеках объекты и функции, как со стороны JavaScript среды, так и со стороны Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#create()">create</a>(cn:String, a:Array, jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Создать объект в среде Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#del()">del</a>(n:String, u:String = ""):Boolean</div>
+<div class="summaryTableDescription"> Удалить свойство из flash объекта
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#describeType()">describeType</a>():String</div>
+<div class="summaryTableDescription"> 
+    Метод возвращает в виде строки XML выдаваемый flash функцией flash.utils.describeType()
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#get()">get</a>(n:String, u:String = ""):*</div>
+<div class="summaryTableDescription"> Получить значение свойства из flash объекта
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getAsSimple()">getAsSimple</a>():Object</div>
+<div class="summaryTableDescription"> Получить данный flash объект не как ссылку, а напрямую - с последующей пастеризацией и потерей связи с flash окружением.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getClassName()">getClassName</a>():String</div>
+<div class="summaryTableDescription"> 
+   Получить имя класса flash объекта
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getMethodList()">getMethodList</a>():Array</div>
+<div class="summaryTableDescription"> 
+   Получить список методов flash объекта.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPropertyList()">getPropertyList</a>(ac:String):Array</div>
+<div class="summaryTableDescription"> Получить список свойств flash объекта
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getSuperClassName()">getSuperClassName</a>():String</div>
+<div class="summaryTableDescription"> 
+   Получить имя супер класса flash объекта
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#has()">has</a>(n:String, u:String = ""):Boolean</div>
+<div class="summaryTableDescription"> 
+   Проверить наличие свойства во flash объекте
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hasRegisteredWrapper()">hasRegisteredWrapper</a>(cn:String, jn:String = ""):Boolean</div>
+<div class="summaryTableDescription">[static] Проверяет сущестование альтернативного объекта-оболочки для указанного класса, по его имени.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#instance()">instance</a>(p:String, t:<a href="FLObject.html">FLObject</a>, jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Получить flash объект по строковому пути к нему в точечной нотации.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerWrapper()">registerWrapper</a>(cn:String, jf:Function, af:Boolean = false, jn:String = "", up:Boolean = false, pn:String = "_flObject"):void</div>
+<div class="summaryTableDescription">[static] Зарегистрировать класс JavaScript объектов-оболочек для определённого типа объектов из 
+   среды Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#remove()">remove</a>():void</div>
+<div class="summaryTableDescription"> 
+   Удалить данный flash объект из стека ссылок.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#root()">root</a>(jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Получить объект root timeline из среды Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#set()">set</a>(n:String, v:String, u:*):void</div>
+<div class="summaryTableDescription"> Установить свойство во flash объекте
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stage()">stage</a>(jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Получить объект stage из среды Flash Player'а.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregisterAllWrappers()">unregisterAllWrappers</a>(jn:String = ""):void</div>
+<div class="summaryTableDescription">[static] Отчищает всю информацию о типах альтернативных объектов-оболочек.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregisterWrapper()">unregisterWrapper</a>(cn:String, jn:String = ""):void</div>
+<div class="summaryTableDescription">[static] Удаляет информацию о альтернативной оболочке для указанного класса.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="info"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">info</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var info:Object</code><p>
+   Информация о переданном flash объекте
+   </p></div>
+<a name="jsi"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">jsi</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var jsi:String</code><p>
+   Имя экземпляра JavaScript менеджера JSInterface
+   </p></div>
+<a name="name"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var name:String</code><p>
+   Строковая ссылка, имя flash объекта в стеке переданных объектов. 
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FLObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FLObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FLObject(j:String, i:Object)</code><p>
+   Объекты FLObject создаются автоматически каждый раз, когда в JavaScript среду передаётся объект из среды Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">j</span>:String</code> &mdash; Имя экземпляра JavaScript менеджера JSInterface
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">i</span>:Object</code> &mdash; Информация о переданном flash объекте
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="applicationDomain()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">applicationDomain</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function applicationDomain(jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Получить объект ApplicationDomain.currentDomain из среды Flash Player'а.
+   Возможность выполнения этой функции зависит от значения свойства JSInterface.allowJavaScriptAccess в среде Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Имя экземпляра менеджера JSIinterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        Объект FLObject содержащий информацию о оригинальном объекте из среды Flash Player'а
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="call()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">call</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function call(n:String, a:Array, u:String = ""):*</code><p> 
+   Вызвать свойство/метод из flash объекта
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Имя метода.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">a</span>:Array</code> &mdash; Список передаваемых аргументов.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; URI пространства имён в котором находится имя метода. Не обязательный параметр, можно не указывать если имя метода находится в базовом пространстве имён.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code> &mdash; Результат выполнения метода
+   </td>
+</tr>
+</table>
+</div>
+<a name="clear()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">clear</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function clear(flc:Boolean = true, flo:Boolean = true, jsc:Boolean = true, jso:Boolean = true, jn:String = ""):void</code><p> 
+   Удалить все ссылки на сохранённые в стеках объекты и функции, как со стороны JavaScript среды, так и со стороны Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">flc</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Удалить Flash каллбеки
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">flo</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Удалить Flash объекты
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jsc</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Удалить JavaScript каллбеки
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jso</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Удалить JavaScript объекты
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Имя экземпляра менеджера JSIinterface
+   </td>
+</tr>
+</table>
+</div>
+<a name="create()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function create(cn:String, a:Array, jn:String = ""):<a href="FLObject.html">FLObject</a></code><p>
+   Создать объект в среде Flash Player'а.
+   Возможность выполнения этой функции зависит от значения свойства JSInterface.allowJavaScriptAccess в среде Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Имя класса
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">a</span>:Array</code> &mdash; Список аргументов передаваемых в конструктор
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Имя экземпляра менеджера JSIinterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        Объект FLObject, содержащий информацию о оригинальном объекте из среды Flash Player'а
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="del()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">del</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function del(n:String, u:String = ""):Boolean</code><p> Удалить свойство из flash объекта
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Имя свойства
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; URI пространства имён в котором находится имя свойства. Не обязательный параметр, можно не указывать если имя свойства находится в базовом пространстве имён.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Возвращает TRUE в случае успешного проведения операции
+   </td>
+</tr>
+</table>
+</div>
+<a name="describeType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">describeType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function describeType():String</code><p> 
+    Метод возвращает в виде строки XML выдаваемый flash функцией flash.utils.describeType()
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; XML дерево с информацией о классе flash объекта в виде строки
+   </td>
+</tr>
+</table>
+</div>
+<a name="get()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">get</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function get(n:String, u:String = ""):*</code><p> Получить значение свойства из flash объекта
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; URI пространства имён в котором находится имя свойства. Не обязательный параметр, можно не указывать если имя свойства находится в базовом пространстве имён.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code> &mdash; Значение свойства
+   </td>
+</tr>
+</table>
+</div>
+<a name="getAsSimple()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getAsSimple</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getAsSimple():Object</code><p> Получить данный flash объект не как ссылку, а напрямую - с последующей пастеризацией и потерей связи с flash окружением.
+    </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code> &mdash; Возвращает flash объект напрямую, аналогично по действию оборачиванию в объект JSSimple при передаче со стороны Flash Player'а.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getClassName():String</code><p> 
+   Получить имя класса flash объекта
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; Имя класса
+   </td>
+</tr>
+</table>
+</div>
+<a name="getMethodList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getMethodList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getMethodList():Array</code><p> 
+   Получить список методов flash объекта.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Список методов flash объекта.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getPropertyList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPropertyList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getPropertyList(ac:String):Array</code><p> Получить список свойств flash объекта
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">ac</span>:String</code> &mdash; Модификатор доступа, указывается ключами R, W, RW, D(только динамические, не объявленные свойства).
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Список свойств flash объекта.
+   </td>
+</tr>
+</table>
+</div>
+<a name="getSuperClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getSuperClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getSuperClassName():String</code><p> 
+   Получить имя супер класса flash объекта
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; Имя супер класса
+   </td>
+</tr>
+</table>
+</div>
+<a name="has()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">has</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function has(n:String, u:String = ""):Boolean</code><p> 
+   Проверить наличие свойства во flash объекте
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Имя свойства
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; URI пространства имён в котором находится имя свойства. Не обязательный параметр, можно не указывать если имя свойства находится в базовом пространстве имён.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Возвращает TRUE, если свойство с заданным именем существует.
+   </td>
+</tr>
+</table>
+</div>
+<a name="hasRegisteredWrapper()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hasRegisteredWrapper</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function hasRegisteredWrapper(cn:String, jn:String = ""):Boolean</code><p> Проверяет сущестование альтернативного объекта-оболочки для указанного класса, по его имени.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Имя класса Flash объекта
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean
+   </td>
+</tr>
+</table>
+</div>
+<a name="instance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">instance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function instance(p:String, t:<a href="FLObject.html">FLObject</a>, jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Получить flash объект по строковому пути к нему в точечной нотации.
+   Возможность выполнения этой функции зависит от значения свойства JSInterface.allowJavaScriptAccess в среде Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">p</span>:String</code> &mdash; Путь к объекту
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">t</span>:<a href="FLObject.html">FLObject</a></code> &mdash; Целевой объект из среды Flash Player'а, к которому будет привязан путь
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Имя экземпляра менеджера JSIinterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        Объект FLObject содержащий информацию о оригинальном объекте из среды Flash Player'а
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="registerWrapper()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerWrapper</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function registerWrapper(cn:String, jf:Function, af:Boolean = false, jn:String = "", up:Boolean = false, pn:String = "_flObject"):void</code><p> Зарегистрировать класс JavaScript объектов-оболочек для определённого типа объектов из 
+   среды Flash Player'а. Такие пользовательские объекты-оболочки должны агрегировать передаваемый 
+   объект FLObject и использовать его для связи  оригинальным объектом. 
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Имя класса Flash объекта
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jf</span>:Function</code> &mdash; Конструктор JavaScript класса или функция
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">af</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Если TRUE, то запускать передаваемую JavaScript функцию через оператор "()", а если FALSE(по умолчанию), то через оператор "new".
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Если TRUE, то объект FLObject передаётся после создания объекта в указанное свойство, а если FALSE - передаётся в качестве единственного аргумента
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">up</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Имя аргумента в котором содержится объект FLObject
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">pn</span>:String</code> (default = "<code>_flObject</code>")<code></code></td>
+</tr>
+</table>
+<br>
+<span class="label">Example</span>
+<br>Создаёт объект используя полученную функцию в качестве конструктора и передаёт 
+   ему объект FLObject как единственный аргумент.
+<div class='listing'><pre>
+function SpriteObject(flObject){
+ this._flObject = flObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject);
+</pre></div>
+   <p></p>FLObject передаёт в уже созданный объект, применяя его как значение свойству "_flObject"
+<div class='listing'><pre>
+function SpriteObject(){
+ var _flObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, false, null, true);
+</pre></div>
+   <p></p>FLObject передаёт в уже созданный объект, применяя его как значение указанного свойства, в 
+   данном случае "_currentFlashObject"
+<div class='listing'><pre>
+function SpriteObject(){
+ var _currentFlashObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, false, null, true, '_currentFlashObject');
+</pre></div>
+   <p></p>Переданная функция вызывается через оператор "()", в качестве возвращаемого значения функция должна 
+   вернуть ожидаемый объект. В качестве аргумента получает объект FLObject.
+<div class='listing'><pre>
+function SpriteObject(){
+ var _flObject;
+}
+function createSpriteObject(flObject){
+ var sprite = new SpriteObject();
+ sprite._flObject = flObject;
+ return sprite;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, true);
+</pre></div>
+   
+   <p></p>
+</div>
+<a name="remove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">remove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function remove():void</code><p> 
+   Удалить данный flash объект из стека ссылок.
+   </p></div>
+<a name="root()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">root</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function root(jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Получить объект root timeline из среды Flash Player'а.
+   Возможность выполнения этой функции зависит от значения свойства JSInterface.allowJavaScriptAccess в среде Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Имя экземпляра менеджера JSIinterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                         Объект static public function  содержащий информацию о оригинальном объекте из среды Flash Player'а
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="set()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">set</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function set(n:String, v:String, u:*):void</code><p> Установить свойство во flash объекте
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">v</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:*</code> &mdash; URI пространства имён в котором находится имя свойства. Не обязательный параметр, можно не указывать если имя свойства находится в базовом пространстве имён.
+   </td>
+</tr>
+</table>
+</div>
+<a name="stage()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stage</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function stage(jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Получить объект stage из среды Flash Player'а.
+   Возможность выполнения этой функции зависит от значения свойства JSInterface.allowJavaScriptAccess в среде Flash Player'а.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Имя экземпляра менеджера JSIinterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        Объект FLObject содержащий информацию о оригинальном объекте из среды Flash Player'а
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="unregisterAllWrappers()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregisterAllWrappers</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unregisterAllWrappers(jn:String = ""):void</code><p> Отчищает всю информацию о типах альтернативных объектов-оболочек.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+</table>
+</div>
+<a name="unregisterWrapper()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregisterWrapper</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unregisterWrapper(cn:String, jn:String = ""):void</code><p> Удаляет информацию о альтернативной оболочке для указанного класса.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Имя класса Flash объекта
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

@@ -1,11 +1,42 @@
 package aw.external.jsinterface{
 	[ExcludeClass]
 	/**
+	 * Класс содержит реализацию всех необходимых JavaScript объектов и команд. Эти команды будут внедрены в HTML документ при инициализации JSInterface. 
+	 * 
+	 * 
 	 *  @private
+	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 	 */
 	internal class JSCoreCommands extends Object{
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public const VERIFY_JSI_INSTALLATION:String = '(function(){return Boolean(JSI);})';
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public const VERIFY_DOCUMENT_AVAILABILITY:String = '(function(){return JSI.hasDocument();})';
+
+		/** 
+		* 
+		* 
+		* 
+		* @private (internal,constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static internal const JSI_COMMANDS:Array = [
 			"JSI=function(){};JSIHost={};JSI.first;JSI.count=0;JSI.name='__jsi_';JSI.index=0;JSI.isInstalled=false;JSI.installedEventList=['onJSIInstalled','onjsiinstalled'];",
 			"JSI.create=function(id,url){var nm=id?id:JSI.name+String(JSI.index++);var o=new JSIMain(id,url,nm);if(!JSI.first){JSI.first=o;};JSIHost[nm]=o;JSI.count++;return nm;};JSI.get=function(n){var r;if(n){r=JSIHost[n];}else if(JSI.count==1){r=JSI.first;};return r;};",
@@ -15,7 +46,7 @@ package aw.external.jsinterface{
 			"JSI.getEventLink=function(jn){var j=JSIHost[jn];return j.getInfo(event);};JSI.getInfo=function(jn,vn){var val=JSI.eval(vn);return {value:JSIHost[jn].getInfo(val)};};JSI.tryGetInfo=function(jn,vn){var o;try{o=JSI.getInfo(jn,vn);}catch(e){o={value:null,error:JSICallbacks.getErrorObject(JSIHost[jn],e,vn)};};return o;};",
 			"JSI.eval=function(n){var f=new Function('return '+n+';');return f();};JSI.convertListToInfoIn=function(j,args){var ret=[];if(args){var len=args.length;for(var i=0; i<len; i++){ret[i]=j.getInfo(args[i]);};};return ret;};",
 			"JSI.getValue=function(jn,o){var r;if(o instanceof Object){r=JSI.getValueIn(JSIHost[jn],o);}else{r=o;};return r;};JSI.getValueIn=function(j,o){var r;if(o instanceof Object && o.constructor==Object){if(o.isComplex){r=JSI.getComplexValueIn(j,o);}else{r=JSI.getSimpleValueIn(j,o);};}else{r=o;};return r;};",
-			"JSI.getComplexValueIn=function(j,o){var r;if(o.side=='JS'){if(o.type=='function'){r=j.funcs.getItem(o.value);}else{r=j.objects.getItem(o.value);};}else{if(o.type=='function'){r=j.callbacks.getItemByInfo(o);}else{r=new FLObject(j,o);};};return r;};",
+			"JSI.getComplexValueIn = function(j, o){var r;if(o.side=='JS'){if(o.type=='function'){r=j.funcs.getItem(o.value);}else{r=j.objects.getItem(o.value);};}else{if(o.type=='function'){r=j.callbacks.getItemByInfo(o);}else{r=new FLObject(j,o);var cn=o[FLObject.classInfoProperty];var jn=j.name;if(cn && FLObject.hasRegisteredWrapper(cn,jn)){r=FLObject.createWrapper(r,cn,jn);};};};return r;};",
 			"JSI.getSimpleValueIn=function(j,o){var r;if(o.type=='array'){r=JSI.convertListToValueIn(j,o.value);}else if(o.type=='object'){r=JSI.convertObjectToValueIn(j,o.value);}else{r=o.value;};return r;};",
 			"JSI.convertListToValueIn=function(j,args){var r=[];if(args){var len=args.length;for(var i=0; i<len; i++){r[i]=JSI.getValueIn(j,args[i]);};};return r;};JSI.convertObjectToValueIn=function(j,obj){var r={};if(obj){for(var p in obj){r[p]=JSI.getValueIn(j,obj[p]);};};return r;};",
 			"JSI.getParamValue = function(jn, o, p){o = JSI.getValue(jn, o);var f = JSI.eval('function(o){return o.'+p+'}');var r = f(o);return {value:JSIHost[jn].getInfo(r)};};JSI.tryGetParamValue = function(jn, o, p){var r;try{r = JSI.getParamValue(jn, o, p);}catch(e){r = {value:null, error:JSICallbacks.getErrorObject(JSIHost[jn], e, o, p)};};return r;};",
@@ -79,13 +110,13 @@ package aw.external.jsinterface{
 			"JSI.mp.getSimpleArray=function(v){var r=[];var l=v.length;for(var i=0; i<l; i++){r[i]=this.getInfo(v[i]);};return r;};JSIMain.__getInfo=function(val){return {value:val,type:JSIMain.getType(val),isComplex:JSIMain.isComplex(val),side:'JS'};};",
 			"JSIMain.getType=function(o){var t=typeof o;if(t=='object'){if(o){if(o instanceof Array){t='array';}else if(JSIMain.ieBrowser){t=JSIMain.getIEString(o,t);};}else{t='void';};}else if(o.constructor==Object){t='object';};return t;};",
 			"JSIMain.getIEString=function(o,t){if('toString' in o){var p=o.toString().indexOf('function');if(p>=0 && p<3){t='function';};};return t;};JSIMain.isComplex=function(o){return (!Boolean(!o || JSIMain.simple[typeof o])|| o instanceof Array);};",
-			"JSIMain.getTag=function(){var d=JSI.d();var hd=d.getElementsByTagName('head')[0];if(!hd){hd=d.createElement('head');d.firstChild.appendChild(hd);};return hd;};JSIFunctions=function(i){this.jsi=i;this.index=0;this.items={};};JSI.fp=JSIFunctions.prototype;JSIFunctions.base='func_';",
+			"JSIMain.getTag=function(){var d=JSI.d();var hd=d.getElementsByTagName('head')[0];if(!hd){hd=d.createElement('head');d.firstChild.appendChild(hd);};return hd;};JSIFunctions=function(i){this.jsi=i;this.index=0;this.items={};};JSI.fp=JSIFunctions.prototype;JSIFunctions.base='jf';",
 			"JSI.fp.addItem=function(fn,pn,nm){var n=this.findItem(fn,pn,nm);if(!n){n=JSIFunctions.base+String(this.index++);this.items[n]={func:fn,parent:pn,name:nm};};return n;};JSI.fp.findItem=function(fn,pn,nm){for(var p in this.items){var o=this.items[p];if(o.func==fn && o.parent==pn && o.name==nm){return p;};};return '';};",
 			"JSI.fp.addItemByTarget=function(fn,pt,nm){return this.addItem(fn,this.jsi.objects.addItem(pt),nm);};JSI.fp.getItem=function(n){var o=this.items[n];if(o){return o.func;}else{return null;};};JSI.fp.getItemObject=function(n){return this.items[n];};",
 			"JSI.fp.removeItem=function(n){delete this.items[n];};JSI.fp.clear=function(){for(var p in this.items){delete this.items[p];};};JSI.fp.isExists=function(n){return Boolean(this.items[n]);};",
 			"JSI.fp.isCurrentByTarget=function(fn,pt){return this.isCurrent(fn,this.jsi.objects.addItem(pt));};JSI.fp.isCurrent=function(fn,pn){var jo=this.jsi.objects;var o=this.getItem(fn);var p=jo.getItem(o.parent);var t=jo.getItem(pn);if(p===t && t[o.name]===o.func){return true;}else{return false;};};",
 			"JSIFunctions.isFunction=function(o){if(o){var t=typeof o;if(t=='function'){return true;}else if(JSIMain.ieBrowser && t=='object'){var pos=String(o).indexOf('function');if(pos>=0 && pos<3){return true;};};};return false;};",
-			"JSIObjects=function(i){this.jsi=i;this.index=0;this.items={};};JSI.op=JSIObjects.prototype;JSIObjects.base='obj_';JSI.op.addItem=function(o){for(var p in this.items){if(this.items[p]===o){return p;};};var name=JSIObjects.base+String(this.index++);this.items[name]=o;return name;};",
+			"JSIObjects=function(i){this.jsi=i;this.index=0;this.items={};};JSI.op=JSIObjects.prototype;JSIObjects.base='jo';JSI.op.addItem=function(o){for(var p in this.items){if(this.items[p]===o){return p;};};var name=JSIObjects.base+String(this.index++);this.items[name]=o;return name;};",
 			"JSI.op.getItem=function(n){return this.items[n];};JSI.op.getItemType=function(n){return typeof this.items[n];};JSI.op.removeItem=function(n){delete this.items[n];};JSI.op.clear=function(){for(var p in this.items){delete this.items[p];};};",
 			"JSI.op.isExists=function(n){return Boolean(this.items[n]);};JSICallbacks=function(i){this.objects={};this.jsi=i;};JSI.cp=JSICallbacks.prototype;JSICallbacks.getJSINameMethod='getJSIName';JSICallbacks.forEachMethod='jsiCaller_ForEachMethod';",
 			"JSICallbacks.callbackMethod='jsiCaller_CallMethod';JSICallbacks.exceptionMethod='jsiCaller_ThrowException';JSICallbacks.objectCreateMethod='jsiCaller_Object_CreateMethod';JSICallbacks.objectInstanceMethod='jsiCaller_Object_InstanceMethod';",
@@ -115,8 +146,23 @@ package aw.external.jsinterface{
 			"JSI.fo.getMethodList=function(){return this.jsi.callbacks.callCommand(this.name,'methodList');};JSI.fo.describeType=function(){return this.jsi.callbacks.callCommand(this.name,'describeType');};JSI.fo.getClassName=function(){return this.jsi.callbacks.callCommand(this.name,'className');};",
 			"JSI.fo.getSuperClassName=function(){return this.jsi.callbacks.callCommand(this.name,'superClassName');};JSI.fo.remove=function(){return this.jsi.callbacks.removeObject(this.name);};FLObject.create=function(cn,a,jn){var j=JSI.get(jn);if(arguments.length<2 || a==null){a=[];}else if(!(a instanceof Array)){a=[a];};return j.callbacks.createObject(cn,a);};",
 			"FLObject.instance=function(p,t,jn){var j=JSI.get(jn);return j.callbacks.instanceObject(p,t);};FLObject.clear=function(flc,flo,jsc,jso,jn){var l=arguments.length;if(l<1)flc=true;if(l<2)flo=true;if(l<3)jsc=true;if(l<4)jso=true;var j=JSI.get(jn);j.clear(flc,flo);return j.callbacks.objectsClear(jsc,jso);};",
-			"FLObject.stage=function(jn){var j=JSI.get(jn);return j.callbacks.instanceObject('stage');};FLObject.root=function(jn){var j=JSI.get(jn);return j.callbacks.instanceObject('root');};FLObject.applicationDomain=function(jn){var j=JSI.get(jn);return j.callbacks.instanceObject('applicationDomain');};"
+			"FLObject.stage=function(jn){var j=JSI.get(jn);return j.callbacks.instanceObject('stage');};FLObject.root=function(jn){var j=JSI.get(jn);return j.callbacks.instanceObject('root');};FLObject.applicationDomain=function(jn){var j=JSI.get(jn);return j.callbacks.instanceObject('applicationDomain');};",
+			"FLObject.defaultFLProperty='_flObject';FLObject.classInfoProperty='className';FLObject._flashTypes={};FLObject.registerWrapper=function(cn,jf,af,jn,up,pn){var c;if(!jn) jn=JSI.first.name;if(jn in FLObject._flashTypes) c=FLObject._flashTypes[jn];else FLObject._flashTypes[jn]=c={};cn=FLObject.convertFlashClassName(cn);if(cn && jf){if(!pn) pn=FLObject.defaultFLProperty;c[cn]={name:cn,func:jf,asFunc:af,useProp:up,prop:pn};};};",
+			"FLObject.convertFlashClassName = function(cn){if(cn && cn.indexOf('.')>0 && cn.indexOf(':')<0){var i = cn.lastIndexOf('.');cn = cn.substr(0, i)+'::'+cn.substr(i+1);};return cn;};FLObject.hasRegisteredWrapper=function(cn,jn){if(!jn) jn=JSI.first.name;cn=FLObject.convertFlashClassName(cn);if(jn in FLObject._flashTypes && cn) return cn in FLObject._flashTypes[jn];return false;};",
+			"FLObject.getWrapperInfo=function(cn,jn){if(!jn) jn=JSI.first.name;cn=FLObject.convertFlashClassName(cn);if(jn in FLObject._flashTypes && cn) return FLObject._flashTypes[jn][cn];return null;};FLObject.createWrapper=function(fl,cn,jn){if(!jn) jn=JSI.first.name;var r;var o=FLObject.getWrapperInfo(cn,jn);if(o.asFunc){if(o.useProp){r=o.func();r[o.prop]=fl;}else{r=o.func(fl);};}else{if(o.useProp){r=new o.func();r[o.prop]=fl;}else{r=new o.func(fl);};};return r;};",
+			"FLObject.unregisterWrapper=function(cn,jn){if(!jn) jn=JSI.first.name;cn=FLObject.convertFlashClassName(cn);if(jn in FLObject._flashTypes && cn) delete FLObject._flashTypes[jn][cn];};FLObject.unregisterAllWrappers=function(jn){if(!jn) jn=JSI.first.name;delete FLObject._flashTypes[jn];};"
 		];
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param arr 
+		* @return void 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function callJSCommands(arr:Array):void{
 			var len:int = arr.length;
 			for(var i:int=0; i<len; i++){

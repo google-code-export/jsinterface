@@ -1,0 +1,1 @@
+commentor -input ./ -output ./ -add-see true -overwrite true -add-see-path ./aw -empty-rows 3 -playerversion "Flash 9.0.28.0" -langversion "ActionScript 3.0" -author "Galaburda a_[w] Oleg	  http://www.actualwave.com"

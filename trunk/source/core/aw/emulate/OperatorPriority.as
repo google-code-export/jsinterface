@@ -1,6 +1,32 @@
 package aw.emulate{
+
+	/** 
+	* 
+	* 
+	* 
+	* @private 
+	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
+	*/
 	public class OperatorPriority extends Object{
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public const NO_VALUE:int = -1;
+
+		/** 
+		* 
+		* 
+		* 
+		* @private (internal,constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static internal const OPERATORS:Object = function():Object{
 			var ret:Object = {};
 			//Unary
@@ -65,6 +91,17 @@ package aw.emulate{
 			ret[','] = 1;
 			return ret;
 		}();
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param op 
+		* @return int 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function getValue(op:String):int{
 			return op in OPERATORS ? OPERATORS[op] : NO_VALUE;
 		}

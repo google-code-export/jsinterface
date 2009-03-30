@@ -8,7 +8,10 @@ package{
 		public function CreateFunctionExample():void{
 			super();
 			JSInterface.initialize(this, true);
-			var func:Function = JSFunction.create('this.title = arg;return this.title;', 'arg');
+			var func:Function = JSFunction.create(
+				'this.title = arg;' + 
+				'return this.title;'
+			, 'arg');
 			trace(func.call(JSInterface.document, 'Hello world!'));
 		}
 

@@ -3,6 +3,7 @@
 	/**
 	* Класс для преобразования строк в простые типы и обратно.
 	* 
+	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 	* @playerversion Flash 9.0.28.0
 	* @langversion 3.0
 	*/
