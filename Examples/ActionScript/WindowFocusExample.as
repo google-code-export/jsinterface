@@ -1,5 +1,6 @@
 package{
 	import aw.external.JSInterface;
+	import aw.external.jsinterface.JSDynamic;
 	
 	import flash.display.Sprite;
 
@@ -11,21 +12,21 @@ package{
 			JSInterface.window.onfocus = this.windowFocusHandler;
 			JSInterface.window.onunload = this.windowUnloadHandler;
 		}
-		public function windowBlurHandler():void{
+		public function windowBlurHandler(event:JSDynamic=null):void{
 			/*
 				Window lose focus
 				Pause application animation, sounds, etc.
 			*/
 			trace('pause');
 		}
-		public function windowFocusHandler():void{
+		public function windowFocusHandler(event:JSDynamic=null):void{
 			/*
 				Window gather focus
 				Restore application animation, sounds, etc.
 			*/
 			trace('restore');
 		}
-		public function windowUnloadHandler():void{
+		public function windowUnloadHandler(event:JSDynamic=null):void{
 			/*
 				Window will close
 				Save application data.

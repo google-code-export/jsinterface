@@ -11,7 +11,7 @@ package{
 			JSInterface.initialize(this);
 			showWindow();
 		}
-		/** Open window with specific content
+		/** Open window with specific content. This example may not work correctly in Internet Explorer.
 		 * 
 		 */
 		protected function showWindow():void{

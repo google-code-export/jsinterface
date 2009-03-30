@@ -5,11 +5,31 @@ package aw.external.jsinterface.objects{
 	 * Класс портирован по документации <a href="http://www.aptana.com/studio">Aptana Studio</a>.
 	 */
 	public dynamic class JSFrame extends JSDynamic{
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public const CLASS_NAME:String = 'Frame';
-		public function JSFrame(className:Object='', args:*=null):void{
-			if(className){
-				if(arguments.length>1 && !(args is Array)) args = [args];
-				super(className, args);
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param className 
+		* @param args 
+		* @return void 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		public function JSFrame(...args:Array):void{
+			if(!args.length || args[0]!==JSDynamic.DO_NOT_CREATE_OBJECT){
+				super(CLASS_NAME, args);
 			}else init();
 		}
 		

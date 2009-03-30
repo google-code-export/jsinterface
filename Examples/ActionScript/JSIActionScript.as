@@ -5,7 +5,10 @@ package {
 	import flash.display.Sprite;
 	import flash.system.System;
 	import flash.utils.setTimeout;
-
+	/*
+	 * ANY CLASS IN THIS PROJECT IN ROOT PACKAGE IS A SINGLE EXAMPLE. SETUP IT AS APPLICATION 
+	 * AND RUN UNDER HTTP PROTOCOL(some examples will NOT work locally).
+	 */
 	public class JSIActionScript extends Sprite{
 		public function JSIActionScript():void{
 			super();
@@ -13,7 +16,7 @@ package {
 			setTimeout(this.addFunctions, 5000);
 		}
 		private function getFunc():Function{
-			return function(){return true;};
+			return function():Boolean{return true;};
 		}
 		protected function addFunctions():void{
 			var d:JSDocument = JSInterface.document;

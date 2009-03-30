@@ -2,15 +2,62 @@ package aw.external.jsinterface.objects{
 	import aw.external.jsinterface.JSTypeMap;
 	
 	import flash.utils.getQualifiedClassName;
+
+	/** 
+	* Содержит все объекты маппигна типов для JavaScript объектов. Этот объект является хранилищем и при создании нового объекта-оболочки он отвечает за присвоение ему объекта маппинга.
+	* 
+	* 
+	* @public 
+	* @see aw.external.jsinterface.JSTypeMap
+	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
+	*/
 	public class JSObjectTypeMapper extends Object{
+
+		/** 
+		* 
+		* 
+		* 
+		* @private 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static private var _initialized:Boolean = false;
+
+		/** 
+		* 
+		* 
+		* 
+		* @private 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static private var _types:Object = new Object();
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @return void 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function initialize():void{
 			if(!_initialized){
 				initPredefined();
 				_initialized = true;
 			}
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @private 
+		* @return void 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static private function initPredefined():void{
 			addMapsByObject(
 				JSArray, new JSTypeMap(JSTypeMap.JSARRAY), 
@@ -33,30 +80,113 @@ package aw.external.jsinterface.objects{
 				JSXMLHttpRequest, new JSTypeMap(JSTypeMap.JSXML_HTTP_REQUEST)
 			);
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param name 
+		* @param map 
+		* @return void 
+		* @see aw.external.jsinterface.JSTypeMap 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function addMap(name:String, map:JSTypeMap):void{
 			_types[name] = map;
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param obj 
+		* @param map 
+		* @return void 
+		* @see aw.external.jsinterface.JSTypeMap 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function addMapByObject(obj:Object, map:JSTypeMap):void{
 			_types[getQualifiedClassName(obj)] = map;
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param args 
+		* @return void 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function addMaps(... args:Array):void{
 			var len:int = args.length;
 			for(var i:int=0; i<len; i+=2){
 				_types[args[i]] = args[i+1];
 			}
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param args 
+		* @return void 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function addMapsByObject(... args:Array):void{
 			var len:int = args.length;
 			for(var i:int=0; i<len; i+=2){
 				_types[getQualifiedClassName(args[i])] = args[i+1];
 			}
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param name 
+		* @return Boolean 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function isMapExists(name:String):Boolean{
 			return name in _types;
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param name 
+		* @return JSTypeMap 
+		* @see aw.external.jsinterface.JSTypeMap 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function getMap(name:String):JSTypeMap{
 			return _types[name];
 		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public 
+		* @param obj 
+		* @return JSTypeMap 
+		* @see aw.external.jsinterface.JSTypeMap 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
 		static public function getMapByObject(obj:Object):JSTypeMap{
 			return _types[getQualifiedClassName(obj)];
 		}

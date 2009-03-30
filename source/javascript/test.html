@@ -1,0 +1,53 @@
+﻿<html>
+<head>
+	<title></title>
+</head>
+<body>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab" id="flash">
+	<param name="movie" value="flash.swf" />
+	<embed src="flash.swf" id="flash"/>
+</object>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab" id="f1">
+	<param name="movie" value="flash1.swf" />
+	<embed src="flash1.swf"/>
+</object>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab" id="f2">
+	<param name="movie" value="flash2.swf" />
+	<embed src="flash2.swf"/>
+</object>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab" id="f3">
+	<param name="movie" value="flash3.swf" />
+	<embed src="flash3.swf"/>
+</object>
+<script type="text/javascript" src="jsinterface.js"></script>
+<script type="text/javascript">
+
+var nm = JSI.create(null, 'flash2.swf');
+// Создаёт объект используя полученную функцию в качестве конструктора и передаёт ему объект FLObject как единственный аргумент.
+function SpriteObject(flObject){
+	this._flObject = flObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject);
+// FLObject передаёт в уже созданный объект, применяя его как значение свойству "_flObject"
+function SpriteObject(){
+	var _flObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, false, null, true);
+// FLObject передаёт в уже созданный объект, применяя его как значение указанного свойства, в данном случае "_currentFlashObject"
+function SpriteObject(){
+	var _currentFlashObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, false, null, true, '_currentFlashObject');
+// Переданная функция вызывается через оператор "()", в качестве возвращаемого значения функция должна вернуть ожидаемый объект. В качестве аргумента получает объект FLObject.
+function SpriteObject(){
+	var _flObject;
+}
+function createSpriteObject(flObject){
+	var sprite = new SpriteObject();
+	sprite._flObject = flObject;
+	return sprite;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, true);
+</script>
+</body>
+</html>
