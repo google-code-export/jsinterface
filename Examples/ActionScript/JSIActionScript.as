@@ -10,9 +10,9 @@ package {
 	 * AND RUN UNDER HTTP PROTOCOL(some examples will NOT work locally).
 	 */
 	public class JSIActionScript extends Sprite{
+		static public const INIT:* = JSInterface.initialize();
 		public function JSIActionScript():void{
 			super();
-			JSInterface.initialize(this);
 			setTimeout(this.addFunctions, 5000);
 		}
 		private function getFunc():Function{
