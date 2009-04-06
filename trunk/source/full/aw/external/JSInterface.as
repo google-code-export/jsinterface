@@ -60,7 +60,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_TITLE:String = 'JSI.getTitle';
+		static private const GET_TITLE:String = 'JSIBrowser.getTitle';
 
 		/** 
 		* 
@@ -70,7 +70,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const SET_TITLE:String = 'JSI.setTitle';
+		static private const SET_TITLE:String = 'JSIBrowser.setTitle';
 
 		/** 
 		* 
@@ -80,7 +80,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_STATUS:String = 'JSI.getStatus';
+		static private const GET_STATUS:String = 'JSIBrowser.getStatus';
 
 		/** 
 		* 
@@ -90,7 +90,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const SET_STATUS:String = 'JSI.setStatus';
+		static private const SET_STATUS:String = 'JSIBrowser.setStatus';
 
 		/** 
 		* 
@@ -100,7 +100,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_LOCATION:String = 'JSI.getLocation';
+		static private const GET_LOCATION:String = 'JSIBrowser.getLocation';
 
 		/** 
 		* 
@@ -110,7 +110,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_TOP_LOCATION:String = 'JSI.getTopLocation';
+		static private const GET_TOP_LOCATION:String = 'JSIBrowser.getTopLocation';
 
 		/** 
 		* 
@@ -120,7 +120,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_LOCATION_HASH:String = 'JSI.getLocationHash';
+		static private const GET_LOCATION_HASH:String = 'JSIBrowser.getLocationHash';
 
 		/** 
 		* 
@@ -130,7 +130,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const SET_LOCATION_HASH:String = 'JSI.setLocationHash';
+		static private const SET_LOCATION_HASH:String = 'JSIBrowser.setLocationHash';
 
 		/** 
 		* 
@@ -140,7 +140,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_COOKIE_STRING:String = 'JSI.getCookieString';
+		static private const GET_COOKIE_STRING:String = 'JSIBrowser.getCookieString';
 
 		/** 
 		* 
@@ -150,7 +150,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const SET_COOKIE_STRING:String = 'JSI.setCookieString';
+		static private const SET_COOKIE_STRING:String = 'JSIBrowser.setCookieString';
 
 		/** 
 		* 
@@ -160,7 +160,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const GET_DEFAULT_STATUS:String = 'JSI.getDefaultStatus';
+		static private const GET_DEFAULT_STATUS:String = 'JSIBrowser.getDefaultStatus';
 
 		/** 
 		* 
@@ -170,7 +170,7 @@ package aw.external{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const SET_DEFAULT_STATUS:String = 'JSI.setDefaultStatus';
+		static private const SET_DEFAULT_STATUS:String = 'JSIBrowser.setDefaultStatus';
 
 		/** 
 		* Указывает на необходимость дублировать JavaScript ошибки во Flash среде. Такие ошибки могут возникнуть при неправомерных действиях(вызов несуществующего метода) инициатором которых была среда Flash Player'а.
@@ -428,8 +428,8 @@ package {
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static public function getTitle(str:String):void{
-			ExternalInterface.call(GET_TITLE);
+		static public function getTitle():String{
+			return ExternalInterface.call(GET_TITLE);
 		}
 
 		/** 

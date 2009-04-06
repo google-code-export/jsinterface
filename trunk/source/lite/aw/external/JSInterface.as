@@ -16,29 +16,29 @@ package aw.external{
 	*/
 	public class JSInterface extends Object{
 
-		static private const GET_TITLE:String = 'JSI.getTitle';
+		static private const GET_TITLE:String = 'JSIBrowser.getTitle';
 
-		static private const SET_TITLE:String = 'JSI.setTitle';
+		static private const SET_TITLE:String = 'JSIBrowser.setTitle';
 
-		static private const GET_STATUS:String = 'JSI.getStatus';
+		static private const GET_STATUS:String = 'JSIBrowser.getStatus';
 
-		static private const SET_STATUS:String = 'JSI.setStatus';
+		static private const SET_STATUS:String = 'JSIBrowser.setStatus';
 
-		static private const GET_LOCATION:String = 'JSI.getLocation';
+		static private const GET_LOCATION:String = 'JSIBrowser.getLocation';
 
-		static private const GET_TOP_LOCATION:String = 'JSI.getTopLocation';
+		static private const GET_TOP_LOCATION:String = 'JSIBrowser.getTopLocation';
 
-		static private const GET_LOCATION_HASH:String = 'JSI.getLocationHash';
+		static private const GET_LOCATION_HASH:String = 'JSIBrowser.getLocationHash';
 
-		static private const SET_LOCATION_HASH:String = 'JSI.setLocationHash';
+		static private const SET_LOCATION_HASH:String = 'JSIBrowser.setLocationHash';
 
-		static private const GET_COOKIE_STRING:String = 'JSI.getCookieString';
+		static private const GET_COOKIE_STRING:String = 'JSIBrowser.getCookieString';
 
-		static private const SET_COOKIE_STRING:String = 'JSI.setCookieString';
+		static private const SET_COOKIE_STRING:String = 'JSIBrowser.setCookieString';
 
-		static private const GET_DEFAULT_STATUS:String = 'JSI.getDefaultStatus';
+		static private const GET_DEFAULT_STATUS:String = 'JSIBrowser.getDefaultStatus';
 
-		static private const SET_DEFAULT_STATUS:String = 'JSI.setDefaultStatus';
+		static private const SET_DEFAULT_STATUS:String = 'JSIBrowser.setDefaultStatus';
 
 		static public var redirectJavaScriptExceptions:Boolean = true;
 
@@ -118,8 +118,8 @@ package aw.external{
 			_root = p;
 		}
 
-		static public function getTitle(str:String):void{
-			ExternalInterface.call(GET_TITLE);
+		static public function getTitle():String{
+			return ExternalInterface.call(GET_TITLE);
 		}
 
 		static public function setTitle(str:String):void{
