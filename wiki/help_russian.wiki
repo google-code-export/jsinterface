@@ -237,7 +237,7 @@ JSInterface позволяет управлять объектами в обе �
 {{{
 	// ActionScript 3
 	JSInterface.loadCSS("style.css");
-	JSInterface.load!JavaScript("script.js", this.load!JavaScriptComplete);
+	JSInterface.loadJavaScript("script.js", this.loadJavaScriptComplete);
 	...
 	protected function load!JavaScriptComplete(event:JSDynamic=null):void{
 		...
@@ -287,7 +287,7 @@ _Больше примеров находится в разделе "[http://cod
 
 	JSInterface.initialize(this);
 	var element:JSHTMLElement = JSInterface.getInstance('document.getElementsByTagName("body")[0]', JSHTMLElement);
-	trace(element.innerHTML); // <script language="!JavaScript" type...
+	trace(element.innerHTML); // <script language="JavaScript" type...
 }}}
 
 JSInterface имеет свойства позволяющие получить доступ к основным объектам из !JavaScript среды:
