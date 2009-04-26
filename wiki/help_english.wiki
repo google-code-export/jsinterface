@@ -20,7 +20,7 @@ JSInterface library allows managing HTML environment of an SWF application locat
 
 Example of !JavaScript code:
 {{{
-	// !JavaScript
+	// JavaScript
 	window.location.hash = 'hello_world';
 	alert("Hello world!");
 	document.onclick = function(){
@@ -30,7 +30,7 @@ Example of !JavaScript code:
 
 Example of !ActionScript 3 code completing the same tasks:
 {{{
-	// !ActionScript 3	
+	// ActionScript 3	
 	package {
 		import aw.external.JSInterface;
 		import aw.external.jsinterface.objects.JSWindow;
@@ -78,7 +78,7 @@ JSInterface divides objects into two types – simple and complex. The main diff
 
   * Simple !ActionScript objects – `String`, `Number`, `int`, `uint`, `Boolean`, `Array`, `Object`. Instances of these classes are considered simple, but instances of their derivatives are not. For example, a usual array is a simple type, but a class derived from an array will be a complex type. 
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	var number:Number = new Number();
 	var integer:int = 123;
 	var string:String = new String("some string");
@@ -88,7 +88,7 @@ JSInterface divides objects into two types – simple and complex. The main diff
 }}}
   * Complex !ActionScript objects are any other objects derivative from `Object` and `Array`. Of course, simple objects are also derivative from `Object`, but they are described as simple in advance.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
 	var sprite:Sprite = new Sprite();
@@ -98,14 +98,14 @@ JSInterface divides objects into two types – simple and complex. The main diff
 }}}
   * Simple !JavaScript values – `String`, `Number`, `Boolean` in case of literal use:
 {{{
-	// !JavaScript
+	// JavaScript
 	var integer = 5;
 	var boolean = true;
 	var string  = "this is a string";
 }}}
   * Any !JavaScript objects – `String`, `Number`, `Boolean`, `Array`, `Object` and their derivatives. Even Boolean type, if its instance was created with "new" operator, is considered an object (in this case, a complex object):
 {{{
-	// !JavaScript
+	// JavaScript
 	var integer = new Number(5);
 	var boolean = new Boolean(true);
 	var string  = new String("this is a string");
@@ -179,7 +179,7 @@ To start working with JSInterface you need to load and install the SWC library o
 
 In order to use JSInterface it should be initialized
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import aw.external.JSInterface;
 	JSInterface.initialize(this);
 }}}
@@ -187,28 +187,28 @@ This is the only obligatory condition for using the library. Any appeals to !Jav
 
 After initialization you can create !JavaScript objects
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	var obj:JSDynamic = new JSDynamic('Object');
 }}}
 In !ActionScript you can’t create !JavaScript objects directly through the object class – you should use JSDynamic class for these purposes and transfer the name of !JavaScript object class and the list of arguments accepted by the constructor to it.
 
 Getting access to !JavaScript objects
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	var body:JSDynamic = JSInterface.getInstance('window.document.body');
 }}}
 Instead of a !JavaScript object you’ll get an object of JSDynamic type or its derivative, through which data exchange with the original !JavaScript object will take place. The resulting object serves as proxy – it redirects all the calls (get,set,has,call,delete) for object properties and methods to the original !JavaScript object and retrieves the result. After using such an object you can do all as with the usual !JavaScript object and get the same results. 
 
 As functions and methods are also objects, you can get references to them:
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	var byTagName:Function = body.getElementsByTagName;
 }}}
 In this case you’ll get a reference not to a JSDynamic object, but to a usual function that can be executed. This is a special function that will transfer the received arguments to the original !JavaScript function and retrieve the result upon each call for it.
 
 Get and set values, remove and check for presence of  !JavaScript object properties
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	body.attributes.getNamedItem('bgcolor').value = '#ff0000';
 	body.document.onclick = function(...args):void{
 		JSInterface.window.alert("Click!");
@@ -218,7 +218,7 @@ All the actions are executed in the same way as for usual objects with the help 
 
 Call for !JavaScript functions and !JavaScript objects methods
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	var object:JSElement = byTagName('object')[0];
 	if(object) object.click();
 	var embed:JSElement = byTagName('embed')[0];
@@ -228,14 +228,14 @@ All calls for methods and functions will be redirected to the original objects a
 
 Create !JavaScript functions
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	var func:Function = JSFunction.create('alert(arg1);', 'arg1');
 	func('Hello world!');
 }}}
 
 Download !JavaScript or CSS files to HTML environment
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	JSInterface.loadCSS("style.css");
 	JSInterface.loadJavaScript("script.js", this.loadJavaScriptComplete);
 	...
@@ -260,7 +260,7 @@ All the objects transferred by !JavaScript will appear in Flash Player environme
 
 The full version of the library additionally features a set of classes imitating !JavaScript objects. These classes describe the standard properties and methods of !JavaScript objects and extend JSDynamic (using the same mechanisms). The classes can be useful for determination of the received object type, as in the full version JSInterface matches the types with the retrieved values, according to the specification. For example, it is definitely known that the Document.createElement() method retrieves an HTMLElement object, that’s why the JSDocument.createElement() method  will always retrieve JSHTMLElement (or NULL in case of failure). All the types of retrieved value of properties and methods of !JavaScript objects that can be traced are already described in JSInterface according to specification, and there is no need to define them.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import aw.external.JSInterface;
 	import aw.external.jsinterface.objects.JSArray;
 	import aw.external.jsinterface.objects.JSHTMLElement;
@@ -281,7 +281,7 @@ TypeMap allows tying certain wrapper object types to properties and methods as t
 
 Besides using a chain of objects in the dotted notation you can use the JSInterface.getInstance() method for getting access to it. The method accepts a line containing the path to an object in !JavaScript style and a Class object indicating the type of retrieved object as parameters. The second parameter is necessary as JSInterface can’t determine the type of the retrieved value by itself. And even if the type will be different, a !JavaScript error will occur on the execution stage and only if you call for a non-existing method or commit other wrongful actions.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import aw.external.JSInterface;
 	import aw.external.jsinterface.objects.JSHTMLElement;
 
@@ -299,7 +299,7 @@ JSInterface has properties allowing access to the main objects from !JavaScript 
 
 Functions in !JavaScript environment and in Flash Player environment are objects, and upon getting a link to a function (and only in this case – an object is not created upon a call) JSDynamic objects are created for them as for all objects. But as a result the user gets a link to a function connected with the JSDynamic object created for the function beforehand.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	JSInterface.initialize(this);
 	var create:Function = JSInterface.document.createElement;
 	var append:Function = JSInterface.document.body.appendChild;
@@ -311,7 +311,7 @@ Functions in !JavaScript environment and in Flash Player environment are objects
 
 Upon necessity you can get access to a !JavaScript function object in order to get access to its methods and properties. It can be needed, for example, for getting access to static methods and properties of a !JavaScript class.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	JSInterface.initialize(this);
 	var flObject:Function = JSInterface.window.FLObject;
 	var flObjectClass:JSDynamic = JSDynamic.convertFunctionToObject(flObject);
@@ -320,7 +320,7 @@ Upon necessity you can get access to a !JavaScript function object in order to g
 
 JSinterface allows creating !JavaScript functions with the help of JSFunction.create() method which accepts the function code and parameter names list as parameters. The parameter names list is not obligatory.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import aw.external.JSInterface;
 	import aw.external.jsinterface.JSDynamic;
 	import aw.external.jsinterface.JSFunction;
@@ -340,7 +340,7 @@ Two additional types of marker objects were created for transferring objects in 
 
 *JSComplex* - An object indicating that the transferred object should be transferred as a complex type notwithstanding its type.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	package {
 		import aw.external.JSInterface;
 		import flash.display.Sprite;
@@ -357,7 +357,7 @@ Two additional types of marker objects were created for transferring objects in 
 }}}
 *JSSimple* - An object indicating that the transferred object should be transferred as a simple type (that is directly, as through ExternalInterface) notwithstanding its type.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import aw.external.JSInterface; 
 	import mx.rpc.events.ResultEvent;
 	protected function resultEventHandler(event:ResultEvent):void{
@@ -367,7 +367,7 @@ Two additional types of marker objects were created for transferring objects in 
 }}}
 JSSimple contains a set of static methods for indicating specific types that will be transferred to !JavaScript environment as simple objects.
 {{{
-	// !ActionScript 3
+	// ActionScript 3
 	import aw.external.JSInterface;
 	import aw.external.jsinterface.JSSimple;
 	
@@ -407,7 +407,7 @@ Links to functions from Flash Player environment are formed in approximately the
 
 *FLSimple* – The marker class provides for transferring the object to Flash Player environment as a simple data type, without any transformations.
 {{{
-	// !JavaScript
+	// JavaScript
 	var w = 100;
 	var h = 20;
 	var matrix = FLObject.create('flash.geom.Matrix');
