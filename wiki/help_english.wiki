@@ -1,16 +1,16 @@
 #labels Featured,Phase-Design,Phase-Implementation
 = JSInterface 2 =
 
- * [http://code.google.com/p/jsinterface/wiki/help_russian#intro Introduction]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#basics The basics]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#inside Inside]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#work_with What to work with]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#examples Examples]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#flash Working in Flash Player environment]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#javascript Working in !JavaScript environment]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#errors Processing errors]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#memory Managing memory]
- * [http://code.google.com/p/jsinterface/wiki/help_russian#addition Additional features]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#intro Introduction]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#basics The basics]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#inside Inside]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#work_with What to work with]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#examples Examples]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#flash Working in Flash Player environment]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#javascript Working in !JavaScript environment]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#errors Processing errors]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#memory Managing memory]
+ * [http://code.google.com/p/jsinterface/wiki/help_english#addition Additional features]
 
 <font color="#ffffff">
 ========= intro =========
