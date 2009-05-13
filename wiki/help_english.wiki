@@ -116,7 +116,7 @@ Though the difference between simple and complex objects is clear enough, the de
 <font color="#ffffff">
 ========= inside =========
 </font>
-== Внутри ==
+== Inside ==
 JSInterface allows managing objects from two sides – both from Flash Player environment and !JavaScript environment. Stacks for transferred complex objects are created in both environments upon JSInterface initialization. Such stacks contain references to original objects, JSInterface addresses them every time when a call for this object through its wrapper object takes place. Each object in the stack is identified with a unique key stored in the information transferred to the wrapper object. Such key is transferred in each operation with the object. The process of data transfer is roughly the same for transfer to both directions.
 
 The sequence of actions for creating an object in another environment:
