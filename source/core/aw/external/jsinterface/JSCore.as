@@ -273,6 +273,20 @@ package aw.external.jsinterface{
 		static public function loadJavaScript(url:String, func:Function=null, type:String='', cls:Class=null):JSDynamic{
 			return JSInstanceCache.getByInfo(ExternalInterface.call(JSCaller.loadJavaScriptMethod, _name, url, (func!=null) ? JSCaller.addCallback(func) : '', type), cls);
 		}
+		
+		/**
+		* 
+		* @param code
+		* @param type
+		* @param cls
+		* @return 
+		* @see aw.external.jsinterface.JSDynamic 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public function pushSCRIPTTag(code:String, type:String='', cls:Class=null):JSDynamic{
+			return JSInstanceCache.getByInfo(ExternalInterface.call(JSCaller.pushSCRIPTTagMethod, _name, code, type), cls);
+		}
 
 		/** 
 		* 
@@ -290,6 +304,20 @@ package aw.external.jsinterface{
 		*/
 		static public function loadCSS(url:String, func:Function=null, type:String='', cls:Class=null):JSDynamic{
 			return JSInstanceCache.getByInfo(ExternalInterface.call(JSCaller.loadCSSMethod, _name, url, (func!=null) ? JSCaller.addCallback(func) : '', type), cls);
+		}
+		
+		/**
+		* 
+		* @param style
+		* @param type
+		* @param cls
+		* @return 
+		* @see aw.external.jsinterface.JSDynamic 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public function pushSTYLETag(style:String, type:String='', cls:Class=null):JSDynamic{
+			return JSInstanceCache.getByInfo(ExternalInterface.call(JSCaller.pushSTYLETagMethod, _name, style, type), cls);
 		}
 
 		/** 

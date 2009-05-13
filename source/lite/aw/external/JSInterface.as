@@ -267,8 +267,21 @@ package aw.external{
 			return JSCore.loadJavaScript(url, func, type, JSDynamic);
 		}
 		
+		static public function pushJavaScript(code:String, type:String='', asVirual:Boolean=false):JSDynamic{
+			if(asVirual){
+				JSCore.callAnonymous(code, false);
+				return null;
+			}else{
+				return JSCore.pushSCRIPTTag(code, type, JSDynamic);
+			}
+		}
+		
 		static public function loadCSS(url:String, func:Function=null, type:String=''):JSDynamic{
 			return JSCore.loadCSS(url, func, type, JSDynamic);
+		}
+		
+		static public function pushCSS(style:String, type:String=''):JSDynamic{
+			return JSCore.pushSTYLETag(style, type, JSDynamic);
 		}
 		
 		static public function callLater(obj:*, propName:String, args:Array=null, func:Function=null, timeout:uint=1):void{

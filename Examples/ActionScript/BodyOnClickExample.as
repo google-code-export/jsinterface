@@ -8,7 +8,7 @@ package {
 	public class BodyOnClickExample extends Sprite{
 		public function BodyOnClickExample():void{
 			super();
-			JSInterface.initialize(url);
+			JSInterface.initialize(this);
 			JSInterface.document.onclick = this.onclickHandler;
 			JSInterface.document.onclick();
 		}

@@ -597,6 +597,46 @@ package aw.external.jsinterface{
 		static public const JSIINCLUDE_TRY_LOAD_CSS:String = 'JSIInclude.tryLoadCSS';
 
 		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public const JSIINCLUDE_PUSH_SCRIPT_TAG:String = 'JSIInclude.pushSCRIPTTag';
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public const JSIINCLUDE_TRY_PUSH_SCRIPT_TAG:String = 'JSIInclude.tryPushSCRIPTTag';
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public const JSIINCLUDE_PUSH_STYLE_TAG:String = 'JSIInclude.pushSTYLETag';
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public const JSIINCLUDE_TRY_PUSH_STYLE_TAG:String = 'JSIInclude.tryPushSTYLETag';
+
+		/** 
 		* Stack of all functions transferred to the JavaScript environment.
 		* 
 		* 
@@ -1308,6 +1348,32 @@ package aw.external.jsinterface{
 		*/
 		static public function get loadCSSMethod():String{
 			return JSInterface.redirectJavaScriptExceptions ? JSIINCLUDE_TRY_LOAD_CSS : JSIINCLUDE_LOAD_CSS;
+		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (getter) 
+		* @return String 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public function get pushSCRIPTTagMethod():String{
+			return JSInterface.redirectJavaScriptExceptions ? JSIINCLUDE_TRY_PUSH_SCRIPT_TAG : JSIINCLUDE_PUSH_SCRIPT_TAG;
+		}
+
+		/** 
+		* 
+		* 
+		* 
+		* @public (getter) 
+		* @return String 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public function get pushSTYLETagMethod():String{
+			return JSInterface.redirectJavaScriptExceptions ? JSIINCLUDE_TRY_PUSH_STYLE_TAG : JSIINCLUDE_PUSH_STYLE_TAG;
 		}
 		//------------------------------------- Вызовы методов требующих обёртку
 
