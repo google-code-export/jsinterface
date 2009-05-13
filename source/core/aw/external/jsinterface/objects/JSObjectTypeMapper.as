@@ -4,7 +4,10 @@ package aw.external.jsinterface.objects{
 	import flash.utils.getQualifiedClassName;
 
 	/** 
-	* Содержит все объекты маппигна типов для JavaScript объектов. Этот объект является хранилищем и при создании нового объекта-оболочки он отвечает за присвоение ему объекта маппинга.
+	* Contains all types of mapping objects to JavaScript objects. 
+	* This class is the repository and when you create a new proxy 
+	* object(JSDynamic instance), he is responsible for the 
+	* attribution to him the object mapping.
 	* 
 	* 
 	* @public 

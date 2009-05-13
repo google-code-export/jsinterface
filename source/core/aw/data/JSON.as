@@ -10,11 +10,11 @@
 	import aw.utils.iteration.LengthIterationIndex;
 
 		/**
-		* Обработка данных в формате JSON.
+		* Processing data in JSON format.
 		*
-		* Поддерживает стандартный синтаксис JSON и его "ошибочную" версию со строковыми ключами без кавычек:
-		* <ol><li><code>{"paramName1":"string value", "paramName2":1000}; // правильный синтаксис</code></li>
-		* <li><code>{paramName1:"string value", paramName2:1000}; // ошибка, но будет орректно обработана</code></li></ol>
+		* It supports the standard syntax of JSON and his "misleading" the version with string keys, without the quotation marks:
+		* <ol><li><code>{"paramName1":"string value", "paramName2":1000}; // correct syntax</code></li>
+		* <li><code>{paramName1:"string value", paramName2:1000}; // 	error, but will be processed correctly</code></li></ol>
 		* 
 		* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 		* @playerversion Flash 9.0.28.0
@@ -33,7 +33,7 @@
 		static private var SPACES:String = StringEval.SPACES;
 		
 		/**
-		* Упаковка данных в строку формата JSON.
+		* Packing data into a JSON string.
 		* 
 		* @param o Объект
 		* @return String
@@ -45,7 +45,7 @@
 		}
 
 		/**
-		* Распаковка данных из строки формата JSON.
+		* Extracting data from the JSON format.
 		* 
 		* @param str Строка.
 		* @return *

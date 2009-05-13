@@ -11,7 +11,7 @@
 	public final class PropertyAccessType extends Object{
 
 		/** 
-		* Любой тип
+		* Any type
 		* 
 		* 
 		* @public (constant) 
@@ -21,7 +21,7 @@
 		static public const ANY:int = -1;
 
 		/** 
-		* Чтение и запись
+		* Read and Write
 		* 
 		* 
 		* @public (constant) 
@@ -31,7 +31,7 @@
 		static public const READWRITE:int = 0;
 
 		/** 
-		* Только для чтения
+		* Read only
 		* 
 		* 
 		* @public (constant) 
@@ -41,7 +41,7 @@
 		static public const READONLY:int = 1;
 
 		/** 
-		* Только для записи
+		* Write only
 		* 
 		* 
 		* @public (constant) 
@@ -51,7 +51,7 @@
 		static public const WRITEONLY:int = 2;
 
 		/** 
-		* Метод
+		* Method
 		* 
 		* 
 		* @public (constant) 
@@ -61,7 +61,7 @@
 		static public const METHOD:int = 3;
 
 		/** 
-		* Строка содержащая стандартное описание типа "чтение/запись"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -71,7 +71,7 @@
 		static public const READWRITE_NAME:String = 'readwrite';
 
 		/** 
-		* Строка содержащая стандартное описание типа "только для чтения"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -81,7 +81,7 @@
 		static public const READONLY_NAME:String = 'readonly';
 
 		/** 
-		* Строка содержащая стандартное описание типа "только для записи"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -91,7 +91,7 @@
 		static public const WRITEONLY_NAME:String = 'writeonly';
 
 		/** 
-		* Строка содержащая стандартное описание типа "метод"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -121,7 +121,7 @@
 		static private const TYPE_LIST:Object = [READWRITE_NAME, READONLY_NAME, WRITEONLY_NAME, METHOD_NAME];
 
 		/** 
-		* Метод возвращающий описательную строку по значению типа.
+		* The method returns a description by value type
 		* 
 		* 
 		* @public

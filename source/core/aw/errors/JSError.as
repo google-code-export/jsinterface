@@ -1,7 +1,7 @@
 package aw.errors{
 
 	/** 
-	* Объект являющий собой зеркало JavaScript ошибки в среде Flash Player'а.
+	* Object is a copy of a JavaScript error in the Flash Player environment.
 	* 
 	* 
 	* @public 
@@ -170,7 +170,7 @@ package aw.errors{
 		}
 
 		/** 
-		* Имя файла в котором произошла ошибка.
+		* File name in which the error occurred.
 		* 
 		* 
 		* @public (getter) 
@@ -183,7 +183,7 @@ package aw.errors{
 		}
 
 		/** 
-		* Номер строки, в которой произошла ошибка.
+		* Line number, in which the error occurred.
 		* 
 		* 
 		* @public (getter) 
@@ -196,7 +196,7 @@ package aw.errors{
 		}
 
 		/** 
-		* Имя JavaScript ошибки
+		* Name of JavaScript error
 		* 
 		* 
 		* @public (getter) 
@@ -209,7 +209,7 @@ package aw.errors{
 		}
 
 		/** 
-		* ID JavaScript ошибки
+		* ID of JavaScript error
 		* 
 		* 
 		* @public (getter) 
@@ -222,7 +222,7 @@ package aw.errors{
 		}
 
 		/** 
-		* Объект, при работе с которым произошла ошибка. Иногда это свойство может быть пустым, если невозможно определить этот объект.
+		* The object in which the error occurred. Sometimes, this property may be empty, if it is not possible to identify the object.
 		* 
 		* 
 		* @public (getter) 
@@ -235,7 +235,7 @@ package aw.errors{
 		}
 
 		/** 
-		* Имя свойства/метода, при работе с которым произошла ошибка. Иногда это свойство может быть пустым, если невозможно определить имя.
+		* Name of property/method in which the error occurred. Sometimes, this property may be empty, if it is not possible to determine the name.
 		* 
 		* 
 		* @public (getter) 

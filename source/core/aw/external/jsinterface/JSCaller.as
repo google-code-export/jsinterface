@@ -8,14 +8,14 @@ package aw.external.jsinterface{
 	import flash.utils.getQualifiedClassName;
 	[ExcludeClass]
 	/**
-	 * Класс содержит основные методы, через которые JSInterface связывается и взаимодействует с JavaScript средой.
-	 * Так же является менеджером для:
+	 * The class contains the main methods through which JSInterface communicates and co-operates with JavaScript environment.
+	 * Manager for:
 	 * <ul>
-	 * <li>Cсылок передаваемых в JavaScript среду функций и методов</li>
-	 * <li>Cсылок методов призводимых перебор свойств JavaScript объектов через цыклы for...in или for each...in в данный момент</li>
+	 * <li>Links of functions and methods transferred into JavaScript environment</li>
+	 * <li>Links of methods of moving properties of JavaScript objects via the cycle <code>for...in</code>, or <code>for each...in</code> at the moment</li>
 	 * </ul>  
-	 * Этот класс ответственнен за передачу вызова в функцию, за обратную связь в переборе свойств JavaScript объектов и за обработку ошибок происходящих в JavaScript среде.
-	 * Так же, этот класс формирует запросы к JavaScript среде.
+	 * This class is responsible for transferring the call to the function of feedback over the properties of JavaScript objects and for handling errors occurring in the JavaScript environment.
+	 * Also, this class forms a requests to the JavaScript environment.
 	 * 
 	 *  @private
 	 * @see aw.external.JSInterface
@@ -597,7 +597,7 @@ package aw.external.jsinterface{
 		static public const JSIINCLUDE_TRY_LOAD_CSS:String = 'JSIInclude.tryLoadCSS';
 
 		/** 
-		* Стек всех функций переданных в JavaScript среду.
+		* Stack of all functions transferred to the JavaScript environment.
 		* 
 		* 
 		* @private (protected) 
@@ -607,7 +607,7 @@ package aw.external.jsinterface{
 		static protected var _callbacks:Object = {};
 
 		/** 
-		* Стек всех функций производящих перебор свойств JavaScript объектов в данный момент.
+		* Stack of all functions of the properties of JavaScript objects moving at the moment.
 		* 
 		* 
 		* @private (protected) 
@@ -627,12 +627,12 @@ package aw.external.jsinterface{
 		static protected var _initialized:Boolean = false;
 
 		/** 
-		* Добавить функцию в стек.
+		* Add function to the stack.
 		* 
 		* 
 		* @public 
-		* @param f Функция/метод объекта.
-		* @return String Ссылка на функцию в стеке.
+		* @param f Function/method object.
+		* @return String Link to function in the stack.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -646,12 +646,12 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Добавить функцию обратного вызова для перебора в стек.
+		* Add a callback function for the sorting in the stack.
 		* 
 		* 
 		* @public 
-		* @param handler Ссылка на функцию обратного вызова для перебора.
-		* @return String Ссылка на функцию в стеке.
+		* @param handler Link to a callback function for the sorting.
+		* @return String Link to function in the stack.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -690,7 +690,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод инициализации, регистрирует необходимые JavaScript функции.
+		* The method of initialization, registers the necessary JavaScript functions.
 		* 
 		* 
 		* @public 
@@ -813,7 +813,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Вызов метода из стека по текстовой ссылке.
+		* Invoking a method from the stack by the link.
 		* 
 		* 
 		* @private (protected) 
@@ -843,7 +843,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Выбросить полученную ошибку.
+		* Throw occured error.
 		* 
 		* 
 		* @private (internal) 
@@ -868,7 +868,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Преобразовать ошибку c добавлением указателя на среду в которой произошла ошибка.
+		* 	Convert error adding pointer to environment in which the error occurred.
 		* 
 		* 
 		* @private 
@@ -884,7 +884,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Преобразовать объект ошибки в объект JSError, указывающий на ошибку в JavaScript. 
+		* 	Convert error object to object JSError, which point to an error in the JavaScript. 
 		* 
 		* 
 		* @private 
@@ -909,12 +909,12 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод создания строки JavaScript вызова.
+		* The method of creating a string of JavaScript call.
 		* 
 		* 
 		* @public 
-		* @param str Строка вызова
-		* @param wRet Указывает на необходимость возвращать результат выполнения.
+		* @param str JavaScript code string.
+		* @param wRet Points to the need to return a result.
 		* @return String 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 

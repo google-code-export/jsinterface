@@ -1,7 +1,7 @@
 ﻿package aw.utils{
 
 	/** 
-	* Объект содержащий индекс(позицию) итерации.
+	* 	The object containing iteration index (position)
 	* 
 	* 
 	* @public 

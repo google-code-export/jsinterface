@@ -1,0 +1,882 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="PropertyInspector,aw.utils.PropertyInspector,OBJECT_NULL_ERROR,compatible,difference,getByName,getInfo,getMethods,getMethodsByType,getProperties,getPropertiesByContainer,getPropertiesByType,incompatible,intersect,invert,isExists,isProperty,save" name="keywords">
+<title>aw.utils.PropertyInspector</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'PropertyInspector - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?aw/utils/PropertyInspector.html&amp;aw/utils/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;PropertyInspector</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class PropertyInspector"); titleBar_setSubNav(true,false,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">aw.utils</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public final  class PropertyInspector</td>
+</tr>
+</table>
+<p></p> 
+ 
+ 
+ 
+ <p></p>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#compatible()">compatible</a>(obj1:Object, obj2:Object):Array</div>
+<div class="summaryTableDescription">[static] 
+  Returns an array of PropertyItem objects describing available for reading and writing properties that are present in both objects
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#difference()">difference</a>(obj1:Object, obj2:Object, type:Class = null):Object</div>
+<div class="summaryTableDescription">[static] 
+  Returns an object containing properties with the values of the first object having a value different from the values of the same properties of the second object
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getByName()">getByName</a>(o:Object, name:*):<a href="propertyinspector/PropertyItem.html">PropertyItem</a>
+</div>
+<div class="summaryTableDescription">[static] 
+  Retrieve object PropertyItem, by name of a member of the class
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getInfo()">getInfo</a>(o:Object):<a href="propertyinspector/PropertyInspectorItem.html">PropertyInspectorItem</a>
+</div>
+<div class="summaryTableDescription">[static] 
+  Get PropertyInspectorItem object contains the information about target object
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getMethods()">getMethods</a>(o:Object, useStatic:Boolean = false):Array</div>
+<div class="summaryTableDescription">[static] 
+  Возвращает список всех объектов PropertyItem, описывающих методы.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getMethodsByType()">getMethodsByType</a>(o:Object, type:Class, useStatic:Boolean = false):Array</div>
+<div class="summaryTableDescription">[static] 
+  Returns list of PropertyItem, which describes object methods.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getProperties()">getProperties</a>(o:Object, acc:int = -1, useStatic:Boolean = false):Array</div>
+<div class="summaryTableDescription">[static] 
+  Get properties of object by level of access
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPropertiesByContainer()">getPropertiesByContainer</a>(o:Object, cont:int = -1, useStatic:Boolean = false):Array</div>
+<div class="summaryTableDescription">[static] 
+  Returns properties by the type of class member
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPropertiesByType()">getPropertiesByType</a>(o:Object, type:Class, useStatic:Boolean = false):Array</div>
+<div class="summaryTableDescription">[static] 
+  Returns the properties by value type
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#incompatible()">incompatible</a>(obj1:Object, obj2:Object):Array</div>
+<div class="summaryTableDescription">[static] 
+  Returns an array of PropertyItem objects describing available for read and write properties and are opposed (to the type of content), or missing in one of the objects 
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#intersect()">intersect</a>(obj1:Object, obj2:Object, type:Class = null):Object</div>
+<div class="summaryTableDescription">[static] 
+  Returns an object containing properties with values similar in both objects
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#invert()">invert</a>(obj1:Object, obj2:Object, type:Class = null, names:Array = null):void</div>
+<div class="summaryTableDescription">[static] 
+  Changes between the objects, values of common properties that have the same names and types of values
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isExists()">isExists</a>(o:Object, name:*):Boolean</div>
+<div class="summaryTableDescription">[static] 
+  Verifies the existence of a member of the class, by its name
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isProperty()">isProperty</a>(o:Object, name:*):Boolean</div>
+<div class="summaryTableDescription">[static] 
+  Returns TRUE, if passed the name of the property and FALSE - if the name of the method.</div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#save()">save</a>(obj:Object, type:Class = null):Object</div>
+<div class="summaryTableDescription">[static] 
+  Returns an object with duplicates of the source object properties and their values
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#OBJECT_NULL_ERROR">OBJECT_NULL_ERROR</a> : String = "Object is NULL."<div class="summaryTableDescription">[static] 
+  Text of the error, occurs when failure to gain access to the object
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">PropertyInspector</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="compatible()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">compatible</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function compatible(obj1:Object, obj2:Object):Array</code><p> 
+  Returns an array of PropertyItem objects describing available for reading and writing properties that are present in both objects
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj1</span>:Object</code> &mdash; First object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">obj2</span>:Object</code> &mdash; Second object
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="difference()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">difference</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function difference(obj1:Object, obj2:Object, type:Class = null):Object</code><p> 
+  Returns an object containing properties with the values of the first object having a value different from the values of the same properties of the second object
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj1</span>:Object</code> &mdash; First object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">obj2</span>:Object</code> &mdash; Second object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; If the type of values is specified, will be processed only properties with values of this type
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code> &mdash; Object 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getByName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getByName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getByName(o:Object, name:*):<a href="propertyinspector/PropertyItem.html">PropertyItem</a></code><p> 
+  Retrieve object PropertyItem, by name of a member of the class
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Name of property can be String or QName instance
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="propertyinspector/PropertyItem.html">PropertyItem</a></code> &mdash; 
+                        PropertyItem 
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="getInfo()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getInfo</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getInfo(o:Object):<a href="propertyinspector/PropertyInspectorItem.html">PropertyInspectorItem</a></code><p> 
+  Get PropertyInspectorItem object contains the information about target object
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="propertyinspector/PropertyInspectorItem.html">PropertyInspectorItem</a></code> &mdash; 
+                        PropertyInspectorItem 
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyInspectorItem.html" target="">aw.utils.propertyinspector.PropertyInspectorItem</a>
+</div>
+</div>
+<a name="getMethods()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getMethods</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getMethods(o:Object, useStatic:Boolean = false):Array</code><p> 
+  Возвращает список всех объектов PropertyItem, описывающих методы.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">useStatic</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Use static memebers only
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="getMethodsByType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getMethodsByType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getMethodsByType(o:Object, type:Class, useStatic:Boolean = false):Array</code><p> 
+  Returns list of PropertyItem, which describes object methods.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code> &mdash; Type of return value
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">useStatic</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Use static memebers only
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="getProperties()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getProperties</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getProperties(o:Object, acc:int = -1, useStatic:Boolean = false):Array</code><p> 
+  Get properties of object by level of access
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">acc</span>:int</code> (default = <code>-1</code>)<code></code> &mdash; Access type
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">useStatic</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Use static memebers only
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+<br>
+<a href="propertyinspector/PropertyAccessType.html" target="">aw.utils.propertyinspector.PropertyAccessType</a>
+<br>
+<a href="propertyinspector/PropertyInspectorItem.html#getProperties" target="">aw.utils.propertyinspector.PropertyInspectorItem.getProperties</a>
+<br>
+<a href="propertyinspector/PropertyInspectorItem.html#static_ns/:getProperties" target="">aw.utils.propertyinspector.PropertyInspectorItem.static_ns::getProperties</a>
+</div>
+</div>
+<a name="getPropertiesByContainer()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPropertiesByContainer</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getPropertiesByContainer(o:Object, cont:int = -1, useStatic:Boolean = false):Array</code><p> 
+  Returns properties by the type of class member
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">cont</span>:int</code> (default = <code>-1</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">useStatic</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Use static memebers only
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+<br>
+<a href="propertyinspector/PropertyContainerType.html" target="">aw.utils.propertyinspector.PropertyContainerType</a>
+</div>
+</div>
+<a name="getPropertiesByType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPropertiesByType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getPropertiesByType(o:Object, type:Class, useStatic:Boolean = false):Array</code><p> 
+  Returns the properties by value type
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code> &mdash; Тип значения, по которому требуется произвести выборку.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">useStatic</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Use static memebers only
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="incompatible()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">incompatible</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function incompatible(obj1:Object, obj2:Object):Array</code><p> 
+  Returns an array of PropertyItem objects describing available for read and write properties and are opposed (to the type of content), or missing in one of the objects 
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj1</span>:Object</code> &mdash; First object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">obj2</span>:Object</code> &mdash; Second object
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Array 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="propertyinspector/PropertyItem.html" target="">aw.utils.propertyinspector.PropertyItem</a>
+</div>
+</div>
+<a name="intersect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">intersect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function intersect(obj1:Object, obj2:Object, type:Class = null):Object</code><p> 
+  Returns an object containing properties with values similar in both objects
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj1</span>:Object</code> &mdash; First object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">obj2</span>:Object</code> &mdash; Second object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; If the type of values is specified, will be processed only properties with values of this type
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code> &mdash; Object 
+  </td>
+</tr>
+</table>
+</div>
+<a name="invert()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">invert</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function invert(obj1:Object, obj2:Object, type:Class = null, names:Array = null):void</code><p> 
+  Changes between the objects, values of common properties that have the same names and types of values
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj1</span>:Object</code> &mdash; First object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">obj2</span>:Object</code> &mdash; Second object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; If the type of values is specified, will be processed only properties with values of this type
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">names</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; An array of names of properties, if specified, the method will work only with those properties
+  </td>
+</tr>
+</table>
+</div>
+<a name="isExists()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isExists</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function isExists(o:Object, name:*):Boolean</code><p> 
+  Verifies the existence of a member of the class, by its name
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Name of property can be String or QName instance
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="isProperty()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isProperty</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function isProperty(o:Object, name:*):Boolean</code><p> 
+  Returns TRUE, if passed the name of the property and FALSE - if the name of the method.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">o</span>:Object</code> &mdash; Object instance or definition
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Name of property can be String or QName instance
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="save()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">save</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function save(obj:Object, type:Class = null):Object</code><p> 
+  Returns an object with duplicates of the source object properties and their values
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj</span>:Object</code> &mdash; Target object
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; If the type of values is specified, will be processed only properties with values of this type
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code> &mdash; Object 
+  </td>
+</tr>
+</table>
+</div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="OBJECT_NULL_ERROR"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">OBJECT_NULL_ERROR</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const OBJECT_NULL_ERROR:String = "Object is NULL."</code><p> 
+  Text of the error, occurs when failure to gain access to the object
+  
+  
+  </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

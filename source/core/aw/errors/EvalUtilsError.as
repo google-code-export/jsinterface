@@ -1,7 +1,7 @@
 package aw.errors{
 
 	/** 
-	* Класс содержит тексты ошибок обработки текста классом EvalUtils.
+	* The class contains the texts of errors caused by the class EvalUtils.
 	* 
 	* 
 	* @public 

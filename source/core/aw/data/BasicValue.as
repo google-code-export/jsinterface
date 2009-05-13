@@ -1,7 +1,7 @@
 ﻿package aw.data{
 
 	/**
-	* Класс для преобразования строк в простые типы и обратно.
+	* Class for converting strings to simple types and vice versa.
 	* 
 	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 	* @playerversion Flash 9.0.28.0
@@ -10,7 +10,7 @@
 	public class BasicValue extends Object{
 
 		/**
-		* Константа со строковым значением TRUE.
+		* Constant with string value of TRUE.
 		* @public (constant)
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -18,7 +18,7 @@
 		static public const TRUE:String = 'true';
 
 		/**
-		* Константа со строковым значением FALSE.
+		* Constant with string value of FALSE.
 		* @public (constant)
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -26,7 +26,7 @@
 		static public const FALSE:String = 'false';
 
 		/**
-		* Константа со строковым значением NULL.
+		* Constant with string value of NULL.
 		* @public (constant)
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -34,7 +34,7 @@
 		static public const NULL:String = 'null';
 
 		/**
-		* Константа со строковым значением UNDEFINED.
+		* Constant with string value of UNDEFINED.
 		* @public (constant)
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -42,9 +42,9 @@
 		static public const UNDEFINED:String = 'undefined';
 
 		/**
-		* Преобразование строкового значения в булев тип.
+		* Converting the string value to boolean.
 		* 
-		* @param s Строка для преобразования.
+		* @param s The string for conversion.
 		* @return Boolean
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -57,9 +57,9 @@
 		}
 
 		/**
-		* Получение значения из строкового эквивалента.
+		* Getting value from the string equivalent.
 		* 
-		* @param s Строка.
+		* @param s Input string.
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -74,9 +74,9 @@
 		}
 
 		/**
-		* Получение строки из значения простого типа.
+		* Getting a string from the value of a simple type.
 		* 
-		* @param v Значение.
+		* @param v Input value.
 		* @return String
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0

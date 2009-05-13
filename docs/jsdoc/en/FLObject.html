@@ -1,0 +1,1035 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="print.css" type="text/css" media="print">
+<meta content="FLObject,info,jsi,name,applicationDomain,call,clear,create,del,describeType,getAsSimple,getClassName,getMethodList,getPropertyList,getSuperClassName,has,hasRegisteredWrapper,instance,registerWrapper,remove,root,stage,unregisterAllWrappers,unregisterWrapper,get,set" name="keywords">
+<title>FLObject</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="asdoc.js"></script><script type="text/javascript" language="javascript" src="cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FLObject - API Documentation';
+				var baseRef = '';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('all-classes.html')" href="package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('all-classes.html')" href="class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('index-list.html')" href="all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="index.html?FLObject.html&amp;class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FLObject</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FLObject"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">Top Level</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FLObject</td>
+</tr>
+</table>
+<p></p>
+  It’s a prototype of objects transferred from Flash Player environment in JavaScript environment. 
+  It works in the same way as JSDynamic, but from JavaScript side. If there is only one instance of 
+  Flash Palyer with initialized JSInterface in an HTML page (in simple words, only one flash-file is 
+  launched), then the parameter indicating the name of JavaScript  instance of JSInterface manager may 
+  be omitted – it will be used by default.
+  <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#info">info</a> : Object<div class="summaryTableDescription">
+   Information about target Flash object
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#jsi">jsi</a> : String<div class="summaryTableDescription">
+   Name of  JavaScript manager instance of the JSInterface
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#name">name</a> : String<div class="summaryTableDescription">
+   String reference, the name of flash object on the stack of transferred objects.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FLObject()">FLObject</a>(j:String, i:Object)</div>
+<div class="summaryTableDescription">
+   FLObject objects are created automatically each time the object is passed into JavaScript environment object the Flash Player environment
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#applicationDomain()">applicationDomain</a>(jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Get an ApplicationDomain.currentDomain object from the Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#call()">call</a>(n:String, a:Array, u:String = ""):*</div>
+<div class="summaryTableDescription"> 
+   Call the property/method of the Flash object
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#clear()">clear</a>(flc:Boolean = true, flo:Boolean = true, jsc:Boolean = true, jso:Boolean = true, jn:String = ""):void</div>
+<div class="summaryTableDescription">[static] 
+   Remove all references to objects and functions stored in the stack, both from the JavaScript environment, and from the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#create()">create</a>(cn:String, a:Array, jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Create object in Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#del()">del</a>(n:String, u:String = ""):Boolean</div>
+<div class="summaryTableDescription"> Removes property from flash object
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#describeType()">describeType</a>():String</div>
+<div class="summaryTableDescription"> 
+   Returns an XML string created by flash function flash.utils.describeType()
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#get()">get</a>(n:String, u:String = ""):*</div>
+<div class="summaryTableDescription"> Returns property value from flash object
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getAsSimple()">getAsSimple</a>():Object</div>
+<div class="summaryTableDescription"> Get this flash object, not as a reference, and directly - with subsequent pasteurization, and the loss connection with flash environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getClassName()">getClassName</a>():String</div>
+<div class="summaryTableDescription"> 
+   Get the class name of flash object
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getMethodList()">getMethodList</a>():Array</div>
+<div class="summaryTableDescription"> 
+   Returns methods list of flash object 
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getPropertyList()">getPropertyList</a>(ac:String):Array</div>
+<div class="summaryTableDescription"> Returns properties list of flash object 
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getSuperClassName()">getSuperClassName</a>():String</div>
+<div class="summaryTableDescription"> 
+   Get the superclass name of flash object
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#has()">has</a>(n:String, u:String = ""):Boolean</div>
+<div class="summaryTableDescription"> 
+   Check the availability of property in the flash object
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#hasRegisteredWrapper()">hasRegisteredWrapper</a>(cn:String, jn:String = ""):Boolean</div>
+<div class="summaryTableDescription">[static] Verifyes existence of information about an alternative wrapper for the specified class
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#instance()">instance</a>(p:String, t:<a href="FLObject.html">FLObject</a>, jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Get the flash object by a string path
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerWrapper()">registerWrapper</a>(cn:String, jf:Function, af:Boolean = false, jn:String = "", up:Boolean = false, pn:String = "_flObject"):void</div>
+<div class="summaryTableDescription">[static] 
+   Register a JavaScript class of wrapper objects for a certain type of objects from the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#remove()">remove</a>():void</div>
+<div class="summaryTableDescription"> 
+   Removes flash object from stack of transferred objects
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#root()">root</a>(jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Returns Root timeline object from Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#set()">set</a>(n:String, v:String, u:*):void</div>
+<div class="summaryTableDescription"> Sets property value in flash object
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stage()">stage</a>(jn:String = ""):<a href="FLObject.html">FLObject</a>
+</div>
+<div class="summaryTableDescription">[static] 
+   Returns Stage object from Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregisterAllWrappers()">unregisterAllWrappers</a>(jn:String = ""):void</div>
+<div class="summaryTableDescription">[static] Clear all the information about alternative types of flash objects wrappers.</div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregisterWrapper()">unregisterWrapper</a>(cn:String, jn:String = ""):void</div>
+<div class="summaryTableDescription">[static] Removes information about an alternative wrapper for the specified class
+   
+   </div>
+</td><td class="summaryTableOwnerCol">FLObject</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="info"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">info</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var info:Object</code><p>
+   Information about target Flash object
+   </p></div>
+<a name="jsi"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">jsi</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var jsi:String</code><p>
+   Name of  JavaScript manager instance of the JSInterface
+   </p></div>
+<a name="name"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var name:String</code><p>
+   String reference, the name of flash object on the stack of transferred objects.
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FLObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FLObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FLObject(j:String, i:Object)</code><p>
+   FLObject objects are created automatically each time the object is passed into JavaScript environment object the Flash Player environment
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">j</span>:String</code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">i</span>:Object</code> &mdash; Information about target Flash object
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="applicationDomain()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">applicationDomain</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function applicationDomain(jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Get an ApplicationDomain.currentDomain object from the Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        FLObject instance of target flash object
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="call()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">call</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function call(n:String, a:Array, u:String = ""):*</code><p> 
+   Call the property/method of the Flash object
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Method name
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">a</span>:Array</code> &mdash; Arguments list
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; Namespace URI where the method. Not mandatory, can be omitted if the method is located in the base namespace.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code> &mdash; Returned value
+   </td>
+</tr>
+</table>
+</div>
+<a name="clear()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">clear</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function clear(flc:Boolean = true, flo:Boolean = true, jsc:Boolean = true, jso:Boolean = true, jn:String = ""):void</code><p> 
+   Remove all references to objects and functions stored in the stack, both from the JavaScript environment, and from the Flash Player environment.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">flc</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Remove Flash callbacks
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">flo</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Remove Flash objects
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jsc</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Remove JavaScript callbacks
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jso</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Remove JavaScript objects
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+</table>
+</div>
+<a name="create()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function create(cn:String, a:Array, jn:String = ""):<a href="FLObject.html">FLObject</a></code><p>
+   Create object in Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Class name
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">a</span>:Array</code> &mdash; Arguments list for constructor
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        FLObject instance of target flash object
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="del()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">del</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function del(n:String, u:String = ""):Boolean</code><p> Removes property from flash object
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Property name
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; Namespace URI where the property. Not mandatory, can be skipped if the property is located in the base namespace.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Returns TRUE if success
+   </td>
+</tr>
+</table>
+</div>
+<a name="describeType()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">describeType</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function describeType():String</code><p> 
+   Returns an XML string created by flash function flash.utils.describeType()
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; XML tree with information about the class of flash object as a string
+   </td>
+</tr>
+</table>
+</div>
+<a name="get()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">get</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function get(n:String, u:String = ""):*</code><p> Returns property value from flash object
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Property name
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; Namespace URI where the property. Not mandatory, can be skipped if the property is located in the base namespace.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code> &mdash; Property value
+   </td>
+</tr>
+</table>
+</div>
+<a name="getAsSimple()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getAsSimple</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getAsSimple():Object</code><p> Get this flash object, not as a reference, and directly - with subsequent pasteurization, and the loss connection with flash environment.
+    </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code> &mdash; Returns simple object
+   </td>
+</tr>
+</table>
+</div>
+<a name="getClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getClassName():String</code><p> 
+   Get the class name of flash object
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; Class name
+   </td>
+</tr>
+</table>
+</div>
+<a name="getMethodList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getMethodList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getMethodList():Array</code><p> 
+   Returns methods list of flash object 
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; Methods list of flash object
+   </td>
+</tr>
+</table>
+</div>
+<a name="getPropertyList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getPropertyList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getPropertyList(ac:String):Array</code><p> Returns properties list of flash object 
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">ac</span>:String</code> &mdash; Modifier access, specify a key R, W, RW, D (only the dynamic properties, are not declared).
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; List of properties of flash object
+   </td>
+</tr>
+</table>
+</div>
+<a name="getSuperClassName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getSuperClassName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getSuperClassName():String</code><p> 
+   Get the superclass name of flash object
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; Superclass name
+   </td>
+</tr>
+</table>
+</div>
+<a name="has()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">has</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function has(n:String, u:String = ""):Boolean</code><p> 
+   Check the availability of property in the flash object
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Property name
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:String</code> (default = "<code></code>")<code></code> &mdash; Namespace URI where the property. Not mandatory, can be skipped if the property is located in the base namespace.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Returns TRUe if property exists
+   </td>
+</tr>
+</table>
+</div>
+<a name="hasRegisteredWrapper()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hasRegisteredWrapper</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function hasRegisteredWrapper(cn:String, jn:String = ""):Boolean</code><p> Verifyes existence of information about an alternative wrapper for the specified class
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Class name of flash object
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean
+   </td>
+</tr>
+</table>
+</div>
+<a name="instance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">instance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function instance(p:String, t:<a href="FLObject.html">FLObject</a>, jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Get the flash object by a string path
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">p</span>:String</code> &mdash; Path to object
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">t</span>:<a href="FLObject.html">FLObject</a></code> &mdash; Target object, path start from
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        FLObject instance of target flash object
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="registerWrapper()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerWrapper</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function registerWrapper(cn:String, jf:Function, af:Boolean = false, jn:String = "", up:Boolean = false, pn:String = "_flObject"):void</code><p> 
+   Register a JavaScript class of wrapper objects for a certain type of objects from the Flash Player environment.
+   These custom wrappers have to wrap/aggregate transferred FLObject objects and use it 
+   to contact the original object.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Class name of flash object
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jf</span>:Function</code> &mdash; Constructor of JavaScript class or function
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">af</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If TRUE, then run a JavaScript function through the operator "()", if FALSE (by default) - via "new" operator.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; If TRUE, the FLObject object passed after the creation of the object to specified property, and if FALSE - is passed as constructor argument
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">up</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Property name for FLObject instance
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">pn</span>:String</code> (default = "<code>_flObject</code>")<code></code></td>
+</tr>
+</table>
+<br>
+<span class="label">Example</span>
+<br>Creates an object using the obtained function as a constructor and passes to it an FLObject object as a single argument.
+<div class='listing'><pre>
+function SpriteObject(flObject){
+ this._flObject = flObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject);
+</pre></div>
+   <p></p>FLObject saves to an already created object, using it as the value of the property "_flObject"
+<div class='listing'><pre>
+function SpriteObject(){
+ var _flObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, false, null, true);
+</pre></div>
+   <p></p>FLObject saves to an already created object, using it as the value of that property, in this case "_currentFlashObject"
+<div class='listing'><pre>
+function SpriteObject(){
+ var _currentFlashObject;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, false, null, true, '_currentFlashObject');
+</pre></div>
+   <p></p>Transferred function calls via the "()" operator, as a return value should return expected object. As the argument gets the object FLObject.
+<div class='listing'><pre>
+function SpriteObject(){
+ var _flObject;
+}
+function createSpriteObject(flObject){
+ var sprite = new SpriteObject();
+ sprite._flObject = flObject;
+ return sprite;
+}
+FLObject.registerWrapper('flash.display.Sprite', SpriteObject, true);
+</pre></div>
+   
+   <p></p>
+</div>
+<a name="remove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">remove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function remove():void</code><p> 
+   Removes flash object from stack of transferred objects
+   </p></div>
+<a name="root()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">root</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function root(jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Returns Root timeline object from Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        FLObject instance of target flash object
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="set()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">set</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function set(n:String, v:String, u:*):void</code><p> Sets property value in flash object
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">n</span>:String</code> &mdash; Property name
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">v</span>:String</code> &mdash; Property value
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">u</span>:*</code> &mdash; Namespace URI where the property. Not mandatory, can be skipped if the property is located in the base namespace.
+   </td>
+</tr>
+</table>
+</div>
+<a name="stage()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stage</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function stage(jn:String = ""):<a href="FLObject.html">FLObject</a></code><p> 
+   Returns Stage object from Flash Player environment
+   Ability to perform this function depends on the property JSInterface.allowJavaScriptAccess in the Flash Player environment.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code> &mdash; Name of JavaScript manager instance of the JSInterface
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="FLObject.html">FLObject</a></code> &mdash; 
+                        FLObject instance of target flash object
+   
+                        
+                     </td>
+</tr>
+</table>
+</div>
+<a name="unregisterAllWrappers()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregisterAllWrappers</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unregisterAllWrappers(jn:String = ""):void</code><p> Clear all the information about alternative types of flash objects wrappers.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+</table>
+</div>
+<a name="unregisterWrapper()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregisterWrapper</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unregisterWrapper(cn:String, jn:String = ""):void</code><p> Removes information about an alternative wrapper for the specified class
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">cn</span>:String</code> &mdash; Class name of flash object
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jn</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

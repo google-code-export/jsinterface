@@ -15,15 +15,13 @@ package aw.external{
 	import flash.external.ExternalInterface;
 	import flash.system.Capabilities;
 	
-
 	/** 
-	* Основной класс библиотеки JSInterface, содержит самые необходимые методы для взаимодействия с JavaScript средой. 
-	* Этот класс содержит методы "шорткаты" для часто испольуемых операций, таких как смена заголовка страницы, работа 
-	* с Cookie или загрузки CSS и JavaScript файлов. 
-	* Перед началом работы с библиотекой удостоверьтесь, что она была проинициализирована с помощью метода JSInterface.initialize(). 
-	* Инициализация необходима для внедрения необходимого JavaScript кода в HTML страничку, чтоб JSInterface мог корректно 
-	* работать.
-	* @example Пример использования:
+	* It’s the main class of JSInterface library, it contains the most necessary methods for interaction with JavaScript environment. 
+	* This class contains “shortcut” methods for frequently used operations, such as page title changing, working with Cookie or loading 
+	* CSS and JavaScript files. Before starting working with the library make sure that it was initialized JSInterface.initialize() 
+	* method. Initialization is necessary to integrate the necessary JavaScript code to the HTML page for the JSInterface to be able  
+	* to operate correctly.
+	* @example Example:
 <listing version="3.0">
  package {
 	import aw.external.JSInterface;
@@ -173,7 +171,9 @@ package aw.external{
 		static private const SET_DEFAULT_STATUS:String = 'JSIBrowser.setDefaultStatus';
 
 		/** 
-		* Указывает на необходимость дублировать JavaScript ошибки во Flash среде. Такие ошибки могут возникнуть при неправомерных действиях(вызов несуществующего метода) инициатором которых была среда Flash Player'а.
+		* Shows the necessity to duplicate JavaScript errors in Flash environment. 
+		* Such errors can occur upon wrongful acts (calling for a non-existing methods) 
+		* initiated by Flash Player environment.
 		* 
 		* 
 		* @public 
@@ -183,7 +183,7 @@ package aw.external{
 		static public var redirectJavaScriptExceptions:Boolean = true;
 
 		/** 
-		* Вместо выброса ошибки позволяет выводить текст ошибки в OUTPUT консоль.
+		* Instead of throwing error will show error description in OUTPUT window, using trace() command.
 		* 
 		* 
 		* @public 
@@ -193,7 +193,9 @@ package aw.external{
 		static public var traceExceptionOnly:Boolean = true;
 
 		/** 
-		* Функция обрабатывающая ошибки произошедшие за рамками запроса из Flash Player'а. Такие ошибки могут происходить при выполнении JavaScript функций вызванных из Flash Player'а по таймауту(к примеру, с помощью метода JSInterface.callLater()).
+		* The function that processes errors that occurred beyond the request from Flash Player. 
+		* Such errors can occur during execution of JavaScript functions called from Flash Player 
+		* by time-out (for example, using JSInterface.callLater() method).
 		* 
 		* 
 		* @public 
@@ -203,8 +205,9 @@ package aw.external{
 		static public var exceptionHandler:Function;
 
 		/** 
-		* Разрешает доступ к объектам Flash Player'а из среды JavaScript. Если задать TRUE, то появляется возможность создавать и запрашивать объекты находящиеся в среде Flash Player'а.
-		* Если значение FALSE, то доступ к объектам из Flash Player среды ограничивается предварительно переданными в JavaScript объектами. 
+		* The function that processes errors that occurred beyond the request from Flash Player. 
+		* Such errors can occur during execution of JavaScript functions called from Flash Player 
+		* by time-out (for example, using JSInterface.callLater() method). 
 		* 
 		* @public 
 		* @langversion ActionScript 3.0 
@@ -213,7 +216,11 @@ package aw.external{
 		static public var allowJavaScriptAccess:Boolean = false;
 
 		/** 
-		* Переадресовывает все ошибки из среды Flash Player'а в JavaScript и там вызывает JavaScript ошибку с полученными данными. Такие ошибки могут происходить во время обработки запроса поступившего из JavaScript среды. 
+		* It allows access to Flash Player objects from JavaScript environment. 
+		* If you set it as TRUE, you get a possibility to create and call for 
+		* objects located in the Flash Player environment. If the value is FALSE, 
+		* then the access to objects from Flash Player environment is limited to 
+		* objects transferred to JavaScript in advance. 
 		* 
 		* 
 		* @public 
@@ -253,7 +260,7 @@ package aw.external{
 		static private var _isHTMLTitleVerified:Boolean = false;
 
 		/** 
-		* Возвращает TRUE если возможно использовать JSInterface. Это произойдёт только в случае запуска программы в браузере и включенном ExternalInterface.
+		* Returns TRUE if you can use JSInterface. This will occur if application will run in browser with enabled ExternalInterface.
 		* 
 		* 
 		* @public (getter) 
@@ -271,7 +278,7 @@ package aw.external{
 		}
 
 		/** 
-		* Возвращает TRUE если JSInterface уже инициализирован
+		* Return TRUE if JSInterface is initialized.
 		* 
 		* 
 		* @public (getter) 
@@ -284,15 +291,17 @@ package aw.external{
 		}
 
 		/** 
-		* Инициализировать JSInterface.
+		* Initialize JSInterface.
 		* 
 		* 
 		* @public 
-		* @param arg Любой объект типа DisplayObject имеющий доступ к Stage, LoaderInfo данной программы или URL строка данной программы. 
-		* Этот параметр позволяет найти HTML объект данной программы в DOM дереве HTML страницы, если не был задан ID для HTML объекта Flash Player'а. 
-		* В случае передачи объекта типа DisplayObject или LoaderInfo, связанного со Stage, автоматически будут заполненны свойства JSInterface.stage 
-		* и JSInterface.root, необходимые для разрешения доступа из JavaScript среды в среду Flash Player'а.
-		* @example Инициализация:
+		* @param arg Any object of DisplayObject type with access to Stage, LoaderInfo of the program or 
+		* URL line of the program. This parameter allows finding the HTML-object of the program in the 
+		* DOM-tree of the HTML-page, if no ID for the Flash Player HTML-object has been set. In case of 
+		* transferring an object of DisplayObject or LoaderInfo type related to Stage the properties 
+		* JSInterface.stage and JSInterface.root, necessary for allowing access from JavaScript environment 
+		* to Flash Player environment, will be filled in automatically.
+		* @example Initialization example:
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -305,7 +314,7 @@ package {
 	}
 }
 </listing>
-		* @param allowJSAccess Разрешить доступ из JavaScript среды в среду Flash Player'а.
+		* @param allowJSAccess Enables access from JavaScript environment into Flash Player environment.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -316,7 +325,7 @@ package {
 		}
 
 		/** 
-		* Инициализирует основные функции JSInterface.
+		* Initialize core of JSInterface
 		* 
 		* 
 		* @private 
@@ -343,7 +352,7 @@ package {
 		}
 
 		/** 
-		* Возвращает корневой объект дерева DisplayObject.
+		* Returns root DisplayObject
 		* 
 		* 
 		* @private 
@@ -365,7 +374,7 @@ package {
 		}
 
 		/** 
-		* Собственная ссылка на Stage объект данной программы. 
+		* Current Stage object. 
 		* 
 		* 
 		* @public (getter) 
@@ -392,7 +401,7 @@ package {
 		}
 
 		/** 
-		* Собственная ссылка на root(корневой DisplayObject объект) объект данной программы.
+		* Root object of DisplayObject hierarchy
 		* 
 		* 
 		* @public (getter) 
@@ -419,7 +428,7 @@ package {
 		}
 
 		/** 
-		* Возвращает заголовок HTML страницы.
+		* Returns title of HTML page
 		* 
 		* 
 		* @public 
@@ -433,7 +442,7 @@ package {
 		}
 
 		/** 
-		* Задаёт заголовок HTML страницы.
+		* Setup title of HTML page
 		* 
 		* 
 		* @public 
@@ -447,7 +456,7 @@ package {
 		}
 
 		/** 
-		* Возвращает текст статусной панели окна.
+		* Returns status of HTML page
 		* 
 		* 
 		* @public 
@@ -460,7 +469,7 @@ package {
 		}
 
 		/** 
-		* Задаёт текст статусной панели окна.
+		* Setup status of HTML page
 		* 
 		* 
 		* @public 
@@ -474,7 +483,7 @@ package {
 		}
 
 		/** 
-		* Возвращает текст статусной панели окна, по-умолчанию.
+		* Returns default status of HTML page
 		* 
 		* 
 		* @public 
@@ -487,7 +496,7 @@ package {
 		}
 
 		/** 
-		* Задаёт текст статусной панели окна, по-умолчанию.
+		* Setup default status of HTML page
 		* 
 		* 
 		* @public 
@@ -501,7 +510,7 @@ package {
 		}
 
 		/** 
-		* Возвращает URL HTML страницы, фрейма в котором находится текущая программа.
+		* Returns URL of current HTML page on which runs this application
 		* 
 		* 
 		* @public 
@@ -514,7 +523,7 @@ package {
 		}
 
 		/** 
-		* Возвращает URL корневого фрейма, онсновной HTML страницы.
+		* Returns URL of top level frame in current HTML page
 		* 
 		* 
 		* @public 
@@ -527,7 +536,7 @@ package {
 		}
 
 		/** 
-		* Возвращает активный якорь страницы. 
+		* Returns current anchor(hash from URL) from HTML page
 		* 
 		* 
 		* @public 
@@ -540,7 +549,7 @@ package {
 		}
 
 		/** 
-		* Задаёт активный якорь страницы.
+		* Setup anchor for current HTML page
 		* 
 		* 
 		* @public 
@@ -554,7 +563,7 @@ package {
 		}
 
 		/** 
-		* Возвращает исходную строку сохранённых Cookie.
+		* Returns all cookie in string format
 		* 
 		* 
 		* @public 
@@ -577,16 +586,16 @@ package {
 		static private var JS_SET_COOKIE_COMMAND:String = 'document.cookie = ';
 
 		/** 
-		* Задаёт сookie.
+		* Setup cookie
 		* 
 		* 
 		* @public 
-		* @param name Имя cookie параметра.
-		* @param value Значение.
-		* @param date Время хранения cookie.
-		* @param path Путь, по котоорму будет доступен cookie.
-		* @param domain Домен, для которого значение cookie действительно.
-		* @param secure Если TRUE, то cookie будет пересылаться только через HTTPS.
+		* @param name Cookie name
+		* @param value Cookie value
+		* @param date Expiration date
+		* @param path Path on which the cookie will be available
+		* @param domain Domain for which cookie value is available
+		* @param secure If TRUE, a cookie will be sent only via HTTPS
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -621,7 +630,7 @@ package {
 		static private var VALUE_SPACER:String = '=';
 
 		/** 
-		* Возвращает cookie по его имени.
+		* Returns the cookie by its name
 		* 
 		* 
 		* @public 
@@ -660,7 +669,7 @@ package {
 		static private const MILLISECONDS_IN_DAY:int = 86400000;
 
 		/** 
-		* Удаляет cookie.
+		* Removes cookie
 		* 
 		* 
 		* @public 
@@ -690,7 +699,9 @@ package {
 		static protected var _window:JSWindow;
 
 		/** 
-		* Ссылка на JavaScript объект window. Этот объект используется в JavaScript, как глобальный и все глобально объявленные функции и свойства JavaScript будут доступны через него, как его методы и свойства. 
+		* Reference to the JavaScript window object. This object is used in JavaScript, 
+		* as a global and globally declared JavaScript functions and properties will be 
+		* available through it, as its methods and properties 
 		* 
 		* 
 		* @public (getter) 
@@ -718,7 +729,7 @@ package {
 		static protected var _document:JSDocument;
 
 		/** 
-		* Ссылка на JavaScript объект document.
+		* Reference to the JavaScript document object
 		* 
 		* 
 		* @public (getter) 
@@ -746,7 +757,7 @@ package {
 		static protected var _navigator:JSNavigator;
 
 		/** 
-		* Ссылка на JavaScript объект navigator.
+		* Reference to the JavaScript navigator object
 		* 
 		* 
 		* @public (getter) 
@@ -774,7 +785,7 @@ package {
 		static protected var _main:JSHTMLElement;
 
 		/** 
-		* Ссылка на JavaScript объект HTML дерева данного экземпляра Flash Player'а.
+		* Reference to the JavaScript object of this copy of Flash Player, from the HTML tree
 		* 
 		* 
 		* @public (getter) 
@@ -802,7 +813,7 @@ package {
 		static protected var _event:JSEvent;
 
 		/** 
-		* Ссылка на JavaScript объект event.
+		* Reference to the JavaScript event object
 		* 
 		* 
 		* @public (getter) 
@@ -818,14 +829,14 @@ package {
 		}
 
 		/** 
-		* Отчищвает стеки ссылок переданных(а зачит и сохранённых) объектов.
+		* Clear stacks of transmitted objects
 		* 
 		* 
 		* @public 
-		* @param flCallbacks Отчистить стек функций переданных из среды JavaScript.
-		* @param flObjects Отчистить стек объектов переданных из среды JavaScript.
-		* @param jsCallbacks Отчистить стек функций переданных из среды Flash Player'а.
-		* @param jsObjects Отчистить стек объектов переданных из среды Flash Player'а.
+		* @param flCallbacks Clear stack of functions from JavaScript
+		* @param flObjects Clear stack of objects from JavaScript
+		* @param jsCallbacks Clear stack of functions from Flash Player
+		* @param jsObjects Clear stack of objects from Flash Player
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -842,7 +853,7 @@ package {
 		}
 
 		/** 
-		* Получить значение из JavaScript среды, по пути в точечной нотации.
+		* Get value by path from JavaScript environment
 		* 
 		* 
 		* @public 
@@ -857,14 +868,14 @@ package {
 		}
 
 		/** 
-		* Загрузить файл с JavaScript в HTML документ.
+		* Load JavaScript file into the HTML document
 		* 
 		* 
 		* @public 
-		* @param url Путь к файлу
-		* @param func Функция вызываемая по окончанию загрузки.
-		* @param type Значение атрибута type тега SCRIPT, если не задано, то будет использовано стандартное - text/javascript.
-		* @return JSHTMLElement HTML объект созданного тега SCRIPT, в который произойдёт загрузка.
+		* @param url File URL
+		* @param func Function which will be called when load complete
+		* @param type TYPE attribute value of SCRIPT tag, if not specified, the default will be used - "text/javascript"
+		* @return JSHTMLElement HTML object of created SCRIPT tag
 		* @see aw.external.jsinterface.objects.JSHTMLElement 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -874,14 +885,14 @@ package {
 		}
 
 		/** 
-		* Загрузить файл с CSS в HTML документ.
+		* Load CSS file into the HTML document
 		* 
 		* 
 		* @public 
-		* @param url Путь к файлу
-		* @param func Функция вызываемая по окончанию загрузки. В браузере Fire Fox не вызывается событие onload, поэтому отловить окончание загрузки в такой способ невозможно и эта функция не будет вызвана.
-		* @param type Значение атрибута type тега LINK, если не задано, то будет использовано стандартное - text/css.
-		* @return JSHTMLElement HTML объект созданного тега LINK, в который произойдёт загрузка.
+		* @param url File URL
+		* @param func Function which will be called when load complete. In a browser, Fire Fox is not called onload event, so to catch the complete of loading in such a way is impossible, and this function will not be called.
+		* @param type TYPE attribute value of LINK tag, if not specified, the default will be used - "text/css"
+		* @return JSHTMLElement HTML object of created LINK tag
 		* @see aw.external.jsinterface.objects.JSHTMLElement 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -891,15 +902,15 @@ package {
 		}
 
 		/** 
-		* Вызвать JavaScript метод по таймауту.
+		* Call the JavaScript method by timeout
 		* 
 		* 
 		* @public 
-		* @param obj Объект, содержащий метод
-		* @param propName Имя метода
-		* @param args Аргументы перебаваемые в метод
-		* @param func Функция в которую будет возвращён результат работы JavaScript функции
-		* @param timeout Таймаут в миллисекундах
+		* @param obj The object containing the method
+		* @param propName Method name
+		* @param args Arguments list
+		* @param func Function into which will return the result of the JavaScript function
+		* @param timeout Time in milliseconds
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 

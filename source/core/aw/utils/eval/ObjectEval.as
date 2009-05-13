@@ -1,7 +1,7 @@
 package aw.utils.eval{
 	import aw.utils.iteration.LengthIterationIndex;
 	
-	/** Преобразовывает строку в объект.
+	/** Converts a string to an object.
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

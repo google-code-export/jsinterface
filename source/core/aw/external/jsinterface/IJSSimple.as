@@ -1,9 +1,11 @@
 package aw.external.jsinterface{
 	/**
-	 * Интерфейс объекта который способен автоматически преобразовываться в простой объект(процесс пастеризации) для передачи в JavaScript среду.
-	 * Этот интерфейс необходимо реализовать в объектах которые будут передаваться, как набор простых данных, в JavaScript среду, без связи с оригинальными объектами. 
-	 * Результат преобразования объекта должен быть возвращён как результат работы метода getSimpleData().
-	 * @example Пример метода преобразования:
+	* Interface of object that is able to turn into a simple object automatically (pasteurization process)
+	*  for transferring to JavaScript environment. This interface should be realized in objects that will 
+	* be transferred data to JavaScript environment as a set of simple without connection with the original 
+	* objects. The result of object transformation should be retrieved as a result of getSimpleData() method 
+	* operation. 
+	 * @example Example of getSimpleData method:
 <listing version="3.0">
 package {
 	import flash.display.Sprite;

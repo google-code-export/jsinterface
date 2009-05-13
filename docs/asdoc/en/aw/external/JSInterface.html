@@ -1,0 +1,1266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="JSInterface,aw.external.JSInterface,allowJavaScriptAccess,exceptionHandler,redirectFlashExceptions,redirectJavaScriptExceptions,traceExceptionOnly,available,document,event,initialized,main,navigator,root,stage,window,callLater,clear,getCookie,getCookieString,getDefaultStatus,getInstance,getLocation,getLocationHash,getStatus,getTitle,getTopLocation,initialize,loadCSS,loadJavaScript,removeCookie,setCookie,setDefaultStatus,setLocationHash,setStatus,setTitle" name="keywords">
+<title>aw.external.JSInterface</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'JSInterface - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../index.html?aw/external/JSInterface.html&amp;aw/external/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;JSInterface</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class JSInterface"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">aw.external</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class JSInterface</td>
+</tr>
+</table>
+<p></p> 
+ It’s the main class of JSInterface library, it contains the most necessary methods for interaction with JavaScript environment. 
+ This class contains “shortcut” methods for frequently used operations, such as page title changing, working with Cookie or loading 
+ CSS and JavaScript files. Before starting working with the library make sure that it was initialized JSInterface.initialize() 
+ method. Initialization is necessary to integrate the necessary JavaScript code to the HTML page for the JSInterface to be able  
+ to operate correctly.
+ <p></p>
+<br>
+<span class="label">Example</span>
+<br>Example:
+<div class='listing'><pre>
+ package {
+ import aw.external.JSInterface;
+ import aw.external.jsinterface.JSDynamic;
+ import aw.external.jsinterface.objects.JSHTMLElement;
+ 
+ import flash.display.Sprite;
+ [SWF(width="20", height="20")]
+ public class BodyOnClickExample extends Sprite{
+  public function BodyOnClickExample():void{
+   super();
+   JSInterface.initialize(this);
+   JSInterface.document.body.onclick = this.onclickHandler;
+   var body:JSHTMLElement = JSDynamic.convert(JSInterface.document.body, JSHTMLElement);
+   body.onclick();
+   trace(JSInterface.document.links.length);
+  }
+  protected function onclickHandler():void{
+   trace(' HTML Click! ');
+  }
+ }
+}
+</pre></div>
+ <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#allowJavaScriptAccess">allowJavaScriptAccess</a> : Boolean = false<div class="summaryTableDescription">[static] 
+  The function that processes errors that occurred beyond the request from Flash Player.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#available">available</a> : Boolean<div class="summaryTableDescription">[static][read-only] 
+  Returns TRUE if you can use JSInterface.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#document">document</a> : <a href="jsinterface/objects/JSDocument.html">JSDocument</a>
+<div class="summaryTableDescription">[static][read-only] 
+  Reference to the JavaScript document object
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#event">event</a> : <a href="jsinterface/objects/JSEvent.html">JSEvent</a>
+<div class="summaryTableDescription">[static][read-only] 
+  Reference to the JavaScript event object
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#exceptionHandler">exceptionHandler</a> : Function<div class="summaryTableDescription">[static] 
+  The function that processes errors that occurred beyond the request from Flash Player.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#initialized">initialized</a> : Boolean<div class="summaryTableDescription">[static][read-only] 
+  Return TRUE if JSInterface is initialized.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#main">main</a> : <a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a>
+<div class="summaryTableDescription">[static][read-only] 
+  Reference to the JavaScript object of this copy of Flash Player, from the HTML tree
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#navigator">navigator</a> : <a href="jsinterface/objects/JSNavigator.html">JSNavigator</a>
+<div class="summaryTableDescription">[static][read-only] 
+  Reference to the JavaScript navigator object
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#redirectFlashExceptions">redirectFlashExceptions</a> : Boolean = true<div class="summaryTableDescription">[static] 
+  It allows access to Flash Player objects from JavaScript environment.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#redirectJavaScriptExceptions">redirectJavaScriptExceptions</a> : Boolean = true<div class="summaryTableDescription">[static] 
+  Shows the necessity to duplicate JavaScript errors in Flash environment.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#root">root</a> : DisplayObject<div class="summaryTableDescription">[static] 
+  Root object of DisplayObject hierarchy
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#stage">stage</a> : Stage<div class="summaryTableDescription">[static] 
+  Current Stage object.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#traceExceptionOnly">traceExceptionOnly</a> : Boolean = true<div class="summaryTableDescription">[static] 
+  Instead of throwing error will show error description in OUTPUT window, using trace() command.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#window">window</a> : <a href="jsinterface/objects/JSWindow.html">JSWindow</a>
+<div class="summaryTableDescription">[static][read-only] 
+  Reference to the JavaScript window object.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#callLater()">callLater</a>(obj:*, propName:String, args:Array = null, func:Function = null, timeout:uint = 1):void</div>
+<div class="summaryTableDescription">[static] 
+  Call the JavaScript method by timeout
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#clear()">clear</a>(flCallbacks:Boolean = true, flObjects:Boolean = true, jsCallbacks:Boolean = true, jsObjects:Boolean = true):void</div>
+<div class="summaryTableDescription">[static] 
+  Clear stacks of transmitted objects
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getCookie()">getCookie</a>(name:String):String</div>
+<div class="summaryTableDescription">[static] 
+  Returns the cookie by its name
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getCookieString()">getCookieString</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns all cookie in string format
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getDefaultStatus()">getDefaultStatus</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns default status of HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getInstance()">getInstance</a>(path:String, cls:Class = null):*</div>
+<div class="summaryTableDescription">[static] 
+  Get value by path from JavaScript environment
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getLocation()">getLocation</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns URL of current HTML page on which runs this application
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getLocationHash()">getLocationHash</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns current anchor(hash from URL) from HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getStatus()">getStatus</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns status of HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getTitle()">getTitle</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns title of HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getTopLocation()">getTopLocation</a>():String</div>
+<div class="summaryTableDescription">[static] 
+  Returns URL of top level frame in current HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#initialize()">initialize</a>(arg:* = null, allowJSAccess:Boolean = false):void</div>
+<div class="summaryTableDescription">[static] 
+  Initialize JSInterface.</div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadCSS()">loadCSS</a>(url:String, func:Function = null, type:String = ""):<a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a>
+</div>
+<div class="summaryTableDescription">[static] 
+  Load CSS file into the HTML document
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#loadJavaScript()">loadJavaScript</a>(url:String, func:Function = null, type:String = ""):<a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a>
+</div>
+<div class="summaryTableDescription">[static] 
+  Load JavaScript file into the HTML document
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeCookie()">removeCookie</a>(name:*, path:String = "/", domain:String = "", secure:Boolean = false):void</div>
+<div class="summaryTableDescription">[static] 
+  Removes cookie
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setCookie()">setCookie</a>(name:*, value:Date, date:String = null, path:String = "/", domain:Boolean, secure:* = false):void</div>
+<div class="summaryTableDescription">[static] 
+  Setup cookie
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setDefaultStatus()">setDefaultStatus</a>(str:String):void</div>
+<div class="summaryTableDescription">[static] 
+  Setup default status of HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setLocationHash()">setLocationHash</a>(str:String):void</div>
+<div class="summaryTableDescription">[static] 
+  Setup anchor for current HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setStatus()">setStatus</a>(str:String):void</div>
+<div class="summaryTableDescription">[static] 
+  Setup status of HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#setTitle()">setTitle</a>(str:String):void</div>
+<div class="summaryTableDescription">[static] 
+  Setup title of HTML page
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSInterface</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="allowJavaScriptAccess"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">allowJavaScriptAccess</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var allowJavaScriptAccess:Boolean = false</code><p> 
+  The function that processes errors that occurred beyond the request from Flash Player. 
+  Such errors can occur during execution of JavaScript functions called from Flash Player 
+  by time-out (for example, using JSInterface.callLater() method). 
+  
+  </p></div>
+<a name="available"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">available</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>available:Boolean</code>&nbsp;&nbsp;[read-only]<p> 
+  Returns TRUE if you can use JSInterface. This will occur if application will run in browser with enabled ExternalInterface.
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get available():Boolean</code>
+<br>
+</div>
+<a name="document"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">document</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>document:<a href="jsinterface/objects/JSDocument.html">JSDocument</a></code>&nbsp;&nbsp;[read-only]<p> 
+  Reference to the JavaScript document object
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get document():<a href="jsinterface/objects/JSDocument.html">JSDocument</a></code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSDocument.html" target="">aw.external.jsinterface.objects.JSDocument</a>
+</div>
+</div>
+<a name="event"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">event</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>event:<a href="jsinterface/objects/JSEvent.html">JSEvent</a></code>&nbsp;&nbsp;[read-only]<p> 
+  Reference to the JavaScript event object
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get event():<a href="jsinterface/objects/JSEvent.html">JSEvent</a></code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSEvent.html" target="">aw.external.jsinterface.objects.JSEvent</a>
+</div>
+</div>
+<a name="exceptionHandler"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">exceptionHandler</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var exceptionHandler:Function</code><p> 
+  The function that processes errors that occurred beyond the request from Flash Player. 
+  Such errors can occur during execution of JavaScript functions called from Flash Player 
+  by time-out (for example, using JSInterface.callLater() method).
+  
+  
+  </p></div>
+<a name="initialized"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initialized</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>initialized:Boolean</code>&nbsp;&nbsp;[read-only]<p> 
+  Return TRUE if JSInterface is initialized.
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get initialized():Boolean</code>
+<br>
+</div>
+<a name="main"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">main</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>main:<a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a></code>&nbsp;&nbsp;[read-only]<p> 
+  Reference to the JavaScript object of this copy of Flash Player, from the HTML tree
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get main():<a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a></code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSHTMLElement.html" target="">aw.external.jsinterface.objects.JSHTMLElement</a>
+</div>
+</div>
+<a name="navigator"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">navigator</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>navigator:<a href="jsinterface/objects/JSNavigator.html">JSNavigator</a></code>&nbsp;&nbsp;[read-only]<p> 
+  Reference to the JavaScript navigator object
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get navigator():<a href="jsinterface/objects/JSNavigator.html">JSNavigator</a></code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSNavigator.html" target="">aw.external.jsinterface.objects.JSNavigator</a>
+</div>
+</div>
+<a name="redirectFlashExceptions"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">redirectFlashExceptions</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var redirectFlashExceptions:Boolean = true</code><p> 
+  It allows access to Flash Player objects from JavaScript environment. 
+  If you set it as TRUE, you get a possibility to create and call for 
+  objects located in the Flash Player environment. If the value is FALSE, 
+  then the access to objects from Flash Player environment is limited to 
+  objects transferred to JavaScript in advance. 
+  
+  
+  </p></div>
+<a name="redirectJavaScriptExceptions"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">redirectJavaScriptExceptions</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var redirectJavaScriptExceptions:Boolean = true</code><p> 
+  Shows the necessity to duplicate JavaScript errors in Flash environment. 
+  Such errors can occur upon wrongful acts (calling for a non-existing methods) 
+  initiated by Flash Player environment.
+  
+  
+  </p></div>
+<a name="root"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">root</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>root:DisplayObject</code>&nbsp;&nbsp;[read-write]<p> 
+  Root object of DisplayObject hierarchy
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get root():DisplayObject</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set root(value:DisplayObject):void</code>
+<br>
+</div>
+<a name="stage"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stage</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>stage:Stage</code>&nbsp;&nbsp;[read-write]<p> 
+  Current Stage object. 
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get stage():Stage</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set stage(value:Stage):void</code>
+<br>
+</div>
+<a name="traceExceptionOnly"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">traceExceptionOnly</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var traceExceptionOnly:Boolean = true</code><p> 
+  Instead of throwing error will show error description in OUTPUT window, using trace() command.
+  
+  
+  </p></div>
+<a name="window"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">window</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>window:<a href="jsinterface/objects/JSWindow.html">JSWindow</a></code>&nbsp;&nbsp;[read-only]<p> 
+  Reference to the JavaScript window object. This object is used in JavaScript, 
+  as a global and globally declared JavaScript functions and properties will be 
+  available through it, as its methods and properties 
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public static function get window():<a href="jsinterface/objects/JSWindow.html">JSWindow</a></code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSWindow.html" target="">aw.external.jsinterface.objects.JSWindow</a>
+</div>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="callLater()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">callLater</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function callLater(obj:*, propName:String, args:Array = null, func:Function = null, timeout:uint = 1):void</code><p> 
+  Call the JavaScript method by timeout
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj</span>:*</code> &mdash; The object containing the method
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">propName</span>:String</code> &mdash; Method name
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; Arguments list
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">func</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; Function into which will return the result of the JavaScript function
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">timeout</span>:uint</code> (default = <code>1</code>)<code></code> &mdash; Time in milliseconds
+  </td>
+</tr>
+</table>
+</div>
+<a name="clear()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">clear</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function clear(flCallbacks:Boolean = true, flObjects:Boolean = true, jsCallbacks:Boolean = true, jsObjects:Boolean = true):void</code><p> 
+  Clear stacks of transmitted objects
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">flCallbacks</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Clear stack of functions from JavaScript
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">flObjects</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Clear stack of objects from JavaScript
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jsCallbacks</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Clear stack of functions from Flash Player
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">jsObjects</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; Clear stack of objects from Flash Player
+  </td>
+</tr>
+</table>
+</div>
+<a name="getCookie()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getCookie</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getCookie(name:String):String</code><p> 
+  Returns the cookie by its name
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getCookieString()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getCookieString</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getCookieString():String</code><p> 
+  Returns all cookie in string format
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getDefaultStatus()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getDefaultStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getDefaultStatus():String</code><p> 
+  Returns default status of HTML page
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getInstance()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getInstance(path:String, cls:Class = null):*</code><p> 
+  Get value by path from JavaScript environment
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">path</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">cls</span>:Class</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code></td>
+</tr>
+</table>
+</div>
+<a name="getLocation()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getLocation</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getLocation():String</code><p> 
+  Returns URL of current HTML page on which runs this application
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getLocationHash()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getLocationHash</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getLocationHash():String</code><p> 
+  Returns current anchor(hash from URL) from HTML page
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getStatus()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getStatus():String</code><p> 
+  Returns status of HTML page
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getTitle()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getTitle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getTitle():String</code><p> 
+  Returns title of HTML page
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; void 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getTopLocation()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getTopLocation</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getTopLocation():String</code><p> 
+  Returns URL of top level frame in current HTML page
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; String 
+  </td>
+</tr>
+</table>
+</div>
+<a name="initialize()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">initialize</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function initialize(arg:* = null, allowJSAccess:Boolean = false):void</code><p> 
+  Initialize JSInterface.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">arg</span>:*</code> (default = <code>null</code>)<code></code> &mdash; Any object of DisplayObject type with access to Stage, LoaderInfo of the program or 
+  URL line of the program. This parameter allows finding the HTML-object of the program in the 
+  DOM-tree of the HTML-page, if no ID for the Flash Player HTML-object has been set. In case of 
+  transferring an object of DisplayObject or LoaderInfo type related to Stage the properties 
+  JSInterface.stage and JSInterface.root, necessary for allowing access from JavaScript environment 
+  to Flash Player environment, will be filled in automatically.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">allowJSAccess</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Enables access from JavaScript environment into Flash Player environment.
+  </td>
+</tr>
+</table>
+<br>
+<span class="label">Example</span>
+<br>Initialization example:
+<div class='listing'><pre>
+package {
+ import aw.external.JSInterface;
+ 
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   JSInterface.initialize(this, true);
+  }
+ }
+}
+</pre></div>
+  <p></p>
+</div>
+<a name="loadCSS()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadCSS</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function loadCSS(url:String, func:Function = null, type:String = ""):<a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a></code><p> 
+  Load CSS file into the HTML document
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">url</span>:String</code> &mdash; File URL
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">func</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; Function which will be called when load complete. In a browser, Fire Fox is not called onload event, so to catch the complete of loading in such a way is impossible, and this function will not be called.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:String</code> (default = "<code></code>")<code></code> &mdash; TYPE attribute value of LINK tag, if not specified, the default will be used - "text/css"
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a></code> &mdash; 
+                        JSHTMLElement HTML object of created LINK tag
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSHTMLElement.html" target="">aw.external.jsinterface.objects.JSHTMLElement</a>
+</div>
+</div>
+<a name="loadJavaScript()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">loadJavaScript</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function loadJavaScript(url:String, func:Function = null, type:String = ""):<a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a></code><p> 
+  Load JavaScript file into the HTML document
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">url</span>:String</code> &mdash; File URL
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">func</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; Function which will be called when load complete
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:String</code> (default = "<code></code>")<code></code> &mdash; TYPE attribute value of SCRIPT tag, if not specified, the default will be used - "text/javascript"
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="jsinterface/objects/JSHTMLElement.html">JSHTMLElement</a></code> &mdash; 
+                        JSHTMLElement HTML object of created SCRIPT tag
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="jsinterface/objects/JSHTMLElement.html" target="">aw.external.jsinterface.objects.JSHTMLElement</a>
+</div>
+</div>
+<a name="removeCookie()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeCookie</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function removeCookie(name:*, path:String = "/", domain:String = "", secure:Boolean = false):void</code><p> 
+  Removes cookie
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">path</span>:String</code> (default = "<code>/</code>")<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">domain</span>:String</code> (default = "<code></code>")<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">secure</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="setCookie()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setCookie</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function setCookie(name:*, value:Date, date:String = null, path:String = "/", domain:Boolean, secure:* = false):void</code><p> 
+  Setup cookie
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Cookie name
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">value</span>:Date</code> &mdash; Cookie value
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">date</span>:String</code> (default = <code>null</code>)<code></code> &mdash; Expiration date
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">path</span>:String</code> (default = "<code>/</code>")<code></code> &mdash; Path on which the cookie will be available
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">domain</span>:Boolean</code> &mdash; Domain for which cookie value is available
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">secure</span>:*</code> (default = <code>false</code>)<code></code> &mdash; If TRUE, a cookie will be sent only via HTTPS
+  </td>
+</tr>
+</table>
+</div>
+<a name="setDefaultStatus()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setDefaultStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function setDefaultStatus(str:String):void</code><p> 
+  Setup default status of HTML page
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">str</span>:String</code></td>
+</tr>
+</table>
+</div>
+<a name="setLocationHash()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setLocationHash</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function setLocationHash(str:String):void</code><p> 
+  Setup anchor for current HTML page
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">str</span>:String</code></td>
+</tr>
+</table>
+</div>
+<a name="setStatus()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function setStatus(str:String):void</code><p> 
+  Setup status of HTML page
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">str</span>:String</code></td>
+</tr>
+</table>
+</div>
+<a name="setTitle()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setTitle</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function setTitle(str:String):void</code><p> 
+  Setup title of HTML page
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">str</span>:String</code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

@@ -3,13 +3,15 @@ package aw.external.jsinterface{
 	
 
 	/** 
-	* Класс использующийся при вызове функций из среды Flash Player'а в JavaScript среде. В обычном 
-	* случае функция из среды Flash Player'а, вызванная в JavaScript среде получает весь набор 
-	* аргументов передаваемых функции в JavaScript. Но такая функция не сможет получить доступ к 
-	* target объекту, в области видимости которого она выполнялась. JSArguments содержит в себе список 
-	* аргументов функции и ссылку на объект-оболочку JavaScript объекта, в области видимости которого 
-	* она выполнялась.
-	* Для того, чтоб функция получала объект JSArguments, необходимо метод зарегистрировать с помошью JSArguments.register();
+	* It’s a class used upon calling functions from Flash Player environment in JavaScript environment. 
+	* In the usual case a function from Flash Player environment called in JavaScript environment gets 
+	* the whole set of arguments transferred to the function in JavaScript. But such function cannot 
+	* get access to the target object in the scope of which it was executed. JSArguments contains a list 
+	* of function arguments and a reference to the wrapper object of the JavaScript object in the scope 
+	* of which it was executed. 
+	* 
+	* For the function to receive the JSArguments objects the method should be registered with  JSArguments.register();
+	* @example
 <listing version="3.0">
 package{
 	import aw.external.JSInterface;
@@ -78,7 +80,7 @@ package{
 		}
 
 		/** 
-		* JSDynamic объект, оболочка JavaScript объекта, в области видимости которого выполнялась данная функция.
+		* JSDynamic object, wrapper of JavaScript object in the scope of which was performed this function.
 		* 
 		* 
 		* @public (AS3,getter) 
@@ -92,7 +94,7 @@ package{
 		}
 
 		/** 
-		* Задать параметры объекта. Метод выполняется перед передачей объекта в функцию.
+		* Set parameters of the object. The method is performed before sending the object to the function.
 		* 
 		* 
 		* @public (AS3) 
@@ -109,15 +111,16 @@ package{
 		}
 
 		/** 
-		* Зарегистрировать метод, который должен принимать в качестве аргумента объект JSArguments.
-		* Этот метод позволяет указать класс производный от JSArguments, экземпляры которого будут 
-		* передаваться в указанный метод. Функции зарегистрированные с помощью метода JSArguments.register() 
-		* будут автоматически удалены вместе с объектом, когда Garbage Collector будет отчищать память.
+		* Registers the method that should accept a JSArguments object as an argument. 
+		* This method allows indicating a class derivative from JSArguments, instances 
+		* of which will be transferred to the indicated method. The functions registered 
+		* with JSArguments.register() method will be automatically removed with the object 
+		* when Garbage Collector will be clearing the memory.
 		* 
 		* @public 
-		* @param target Объект которому принадлежит данный метод. 
-		* @param name Может быть Function - ссылка на метод, или String или QName - имя метода передаваемого объекта.
-		* @param definition Класс дочерний от JSArguments, экземпляры которого будут передаваться в функцию. 
+		* @param target The object that owns the method. 
+		* @param name Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
+		* @param definition Class which extends JSArguments, copies of which will be passed to the function. 
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -130,14 +133,13 @@ package{
 			list[name is Function ? name : target[name]] = definition;
 		}
 		/**
-		* Зарегистрировать метод, по ссылке на метод. Любая функция зарегистрированная 
-		* этим методом может быть удалена только вручную, иначе она никогда не будет 
-		* удалена Garbage Collector'ом.
+		* Register method by the link. A function registered by this 
+		* method can be removed only by hand, otherwise it will never be removed.
 		* 
 		* 
 		* @public 
-		* @param method Ссылка на метод.
-		* @param definition Класс дочерний от JSArguments, экземпляры которого будут передаваться в функцию.
+		* @param method Link to the method.
+		* @param definition Class which extends JSArguments, copies of which will be passed to the function.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -152,12 +154,12 @@ package{
 		}
 
 		/** 
-		* Зарегистрировать список методов одного объекта, принимающих в качестве аргумента, объект JSArguments.
+		* Register a list of methods of one object which hosts as an argument object JSArguments
 		* 
 		* 
 		* @public 
-		* @param target Объект которому принадлежат передаваемые методы.
-		* @param args Список методов или их имён.
+		* @param target The object which owns transmitted methods.
+		* @param args A list of methods or their names.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -170,12 +172,12 @@ package{
 		}
 
 		/** 
-		* Проверяет, зарегистрирован ли метод.
+		* Checks whether the method is registered.
 		* 
 		* 
 		* @public 
-		* @param target Объект которому принадлежит данный метод.
-		* @param name Может быть Function - ссылка на метод, или String или QName - имя метода передаваемого объекта.
+		* @param target The object that owns the method.
+		* @param name Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
 		* @return Boolean 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -188,7 +190,7 @@ package{
 		* 
 		* 
 		* @public 
-		* @param method Ссылка на метод.
+		* @param method Link to the method.
 		* @return Boolean 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -201,12 +203,12 @@ package{
 		}
 
 		/** 
-		* Возвращает класс, экземпляры которого будут передаваться данному методу. Если переданный метод не был зарегистрирован, то будет возвращено NULL.
+		* Returns the class, copies of which will be transferred using this method. If the method was not registered, it will return NULL.
 		* 
 		* 
 		* @public 
-		* @param target Объект которому принадлежит данный метод.
-		* @param name Может быть Function - ссылка на метод, или String или QName - имя метода передаваемого объекта.
+		* @param target The object that owns the method.
+		* @param name Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
 		* @return Class 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -224,7 +226,7 @@ package{
 		* 
 		* 
 		* @public 
-		* @param method Ссылка на метод.
+		* @param method Link to the method.
 		* @return Class 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -237,12 +239,12 @@ package{
 		}
 
 		/** 
-		* Удаляет регистрацию метода. 
+		* Removes method registration. 
 		* 
 		* 
 		* @public 
-		* @param target Объект которому принадлежит данный метод.
-		* @param name Может быть Function - ссылка на метод, или String или QName - имя метода передаваемого объекта.
+		* @param target The object that owns the method.
+		* @param name Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
 		* @return Boolean 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -258,7 +260,7 @@ package{
 		* 
 		* 
 		* @public 
-		* @param method Ссылка на метод.
+		* @param method Link to the method.
 		* @return Boolean 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -271,13 +273,13 @@ package{
 		}
 
 		/** 
-		* Создаёт экземпляр JSArguments по переданным параметрам.
+		* Creates a copy of JSArguments by passed parameters.
 		* 
 		* 
 		* @private 
-		* @param method Ссылка на метод.
-		* @param args Список аргументов функции.
-		* @param target Объект относительно которого была вызвана функция. 
+		* @param method Link to the method.
+		* @param args The list of arguments of function.
+		* @param target The object concerning which function has been called. 
 		* @return JSArguments 
 		* @see aw.external.jsinterface.JSDynamic 
 		* @see aw.external.jsinterface.JSArguments 
@@ -296,12 +298,12 @@ package{
 		}
 		
 		/** 
-		* Если переданный метод зарегистрирован, то вернёт объект JSArguments, а если нет - тот же список аргументов. 
+		* If the transferred method is registered, will return JSArguments object and if is not present - the same list of arguments. 
 		* 
 		* 
 		* @private 
-		* @param method Ссылка на метод.
-		* @param args Список аргументов функции.
+		* @param method Link to the method.
+		* @param args The list of arguments of function.
 		* @param target Объект относительно которого была вызвана функция. 
 		* @return Array 
 		* @see aw.external.jsinterface.JSDynamic 

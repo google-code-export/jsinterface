@@ -10,9 +10,9 @@
 	import aw.utils.iteration.LengthIterationIndex;
 
 	/** 
-	* Класс обрабатывает строки как ссылки на объекты в точечной нотации. Используется для преобразования строк, в формате JSON, в соответствующие объекты.
+	* 	Class handles strings as references to objects in point notation. Used to convert the strings in the JSON, to the appropriate objects.
 	* 
-	* @example Поддерживаемые типы записи:
+	* @example Supported record types:
 <listing version="3.0">
 package {
 	import aw.utils.EvalUtils;

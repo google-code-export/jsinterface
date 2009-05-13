@@ -1,7 +1,7 @@
 package aw.external.jsinterface{
 	import aw.external.*;
 	/**
-	 * Класс для создания анонимных JavaScript функций.
+	 * Class for creating anonymous JavaScript functions.
 	 * 
 	 * @public
 	 * @see aw.external.jsinterface.JSDynamic
@@ -30,9 +30,10 @@ package aw.external.jsinterface{
 		static public const INSTANCE_ERROR:String = 'JavaScript function instance can\'t be created.';
 
 		/** 
-		* Метод создаёт анонимную JavaScript функцию из переданного кода в виде строки.
-		* Эту функцию можно использовать как любую другую JavaScript функцию. Если её применить свойству объекта window, то эта функция станет глобальной JavaScript функцией.
-		* @example Пример использования:
+		* The method creates an anonymous JavaScript function from the transferred code in the form of a line. 
+		* This function can be used as any other JavaScript function. If you apply it to a window object property, 
+		* the function will become a global JavaScript function.
+		* @example
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -59,9 +60,9 @@ package {
 }
 </listing>
 		* @public 
-		* @param javaScriptCode JavaScript код в строке, который будет телом будущей функции.
-		* @param args Имена аргументов JavaScript функции.
-		* @return Function Возвращает функцию в среде Flash Player'а связанную с созданной JavaScript функцией.
+		* @param javaScriptCode JavaScript code in a string, which would body of the function.
+		* @param args The names of arguments of JavaScript functions.
+		* @return Function Returns an function in the Flash Player environment related to the created JavaScript function
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/

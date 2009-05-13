@@ -1,21 +1,23 @@
 ﻿package aw.utils{
 
 	/** 
-	* Класс вызывающий методы и функции по ссылкам, напрямую - без вызовов Function.call() или Function.apply(). 
-	* Содержит скрытые методы для вызова функций по числу аргументов(мексимальное число аргументов - 15), каждый такой метод содержит следующий код 
-	* для вызова функции по ссылке
+	* It’s a class calling for methods and functions from references directly, 
+	* without calling Function.call() or Function.apply(). It contains hidden 
+	* methods for calling functions by the number of arguments (the maximum 
+	* number of arguments is 15), each of the methods contains the following 
+	* code for calling a function from reference 
 <listing version="3.0">
 		static private function callNMethod(func:Function, a:Array):&#042;{
 			return func(a[0], a[1], a[2], a[3], ...a[N]);
 		}
 </listing>
-	* для вызова функции по имени члена класса
+	* for calling a function by name of a class member 
 <listing version="3.0">
 		static private function callNByName(obj:Object, name:&#042;, a:Array):&#042;{
 			return obj[name](a[0], a[1], a[2], a[3], ...a[N]);
 		}
 </listing>
-	* Через методы MethodCaller.getCaller() и MethodCaller.getCallerByMethod() можно получить доступ к конкретному методу по числу аргументов.
+	* You can get access to a specific method according to the number of arguments with methods MethodCaller.getCaller() and MethodCaller.getCallerByMethod().
 	* 
 	* @public 
 	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
@@ -43,12 +45,12 @@
 		static private const byNameCallers:Array = [call0ByName, call1ByName, call2ByName, call3ByName, call4ByName, call5ByName, call6ByName, call7ByName, call8ByName, call9ByName, call10ByName, call11ByName, call12ByName, call13ByName, call14ByName, call15ByName];
 
 		/** 
-		* Вызвать функцию по ссылке
+		* Call function
 		* 
 		* 
 		* @public 
-		* @param func Ссылука на функцию
-		* @param a Список аргументов
+		* @param func Function instance
+		* @param a Argument list
 		* @return * 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -58,12 +60,12 @@
 		}
 
 		/** 
-		* Вызвать функцию по ссылке
+		* Apply to function
 		* 
 		* 
 		* @public 
-		* @param func Ссылука на функцию
-		* @param a Массив аргументов
+		* @param func Function instance
+		* @param a Argument list
 		* @return * 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -73,13 +75,13 @@
 		}
 
 		/** 
-		* Вызвать метод по имени члена класса
+		* Call the method by name of a member of the class
 		* 
 		* 
 		* @public 
-		* @param obj Объект содержащий метод
-		* @param name Имя метода
-		* @param a Список аргументов
+		* @param obj Target object 
+		* @param name Method name
+		* @param a Argument list
 		* @return * 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -89,13 +91,13 @@
 		}
 
 		/** 
-		* Вызвать метод по имени члена класса
+		* Apply the method by name of a member of the class
 		* 
 		* 
 		* @public 
-		* @param obj Объект содержащий метод
-		* @param name Имя метода
-		* @param a Список аргументов
+		* @param obj Target object
+		* @param name Method name
+		* @param a Argument list
 		* @return * 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -105,11 +107,11 @@
 		}
 
 		/** 
-		* Получить метод вызывающий функцию, по числу аргументов
+		* Get method that causing a function, by number of arguments
 		* 
 		* 
 		* @public 
-		* @param a Массив аргументов
+		* @param a Argument list
 		* @return Function 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -119,11 +121,11 @@
 		}
 
 		/** 
-		* Получить метод вызывающий функцию, по числу аргументов
+		* Get method that causing a function, by number of arguments
 		* 
 		* 
 		* @public 
-		* @param f Функция, которую требуется выполнять
+		* @param f The function that you want to call
 		* @return Function 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 

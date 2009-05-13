@@ -3,7 +3,7 @@ package aw.external.jsinterface.objects{
 	import aw.external.jsinterface.JSDynamic;
 	/**
 	 * <a href="http://www.aptana.com/reference/html/api/HTMLDOM0.index.html">HTML DOM Level 0 Reference</a> :: <a href="http://www.aptana.com/reference/html/api/Form.html">Form</a>.
-	 * Класс портирован по документации <a href="http://www.aptana.com/studio">Aptana Studio</a>.
+	 * Class ported by documentation <a href="http://www.aptana.com/studio">Aptana Studio</a>.
 	 */
 	public dynamic class JSForm extends JSDynamic{
 

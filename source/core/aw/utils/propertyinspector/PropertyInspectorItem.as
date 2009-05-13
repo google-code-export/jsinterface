@@ -6,8 +6,10 @@
 	
 
 	/** 
-	* Объекты этого класса содержат информацию о классах находящихся в системе.
-	* Можно инстанциировать объекты этого класса напрямую через конструктор, но рекоммендуется это делать, через методы класса PropertyInspector, в котором существует механизм кеширования информации.
+	* Objects of this class contain information on the classes located in the system. 
+	* Objects of this class can be instantiated directly with the constructor, but 
+	* it’s recommended to do this with methods of PropertyInspector class where an 
+	* information cashing mechanism is present.
 	* @example Пример получения ссылки на объект PropertyInspectorItem
 <listing version="3.0">
 package {
@@ -22,17 +24,17 @@ package {
 		public function Test():void{
 			super();
 			var pii:PropertyInspectorItem = PropertyInspector.getInfo(MovieClip);
-			// Динамический ли объект
+			// Is object dynamic
 			trace(pii.isDynamic);
-			// методы возвращающие объекты типа Rectangle
+			// All methods that returns value of Rectangle type
 			trace(pii.getMethodsByType(Rectangle));
-			// получить объект PropertyItem, содержащий информацию о свойстве объекта
+			// Get object PropertyItem, containing information about the properties of the object
 			pii.getByName('width');
 		}
 	}
 }
 </listing>
-	* Для получения информации о статических членах класса используются методы в пространстве имён static_ns.
+	* For information about static member of class, use methods in the static_ns namespace
 	* 
 	* @public 
 	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com
@@ -42,7 +44,7 @@ package {
 	public class PropertyInspectorItem extends Object{
 
 		/** 
-		* Имя узла описывающего переменную, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -52,7 +54,7 @@ package {
 		static public const VAR_NODE_NAME:String = 'variable';
 
 		/** 
-		* Имя узла описывающего константу, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -62,7 +64,7 @@ package {
 		static public const CONST_NODE_NAME:String = 'constant';
 
 		/** 
-		* Имя узла описывающего GET/SET метод, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -72,7 +74,7 @@ package {
 		static public const GETSET_NODE_NAME:String = 'accessor';
 
 		/** 
-		* Имя узла описывающего метод, член класса, из XML дерева возвращаемом функцией flash.utils.describeType()
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -92,7 +94,7 @@ package {
 		static public const PROTOTYPE_NODE_NAME:String = 'factory';
 
 		/** 
-		* Имя атрибута содержащего имя члена класса.
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -102,7 +104,7 @@ package {
 		static public const NAME_ATTR_NAME:String = 'name';
 
 		/** 
-		* Имя атрибута содержащего тип члена класса.
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -112,7 +114,7 @@ package {
 		static public const ACCESS_ATTR_NAME:String = 'access';
 
 		/** 
-		* Имя атрибута содержащего тип возвращаемого значения членом класса.
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -122,7 +124,7 @@ package {
 		static public const TYPE_ATTR_NAME:String = 'type';
 
 		/** 
-		* Имя атрибута содержащего URI пространства имён в котором находится имя члена класса.
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -132,7 +134,7 @@ package {
 		static public const URI_ATTR_NAME:String = 'uri';
 
 		/** 
-		* Имя атрибута содержащего тип возвращаемого значения членом класса.
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -143,7 +145,7 @@ package {
 
 		/** 
 		* 
-		* Значение указывающее на отстутствие возвращаемого значения.
+		* 
 		* 
 		* @public (constant) 
 		* @langversion ActionScript 3.0 
@@ -152,7 +154,7 @@ package {
 		static public const VOID_RETURN_TYPE_NAME:String = 'void';
 
 		/** 
-		* Значение указывающее любое возвращаемое значение.
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -162,7 +164,7 @@ package {
 		static public const ANY_RETURN_TYPE_NAME:String = '*';
 
 		/** 
-		* Значение указывающее уровень доступа "только для чтения".
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -172,7 +174,7 @@ package {
 		static public const READ_VALUE:String = 'readonly';
 
 		/** 
-		* Значение указывающее уровень доступа "только для записи".
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -182,7 +184,7 @@ package {
 		static public const WRITE_VALUE:String = 'writeonly';
 
 		/** 
-		* Значение указывающее уровень доступа "запись/чтение".
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -202,7 +204,7 @@ package {
 		protected var _isDynamic:Boolean;
 
 		/** 
-		* Содержит имена всех членов класса, принадлежащих экземплярам класса.
+		* Contains the names of all members of the class
 		* 
 		* 
 		* @private (protected) 
@@ -212,7 +214,7 @@ package {
 		protected var _names:Object;
 
 		/** 
-		* 
+		* An array of objects PropertyItem, describing the properties
 		* 
 		* 
 		* @private (protected) 
@@ -223,7 +225,7 @@ package {
 		protected var _properties:Array;
 
 		/** 
-		* Массив объектов PropertyItem, описывающих методы, принадлежащие экземплярам класса.
+		* An array of objects PropertyItem, describing the methods
 		* 
 		* 
 		* @private (protected) 
@@ -234,7 +236,7 @@ package {
 		protected var _methods:Array;
 
 		/** 
-		* Содержит имена всех членов класса, принадлежащих объекту класса.
+		* Contains the names of all static members of the class
 		* 
 		* 
 		* @private (protected) 
@@ -244,7 +246,7 @@ package {
 		protected var _staticNames:Object;
 
 		/** 
-		* Массив объектов PropertyItem, описывающих свойства, принадлежащие объекту класса.
+		* An array of objects PropertyItem, describing the static properties
 		* 
 		* 
 		* @private (protected) 
@@ -255,7 +257,7 @@ package {
 		protected var _staticProperties:Array;
 
 		/** 
-		* Массив объектов PropertyItem, описывающих методы, принадлежащие объекту класса.
+		* An array of objects PropertyItem, describing the static methods
 		* 
 		* 
 		* @private (protected) 
@@ -266,7 +268,7 @@ package {
 		protected var _staticMethods:Array;
 
 		/** 
-		* Создаёт объект содержащий всю информацию о классе и его членах.
+		* Creates an object containing all the information about the class and its member
 		* 
 		* 
 		* @public 
@@ -287,8 +289,7 @@ package {
 		}
 
 		/** 
-		* Указывает на возможность задавать динамические свойства для объектов описываемого класса.
-		* Возвращает TRUE, если экземпляры класса способны создавать динамические свойства.   
+		* Is class dynamic 
 		* 
 		* @public (getter) 
 		* @return Boolean 
@@ -300,7 +301,7 @@ package {
 		}
 
 		/** 
-		* Массив объектов PropertyItem, описывающих свойства, принадлежащие экземплярам класса.
+		* An array of objects PropertyItem, describing the properties
 		* 
 		* 
 		* @public (getter) 
@@ -313,7 +314,7 @@ package {
 		}
 
 		/** 
-		* 
+		* 	An array of objects PropertyItem, describing the static properties
 		* 
 		* @copy #_staticProperties
 		* @public (static_ns,getter) 
@@ -326,7 +327,7 @@ package {
 		}
 
 		/** 
-		* Получить объект PropertyItem, по имени члена класса принадлежащего экземпляру класса.
+		* Retrieve object PropertyItem, by name of a member of the class
 		* 
 		* 
 		* @public 
@@ -341,7 +342,7 @@ package {
 		}
 
 		/** 
-		* Получить объект PropertyItem, по имени члена класса принадлежащего объекту класса.
+		* Retrieve object PropertyItem, by name of a static member of the class
 		* 
 		* 
 		* @public (static_ns) 
@@ -356,7 +357,7 @@ package {
 		}
 
 		/** 
-		* Проверяет существование члена класса, принадлежащего экземпляру класса, по его имени.
+		* Verifies the existence of a member of the class, by its name.
 		* 
 		* 
 		* @public 
@@ -370,7 +371,7 @@ package {
 		}
 
 		/** 
-		* Проверяет существование члена класса, принадлежащего объекту класса, по его имени.
+		* Verifies the existence of a static member of the class, by its name.
 		* 
 		* 
 		* @public (static_ns) 
@@ -384,7 +385,7 @@ package {
 		}
 
 		/** 
-		* Возврашает TRUE, если переданное имя свойства и FALSE - если имя метода. Работает с членами класса принадлежащими экземпляру класса.
+		* Returns TRUE, if passed the name of the property and FALSE - if the name of the method.
 		* 
 		* 
 		* @public 
@@ -399,7 +400,7 @@ package {
 		}
 
 		/** 
-		* Возврашает TRUE, если переданное имя свойства и FALSE - если имя метода. Работает с членами класса принадлежащими объекту класса.
+		* Returns TRUE, if passed the name of the property and FALSE - if the name of the method. For static members only. 
 		* 
 		* 
 		* @public (static_ns) 
@@ -414,7 +415,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список свойств принадлежащих экземпляру класса по уровню доступа.
+		* Separates properties by level of access
 		* 
 		* 
 		* @public 
@@ -428,7 +429,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список свойств принадлежащих объекту класса по уровню доступа.
+		* Separates static properties by level of access
 		* 
 		* 
 		* @public (static_ns) 
@@ -442,7 +443,7 @@ package {
 		}
 
 		/** 
-		* Отделяет свойства по уровню доступа из полученного массива.
+		* Separates properties by level of access from list
 		* 
 		* 
 		* @private (protected) 
@@ -469,7 +470,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список свойств принадлежащих экземпляру класса по виду члена класса.
+		* Separates properties by the type of class member
 		* 
 		* 
 		* @public 
@@ -483,7 +484,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список свойств принадлежащих объекту класса по виду члена класса.
+		* Separates static properties by the type of class member
 		* 
 		* 
 		* @public (static_ns) 
@@ -497,7 +498,7 @@ package {
 		}
 
 		/** 
-		* Отделяет свойства по виду члена класса из полученного массива.
+		* Separates properties by the type of class member from list
 		* 
 		* 
 		* @private (protected) 
@@ -524,7 +525,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список методов принадлежащих экземпляру класса возвращающих определённый тип данных.
+		* Separates the properties by value type
 		* 
 		* 
 		* @public 
@@ -538,7 +539,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список свойств принадлежащих объекту класса возвращающих определённый тип данных.
+		* Separates the static properties by value type
 		* 
 		* 
 		* @public (static_ns) 
@@ -552,7 +553,7 @@ package {
 		}
 
 		/** 
-		* Отделяет свойства по типу значения из полученного массива.
+		* Separates the properties by value type from list
 		* 
 		* 
 		* @private (protected) 
@@ -574,7 +575,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список методов принадлежащих экземпляру класса возвращающих определённый тип данных.
+		* Separates the methods by return type
 		* 
 		* 
 		* @public 
@@ -588,7 +589,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список методов принадлежащих объекту класса возвращающих определённый тип данных.
+		* Separates the static methods by return type
 		* 
 		* 
 		* @public (static_ns) 
@@ -602,7 +603,7 @@ package {
 		}
 
 		/** 
-		* Отделяет методы по возвращаемому типу из полученного массива.
+		* Separates the methods by return type from list
 		* 
 		* 
 		* @private (protected) 
@@ -650,7 +651,7 @@ package {
 		}
 
 		/** 
-		* Обрабатывает и сохраняет информацию о переданном классе.
+		* Processes and stores information about object class
 		* 
 		* 
 		* @private (protected) 
@@ -667,7 +668,7 @@ package {
 		}
 
 		/** 
-		* Разбирает полученный XML и создаёт объекты PropertyItem по найденым данным о членах класса.
+		* Parses the received XML and creates objects PropertyItem to find data about the members of the class
 		* 
 		* 
 		* @private (protected) 

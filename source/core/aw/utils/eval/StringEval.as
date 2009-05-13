@@ -1,7 +1,7 @@
 package aw.utils.eval{
 	import aw.utils.iteration.LengthIterationIndex;
 	
-	/**  Выделяет из строки строку обрамлённую кавычками и снимает экранирование со специальных символов.
+	/** Gets from the string line framed quotations and converts special characters.
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

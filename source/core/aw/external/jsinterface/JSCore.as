@@ -4,9 +4,9 @@ package aw.external.jsinterface{
 	import flash.external.ExternalInterface;
 	[ExcludeClass]
 	/**
-	 * Класс выполняет JavaScript функции и возвращает результат для обработки.
-	 * Все методы этого объекта выполняют служебные функции и предназначены для классов JSInterface и JSDynamic.
-	 * Основное количество методов вынесены в общий интерфейс - в класс JSInterface, поэтому переиспользованием метода из эотго класса, убедитесь, что он не реализован в классе JSInterface.
+	 * Calls JavaScript functions and returns ready for use values.
+	 * All methods of this class is for internal usage and are designed for classes JSInterface and JSDynamic.
+	 * All basic methods has duplicate in JSInterface, and before using method from this class make sure that it is not implemented in the JSInterface class.
 	 * 
 	 * @private
 	 * @see aw.external.JSInterface

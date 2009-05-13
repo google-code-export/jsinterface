@@ -1,7 +1,7 @@
 package aw.utils.eval{
 	import aw.utils.iteration.LengthIterationIndex;
 	
-	/** Преобразовывает строку в значение константы.
+	/** Converts a string to a constant value.
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

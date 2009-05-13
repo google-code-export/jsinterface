@@ -1,7 +1,10 @@
 package aw.data.json{
 
 	/** 
-	* Класс пакующий дерево объектов в строку в JSON формате. Может использовать оригинальный формат и изменённый JavaScript формат. Их отличие в описании свойств объектов - в оригинальном JSON формате имена свойств объектов обрамляются кавычками.
+	* The class that packs the objects in the JSON string. You may use the 
+	* original format and a modified format of JavaScript. They differ in 
+	* describing the properties of objects - in the original JSON format, 
+	* the names of the properties of objects in quotes.
 	* @public 
 	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 	*/
@@ -71,7 +74,7 @@ package aw.data.json{
 		static private const STRING_REPLACEMENTS:Array = ['\\\\','\\\/','\\r','\\n','\\t','\\v','\\b','\\f','\\x','\\0'];
 
 		/**
-		* Упаковка данных в строку формата JSON.
+		* Packs any data to a JSON string.
 		* 
 		* @param o Объект
 		* @return String
@@ -116,7 +119,7 @@ package aw.data.json{
 		}
 
 		/**
-		* Упаковывает объект в строку формата JSON.
+		* Packs an object to a JSON string.
 		* 
 		* @private 
 		* @param o Объект.
@@ -166,7 +169,7 @@ package aw.data.json{
 		}
 
 		/**
-		* Упаковывает массив в строку формата JSON.
+		* Packs an array to a JSON string.
 		* 
 		* @private 
 		* @param o Массив.
