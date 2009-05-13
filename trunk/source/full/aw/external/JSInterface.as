@@ -883,6 +883,26 @@ package {
 		static public function loadJavaScript(url:String, func:Function=null, type:String=''):JSHTMLElement{
 			return JSCore.loadJavaScript(url, func, type, JSHTMLElement) as JSHTMLElement;
 		}
+		
+		/**
+		* Adds new SCRIPT tag with content from "code" argument into HEAD section of HTML document
+		* @param code JavaScript code
+		* @param type Content of "type" argument of SCRIPT tag, by default is "text/javascript"
+		* @param asVirual If TRUE, will NOT add new SCRIPT tag and will return NULL 
+		* @return Created tag object
+		* @see aw.external.jsinterface.objects.JSHTMLElement 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		* 
+		*/
+		static public function pushJavaScript(code:String, type:String='', asVirual:Boolean=false):JSHTMLElement{
+			if(asVirual){
+				JSCore.callAnonymous(code, false);
+				return null;
+			}else{
+				return JSCore.pushSCRIPTTag(code, type, JSHTMLElement) as JSHTMLElement;
+			}
+		}
 
 		/** 
 		* Load CSS file into the HTML document
@@ -899,6 +919,20 @@ package {
 		*/
 		static public function loadCSS(url:String, func:Function=null, type:String=''):JSHTMLElement{
 			return JSCore.loadCSS(url, func, type, JSHTMLElement) as JSHTMLElement;
+		}
+		
+		/**
+		* Adds new STYLE tag with content from "style" argument into HEAD section of HTML document
+		* @param style CSS Style definitions
+		* @param type Content of "type" argument of STYLE tag, by default is "text/css"
+		* @return Created tag object
+		* @see aw.external.jsinterface.objects.JSHTMLElement 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		* 
+		*/
+		static public function pushCSS(style:String, type:String=''):JSHTMLElement{
+			return JSCore.pushSTYLETag(style, type, JSHTMLElement) as JSHTMLElement;
 		}
 
 		/** 

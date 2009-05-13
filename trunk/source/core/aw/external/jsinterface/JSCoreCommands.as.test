@@ -1547,6 +1547,60 @@ package aw.external.jsinterface{
 	};
 ]]></command>
 <command><![CDATA[
+	JSIInclude.pushSCRIPTTag=function(jn,code,type){
+		var j=JSIHost[jn];
+		var s=JSI.d().createElement('SCRIPT');
+		if(!type){
+			type='text/javascript';
+		};
+		s.setAttribute('type',type);
+		s.text=code;
+		j.tag.appendChild(s);
+		return j.getInfo(s);
+	};
+	JSIInclude.tryPushSCRIPTTag=function(jn,code,type){
+		var o;
+		try{
+			o=JSIInclude.pushSCRIPTTag(jn,code,type);
+		}catch(e){
+			var j=JSIHost[jn];
+			j.callbacks.throwException(e,null,'');
+		};
+		return o;
+	};
+]]></command>
+<command><![CDATA[
+	JSIInclude.pushSTYLETag=function(jn,style,type){
+		var j=JSIHost[jn];
+		var s=JSI.d().createElement('STYLE');
+		if(!type){
+			type='text/css';
+		};
+		s.setAttribute('type',type);
+		j.tag.appendChild(s);
+		if(JSIMain.ieBrowser){
+			s.styleSheet.cssText=style;
+		}else{
+			try{
+				s.innerHTML=style;
+			}catch(e){
+				s.innerText=style;
+			};
+		};
+		return j.getInfo(s);
+	};
+	JSIInclude.tryPushSTYLETag=function(jn,style,type){
+		var o;
+		try{
+			o=JSIInclude.pushSTYLETag(jn,style,type);
+		}catch(e){
+			var j=JSIHost[jn];
+			j.callbacks.throwException(e,null,'');
+		};
+		return o;
+	};
+]]></command>
+<command><![CDATA[
 	FLSimple=function(v){
 		this.data=v;
 	};

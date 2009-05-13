@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<actionScriptProperties mainApplicationPath="ShortcutsExample.as" version="3">
+<actionScriptProperties mainApplicationPath="PushToHTMLExample.as" version="3">
 <compiler additionalCompilerArguments="" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath/>
 <libraryPath defaultLinkType="1">
@@ -23,6 +23,7 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
+<application path="PushToHTMLExample.as"/>
 <application path="ShortcutsExample.as"/>
 <application path="JSArgumentsExample.as"/>
 <application path="DOMExample.as"/>
