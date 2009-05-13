@@ -5,7 +5,7 @@ package aw.utils.eval{
 	import aw.emulate.Operators;
 	import aw.utils.iteration.LengthIterationIndex;
 	
-	/** Выделяет из строки операцию и операнды, вычисляет значение операции.
+	/** Gets from string operation and operands, calculates the value of the operation.
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

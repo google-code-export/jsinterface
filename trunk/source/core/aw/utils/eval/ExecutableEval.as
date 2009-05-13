@@ -7,7 +7,7 @@ package aw.utils.eval{
 	
 	import flash.system.ApplicationDomain;
 	
-	/** Преобразовывает строку в запрос в стиле точечной нотации. Позволяет вызывать методы и получать доступ к свойствам, поддерживает E4X синтаксис(без поддержки фильтров). 
+	/** Converts a string in a point notation query. You can call methods and access properties, supports E4X syntax (without filters). 
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

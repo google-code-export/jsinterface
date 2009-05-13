@@ -1,7 +1,7 @@
 package aw.system{
 
 	/** 
-	* Класс содержит типы Flash плееров как константы. 
+	* The class contains the types of Flash player.
 	* 
 	* 
 	* @public 

@@ -11,10 +11,10 @@ package aw.external.jsinterface{
 	
 
 	/** 
-	* Класс связывающий объекты из среды Flash Player'а переданные в JavaScript. Через этот класс проходят все запросы связанные с этими обхъектами из среды JavaScript.
-	* Так же, этот класс является менеджером всех переданных в JavaScript объектов и содержит о всех таких объектах информацию и ссылки на оригинальные объекты. 
-	* Стек в котором хранятся ссылки на эти объекты сам не отчищается, его можно отчистить вручную используя методы FLObject.clear() или  FLObject.removeObject() для индивидуального объекта.
-	* Операцию отчистки можно провести через основной класс - JSInterface, поэтому этот класс был скрыт.
+	* Class linking objects from Flash Player environment available to JavaScript. Through this class are all queries relating to these objects from the JavaScript. 
+	* Also, this class is the manager of all transferred to the JavaScript object and contains all of the objects of such information and links to the original objects. 
+	* The stack that stores references to these objects do not brush away, it can be cleaned by hand using FLObject.clear() or FLObject.removeObject() for an individual object. 
+	* Operation cleaning can be done through the main class - JSInterface, so this class has been hidden.
 	* 
 	* @private (internal) 
 	* @see aw.external.JSInterface
@@ -23,7 +23,7 @@ package aw.external.jsinterface{
 	internal class FLObject extends Object{
 
 		/** 
-		* Базовое имя объекта - его ссылки, по которой он будет идентифицироваться в запросах из JavaScript среды. 
+		* The base name of the object - its link, in which he will be identified in the requests from the JavaScript environment. 
 		* 
 		* 
 		* @private (constant) 
@@ -33,7 +33,7 @@ package aw.external.jsinterface{
 		static private const OBJECTS_BASE_NAME:String = 'fo';
 
 		/** 
-		* Имя JavaScript метода создающего объект в среде Flash Player'а.
+		* The name of the method for creating a JavaScript object in the Flash Player environment.
 		* 
 		* 
 		* @private (constant) 
@@ -42,9 +42,10 @@ package aw.external.jsinterface{
 		*/
 		static private const OBJECT_CREATE_METHOD:String = 'jsiCaller_Object_CreateMethod';
 
-		/** 
-		* Имя JavaScript метода получающего экземпляр объекта в среде Flash Player'а из строковой ссылки на этот объект.
-		* Использует класс aw.utils.EvalUtils.
+		/**
+		* The name of the JavaScript method which receives a copy of the object in the Flash Player environment, from string reference to this object.
+		* 
+		* Uses class aw.utils.EvalUtils.
 		* @see aw.utils.EvalUtils
 		* @private (constant) 
 		* @langversion ActionScript 3.0 
@@ -53,7 +54,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_INSTANCE_METHOD:String = 'jsiCaller_Object_InstanceMethod';
 
 		/** 
-		* Имя JavaScript метода вызывающего метод объекта в среде Flash Player'а.
+		* The name of the JavaScript method which call the method of the object in the Flash Player environment.
 		* 
 		* 
 		* @private (constant) 
@@ -63,7 +64,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_CALL_METHOD:String = 'jsiCaller_Object_CallMethod';
 
 		/** 
-		* Имя JavaScript метода вызывающего предопределённую команду.
+		* The name of the JavaScript method which call commands.
 		* 
 		* 
 		* @private (constant) 
@@ -73,7 +74,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_CALL_COMMAND:String = 'jsiCaller_Object_CallCommand';
 
 		/** 
-		* Имя JavaScript метода проверяющего существование свойства у объекта в среде Flash Player'а.
+		* The name of the JavaScript method checks for the existence of the properties of the object in the Flash Player environment.
 		* 
 		* 
 		* @private (constant) 
@@ -83,7 +84,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_HAS_METHOD:String = 'jsiCaller_Object_HasMethod';
 
 		/** 
-		* Имя JavaScript метода получающего значение свойства объекта в среде Flash Player'а.
+		* The name of the JavaScript method of the object receiving the value of the property in a Flash Player environment.
 		* 
 		* 
 		* @private (constant) 
@@ -93,7 +94,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_GET_METHOD:String = 'jsiCaller_Object_GetMethod';
 
 		/** 
-		* Имя JavaScript метода задающего значение свойству объекта в среде Flash Player'а.
+		* The name of the JavaScript method which set values to object properties in the Flash Player environment.
 		* 
 		* 
 		* @private (constant) 
@@ -103,7 +104,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_SET_METHOD:String = 'jsiCaller_Object_SetMethod';
 
 		/** 
-		* Имя JavaScript метода удаляющего свойство объекта в среде Flash Player'а.
+		* The name of the JavaScript method which removes the property of the object in the Flash Player environment.
 		* 
 		* 
 		* @private (constant) 
@@ -113,7 +114,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_DELETE_METHOD:String = 'jsiCaller_Object_DeleteMethod';
 
 		/** 
-		* Имя JavaScript метода удаляющего объект из стека FLObject.
+		* The name of the JavaScript method removes the object from the FLObject stack.
 		* 
 		* 
 		* @private (constant) 
@@ -123,7 +124,7 @@ package aw.external.jsinterface{
 		static private const OBJECT_REMOVE_METHOD:String = 'jsiCaller_Object_RemoveMethod';
 
 		/** 
-		* Имя JavaScript метода полной отчистки стека FLObject.
+		* The name of the JavaScript method which cleans the FLObject stack.
 		* 
 		* 
 		* @private (constant) 
@@ -133,7 +134,7 @@ package aw.external.jsinterface{
 		static private const OBJECTS_CLEAR:String = 'jsiCaller_Objects_Clear';
 
 		/** 
-		* Объект передающийся в качестве ошибки доступа, если JavaScript попытался получить доступ к объекту из среды Flash Player'а напрямую, без разрешения. 
+		* The object passed as an error, if JavaScript attempted to gain access to the object from the Flash Player environment directly, without a permit. 
 		* 
 		* 
 		* @private (constant) 
@@ -143,7 +144,7 @@ package aw.external.jsinterface{
 		static private const JS_ACCESS_DENIED_ERROR:Object = {error:{name:'{Flash} Error: Access denied.', message:'Access denied to Flash Player objects.'}};
 
 		/** 
-		* Стек всех объектов, перенесённых из среды Flash Player'а за его пределы.
+		* The stack of all objects which passed into Flash Player environment
 		* 
 		* 
 		* @private (protected) 
@@ -153,7 +154,7 @@ package aw.external.jsinterface{
 		static protected var _objects:Object = {};
 
 		/** 
-		* Индекс ссылок на объекты. Увеличивается на один каждый раз, когда в стеке появляется новая ссылка на объект.
+		* Index of references to objects. Increases by one each time the stack accepts a new link to the object.
 		* 
 		* 
 		* @private (protected) 
@@ -173,7 +174,7 @@ package aw.external.jsinterface{
 		static protected var _initialized:Boolean = false;
 
 		/** 
-		* Генератор новых ссылок.
+		* The generator of new links.
 		* 
 		* 
 		* @public (getter) 
@@ -186,7 +187,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод инициализации FLObject. Регистрирует необходимые JavaScript методы, для работы с объектами из среды Flash Player'а в JavaScript среде. 
+		* The method of FLObject initialization. It registers the necessary JavaScript methods to work with objects from the Flash Player environment in the JavaScript environment. 
 		* 
 		* 
 		* @public 
@@ -212,12 +213,12 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Добавить объект в стек.
+		* Add object to the stack.
 		* 
 		* 
 		* @public 
-		* @param o Исходный объект.
-		* @return String Текстовая ссылка на объект в стеке.
+		* @param o Source object.
+		* @return String Text link to the object in the stack.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -231,12 +232,12 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Получить объект из стека по ссылке.
+		* Get an object from the stack by the link.
 		* 
 		* 
 		* @public 
-		* @param name Ссылка на объект в стеке.
-		* @return Object Исходный объект.
+		* @param name The link to an object in the stack.
+		* @return Object Source object.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -245,11 +246,11 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Удалить объект из стека по его ссылке.
+		* Remove the object from the stack by his link.
 		* 
 		* 
 		* @public 
-		* @param name Ссылка на объект в стеке.
+		* @param name The link to an object in the stack.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -259,7 +260,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Удалить все объекты из стека.
+		* Remove all objects from the stack.
 		* 
 		* 
 		* @public 
@@ -274,7 +275,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Алиас метода FLObjects.removeAllObjects();
+		* Method alias of FLObjects.removeAllObjects();
 		* 
 		* 
 		* @public 
@@ -287,7 +288,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript при инициализации отчистки стеков хранящих объекты и функции. Позволяет отчищать стеки с сохранёнными объектами прямо из JavaScript. 
+		* Method is called from JavaScript when initializing cleaning stacks which stores the objects and functions. Allows you to clean stacks of stored objects directly from JavaScript. 
 		* 
 		* 
 		* @private (internal) 
@@ -303,13 +304,13 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для создания объекта в среде Flash Player'а.
+		* Method is called from JavaScript to create objects in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param className Имя класса
-		* @param args Аргументы передаваемые конструктору класса
-		* @return Object Информация о созданном объекте, либо информация о ошибке
+		* @param className Class name 
+		* @param args Arguments passed to the constructor of class
+		* @return Object Information about the created object, or information about the error
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -323,13 +324,13 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод создания объекта.
+		* The method of creating an object.
 		* 
 		* 
 		* @private (protected) 
-		* @param className Имя класса
-		* @param args Аргументы передаваемые конструктору класса
-		* @return Object Информация о созданном объекте
+		* @param className Class name
+		* @param args Arguments passed to the constructor of class
+		* @return Object Information about the created object
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -339,13 +340,13 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для получения ссылки на объект в среде Flash Player'а.
+		* Method is called from JavaScript to obtain a reference to an object in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param path Путь к объекту, имя класса, путь к любому члену класса или ключевое слово: "stage", "root", "applicationDomain".
-		* @param target Информация о объекте к которому следует применить указанный путь.
-		* @return Object Информация о полученных данных, либо информация о ошибке
+		* @param path The path to the object, class name, the path to any member of the class or keyword: "stage", "root", "applicationDomain".
+		* @param target Information about the object to which to apply the specified path.
+		* @return Object Information about the data, or information about the error
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -359,13 +360,13 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод получения данных по строке.
+		* The method of obtaining data from the string.
 		* 
 		* 
 		* @private (protected) 
-		* @param path Путь к объекту, имя класса, путь к любому члену класса или ключевое слово: "stage", "root", "applicationDomain".
-		* @param target Информация о объекте к которому следует применить указанный путь.
-		* @return Object Информация о полученных данных
+		* @param path The path to the object, class name, the path to any member of the class or keyword: "stage", "root", "applicationDomain".
+		* @param target Information about the object to which to apply the specified path.
+		* @return Object Information about the recieved data
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -381,15 +382,15 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для вызова метода объекта в среде Flash Player'а.
+		* Method is called from JavaScript to call the object method in a Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя метода.
-		* @param args Аргументы передаваемые методу.
-		* @param uri URI пространства имён в котором лежит метод.
-		* @return Object Объект с информацией о возвращённом результате иои о произошедшей ошибке.
+		* @param objectName The link to an object in the stack.
+		* @param name Method name.
+		* @param args Arguments passed to the method.
+		* @param uri URI Namespace in which the method is.
+		* @return Object The object of the information on the return of a result or error occurred.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -402,15 +403,15 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызова метода объекта.
+		* The method call object method.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя метода.
-		* @param args Аргументы передаваемые методу.
-		* @param uri URI пространства имён в котором лежит метод.
-		* @return Object Объект с информацией о возвращённом результате иои о произошедшей ошибке.
+		* @param objectName The link to an object in the stack.
+		* @param name Method name.
+		* @param args Arguments passed to the method.
+		* @param uri URI Namespace in which the method is.
+		* @return Object The object of the information on the return of a result.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -425,13 +426,13 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызова предопределённой команды.
+		* 	Method call commands.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param cmd Вызываемая команда.
-		* @param args Аргументы передаваемые команде.
+		* @param objectName The link to an object in the stack.
+		* @param cmd Called command.
+		* @param args Arguments passed to the command.
 		* @return * Возвращаемый результат.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -441,14 +442,14 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для проверки существования свойства у объекта в среде Flash Player'а.
+		* Method is called from JavaScript to verify the existence of the properties of the object in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return * Информация о свойстве или о ошибке
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param uri Namespace URI at which the property lies.
+		* @return * Information about property or the error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -461,14 +462,14 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод для проверки существования свойства у объекта.
+		* Method for verification of the properties of the object.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о свойстве или о ошибке
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about property or the error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -478,14 +479,14 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для получения значения свойства объекта в среде Flash Player'а.
+		* Method is called from JavaScript to obtain values of the properties of the object in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о значении свойства или о произошедшей ошибке
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about property value or the error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -498,14 +499,14 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод для получения значения свойства объекта.
+		* The method for obtaining values of the properties of the object.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о значении свойства или о произошедшей ошибке
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about property value or the error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -515,15 +516,15 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для указания значения свойству объекта в среде Flash Player'а.
+		* Method is called from JavaScript to set object property values in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param value Новое значение свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о ошибке, в случае её возникновения
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param value New value of property.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -536,15 +537,15 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод для указания значения свойству объекта.
+		* Method to set object property values in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param value Новое значение свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о ошибке, в случае её возникновения
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param value New value of property.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -555,14 +556,14 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызываемый из JavaScript для удаления свойства из объекта в среде Flash Player'а.
+		* Method is called from JavaScript to remove the properties of the object in the Flash Player environment.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о выполненной операции или о произошедшей ошибке.
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about called operation or about error if it will occur
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -575,14 +576,14 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод удаления свойства.
+		* Method removes object properties.
 		* 
 		* 
 		* @private (protected) 
-		* @param objectName Ссылка на объект в стеке.
-		* @param name Имя свойства.
-		* @param uri URI пространства имён в котором лежит свойство.
-		* @return Object Информация о выполненной операции или о произошедшей ошибке.
+		* @param objectName The link to an object in the stack.
+		* @param name Property name.
+		* @param uri Namespace URI at which the property lies.
+		* @return Object Information about the command performed or the error occurred.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -592,7 +593,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызвающий передаваемые ему методы с отловом происходящих ошибок для последующей передачи в JavaScript среду.
+		* It calls the methods and catch errors occured for onward transmission to the JavaScript environment.
 		* 
 		* 
 		* @private (protected) 
@@ -613,7 +614,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Метод вызвающий передаваемые ему методы с отловом происходящих ошибок для определения их будущей судьбы - вызвать или отобразить в OUTPUT.
+		* It calls the methods and catch errors occur to determine their future - call or display OUTPUT.
 		* 
 		* 
 		* @private (protected) 

@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
+<meta content="JSArguments,aw.external.jsinterface.JSArguments,target,getDefinition,getDefinitionByTarget,isRegistered,isRegisteredByTarget,register,registerByTarget,registerList,setArguments,unregister,unregisterByTarget" name="keywords">
+<title>aw.external.jsinterface.JSArguments</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'JSArguments - API Documentation';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../index-list.html')" href="../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../index.html?aw/external/jsinterface/JSArguments.html&amp;aw/external/jsinterface/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;JSArguments</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class JSArguments"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">aw.external.jsinterface</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public dynamic  class JSArguments</td>
+</tr>
+</table>
+<p></p> 
+ It’s a class used upon calling functions from Flash Player environment in JavaScript environment. 
+ In the usual case a function from Flash Player environment called in JavaScript environment gets 
+ the whole set of arguments transferred to the function in JavaScript. But such function cannot 
+ get access to the target object in the scope of which it was executed. JSArguments contains a list 
+ of function arguments and a reference to the wrapper object of the JavaScript object in the scope 
+ of which it was executed. 
+ 
+ For the function to receive the JSArguments objects the method should be registered with  JSArguments.register();
+ <p></p>
+<br>
+<span class="label">Example</span>
+<br><div class='listing'><pre>
+package{
+ import aw.external.JSInterface;
+ import aw.external.jsinterface.JSArguments;
+ 
+ import flash.display.Sprite;
+
+ public class JSArgumentsExample extends Sprite{
+  public function JSArgumentsExample():void{
+   super();
+   JSInterface.initialize(this);
+   JSArguments.registerByTarget(this, this.test);
+   // setup method
+   JSInterface.window.test = this.test;
+   // call method
+   JSInterface.window.test();
+  }
+  protected function test(args:JSArguments):void{
+   trace(args.target); // [object Window]
+  }
+ }
+}
+</pre></div>
+ 
+ <p></p>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#JSArguments()">JSArguments</a>(args:Array = null, target:<a href="JSDynamic.html">JSDynamic</a> = null)</div>
+<div class="summaryTableDescription"> 
+  
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getDefinition()">getDefinition</a>(method:Function):Class</div>
+<div class="summaryTableDescription">[static]
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getDefinitionByTarget()">getDefinitionByTarget</a>(target:Object, name:*):Class</div>
+<div class="summaryTableDescription">[static] 
+  Returns the class, copies of which will be transferred using this method.</div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isRegistered()">isRegistered</a>(method:Function):Boolean</div>
+<div class="summaryTableDescription">[static] 
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#isRegisteredByTarget()">isRegisteredByTarget</a>(target:Object, name:*):Boolean</div>
+<div class="summaryTableDescription">[static] 
+  Checks whether the method is registered.</div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#register()">register</a>(method:Function, definition:Class = null):void</div>
+<div class="summaryTableDescription">[static]
+  Register method by the link.</div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerByTarget()">registerByTarget</a>(target:Object, name:Class, definition:* = null):void</div>
+<div class="summaryTableDescription">[static] 
+  Registers the method that should accept a JSArguments object as an argument.</div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#registerList()">registerList</a>(target:Object, ... args):void</div>
+<div class="summaryTableDescription">[static] 
+  Register a list of methods of one object which hosts as an argument object JSArguments
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregister()">unregister</a>(method:Function):Boolean</div>
+<div class="summaryTableDescription">[static] 
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unregisterByTarget()">unregisterByTarget</a>(target:Object, name:*):Boolean</div>
+<div class="summaryTableDescription">[static] 
+  Removes method registration.</div>
+</td><td class="summaryTableOwnerCol">JSArguments</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="target"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">target</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>target:<a href="../jsinterface/JSDynamic.html">JSDynamic</a></code>&nbsp;&nbsp;[read-only]<p> 
+  JSDynamic object, wrapper of JavaScript object in the scope of which was performed this function.
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;AS3 function get target():<a href="../jsinterface/JSDynamic.html">JSDynamic</a></code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="JSArguments()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">JSArguments</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function JSArguments(args:Array = null, target:<a href="JSDynamic.html">JSDynamic</a> = null)</code><p> 
+  
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:<a href="JSDynamic.html">JSDynamic</a></code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="getDefinition()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getDefinition</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getDefinition(method:Function):Class</code><p>
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">method</span>:Function</code> &mdash; Link to the method.
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Class</code> &mdash; Class 
+  </td>
+</tr>
+</table>
+</div>
+<a name="getDefinitionByTarget()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getDefinitionByTarget</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getDefinitionByTarget(target:Object, name:*):Class</code><p> 
+  Returns the class, copies of which will be transferred using this method. If the method was not registered, it will return NULL.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; The object that owns the method.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Class</code> &mdash; Class 
+  </td>
+</tr>
+</table>
+</div>
+<a name="isRegistered()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isRegistered</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function isRegistered(method:Function):Boolean</code><p> 
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">method</span>:Function</code> &mdash; Link to the method.
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="isRegisteredByTarget()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isRegisteredByTarget</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function isRegisteredByTarget(target:Object, name:*):Boolean</code><p> 
+  Checks whether the method is registered.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; The object that owns the method.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="register()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">register</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function register(method:Function, definition:Class = null):void</code><p>
+  Register method by the link. A function registered by this 
+  method can be removed only by hand, otherwise it will never be removed.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">method</span>:Function</code> &mdash; Link to the method.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">definition</span>:Class</code> (default = <code>null</code>)<code></code> &mdash; Class which extends JSArguments, copies of which will be passed to the function.
+  </td>
+</tr>
+</table>
+</div>
+<a name="registerByTarget()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerByTarget</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function registerByTarget(target:Object, name:Class, definition:* = null):void</code><p> 
+  Registers the method that should accept a JSArguments object as an argument. 
+  This method allows indicating a class derivative from JSArguments, instances 
+  of which will be transferred to the indicated method. The functions registered 
+  with JSArguments.register() method will be automatically removed with the object 
+  when Garbage Collector will be clearing the memory.
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; The object that owns the method. 
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:Class</code> &mdash; Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">definition</span>:*</code> (default = <code>null</code>)<code></code> &mdash; Class which extends JSArguments, copies of which will be passed to the function. 
+  </td>
+</tr>
+</table>
+</div>
+<a name="registerList()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">registerList</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function registerList(target:Object, ... args):void</code><p> 
+  Register a list of methods of one object which hosts as an argument object JSArguments
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; The object which owns transmitted methods.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code>... <span class="label">args</span></code> &mdash; A list of methods or their names.
+  </td>
+</tr>
+</table>
+</div>
+<a name="setArguments()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">setArguments</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>AS3 function setArguments(args:Array, target:<a href="JSDynamic.html">JSDynamic</a> = null):void</code><p> 
+  Set parameters of the object. The method is performed before sending the object to the function.
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:<a href="JSDynamic.html">JSDynamic</a></code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+</div>
+<a name="unregister()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregister</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unregister(method:Function):Boolean</code><p> 
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">method</span>:Function</code> &mdash; Link to the method.
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="unregisterByTarget()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unregisterByTarget</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unregisterByTarget(target:Object, name:*):Boolean</code><p> 
+  Removes method registration. 
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">target</span>:Object</code> &mdash; The object that owns the method.
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:*</code> &mdash; Maybe Function - refers to a method or a String or QName - the name of the method of transmited object.
+  </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

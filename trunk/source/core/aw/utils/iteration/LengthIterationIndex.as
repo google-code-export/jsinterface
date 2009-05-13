@@ -3,7 +3,7 @@ package aw.utils.iteration{
 	
 
 	/** 
-	* Объект содержащий индекс(позицию) итерации, ограниченный максимальным значением, задаваемым через конструктор и нулём, как минимальным значением.
+	* The object containing the iteration index(position), limiting the maximum value set through the constructor, and zero as the minimum value.
 	* 
 	* 
 	* @public 

@@ -11,10 +11,11 @@ package aw.external.jsinterface{
 
 
 	/** 
-	* Объект оболочка для всех объектов перенесённых из JavaScript среды в среду Flash Player'а. 
-	* Он работает как зеркало(прокси) объекта - через него вы можете получить доступ к любым свойствам 
-	* оригинального JavaScript объекта, вызвать его методы и создавать новые JavaScript объекты.
-	* @example Пример создания JavaScript объектов:
+	* It’s a wrapper object for all objects transferred from JavaScript environment to Flash Player environment. 
+	* It works as an object mirror (proxy), and you can get access to any properties of the original JavaScript 
+	* object though it, call for its methods and create new JavaScript objects.
+	* 
+	* @example Example of creating JavaScript objects:
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -39,7 +40,7 @@ package {
 	}
 }
 </listing>
-	* @example Пример получения ссылки на существующие JavaScript объекты:
+	* @example Example of getting a reference to the existing JavaScript objects:
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -52,29 +53,29 @@ package {
 		public function Test():void{
 			super();
 			JSInterface.initialize(true);
-			// JavaScript объект с использованием стандартного JSDynamic
+			// JavaScript object using standard JSDynamic
 			var object1:JSDynamic = JSInterface.getInstance('window.document.body.firstChild');
-			// JavaScript объект с использованием расширеного предка JSDynamic
+			// JavaScript object using the class extended from JSDynamic
 			var object2:JSHTMLElement = JSInterface.getInstance('window.document.body.firstChild', JSHTMLElement);
-			// Возвращяемый тип Object, но на самом деле это JSDynamic
+			// Return type Object, but it's JSDynamic
 			var object3:Object = JSInterface.window.document.body.firstChild;
-			// конвертация типа оболочки JavaScript объекта из JSDynamic в JSHTMLElement(это никак не скажеться на JavaScript оригинальном объекте) 
+			// Conversion of wrapper type of JavaScript object from JSDynamic in JSHTMLElement (this will not affect the original object in JavaScript)
 			var object4:JSHTMLElement = JSDynamic.convert(object1, JSHTMLElement);
 		}
 	}
 }
 </listing>
-	* Так же, этот объект является базовым для всех специализированных объектов-оболочек к таким 
-	* JavaScript объектам как HTMLElement, Document, Navigator и т.д.
-	* Этот класс можно расширять для специфических объектов, к примеру, для специальных объектов 
-	* JavaScript фреймворка, чтоб объявить его свойства и задать типы для этих свойств(маппинг типов).
-	* При расширении данного класса, для маппинга типов свойств необходимо, до обращения к этим свойствам, 
-	* указать типы свойств по именам в классе JSObjectTypeMapper, по имени нового класса.
+	* This object is also the basic one for all specialized wrapper objects to such JavaScript objects as 
+	* HTMLElement, Document, Navigator etc. This class can be extended for specific objects, for example, 
+	* for special objects of JavaScript framework, to announce its properties and set types for the 
+	* properties (types mapping). Upon extension of the class for properties’ types mapping it’s necessary to 
+	* indicate the properties’ types by name in JSObjectTypeMapper class, by the name of the new class, before 
+	* addressing the properties. 
 	* 
-	* Каждый экземпляр этого класса, созданный для нового JavaScript объекта будет кеширован в классе 
-	* JSInstanceCache, но если для одного и того же объекта будет создан ещё один объект JSDynamic, 
-	* то новый объект JSDynamic заменит в кеше старый экземпляр.
-	* @example Пример показывающий работу кеширования:
+	* Each instance of this class, created for a new JavaScript object, will be cashed in JSInstanceCache class, 
+	* but if one more JSDynamic object will be created for the same object, then the new JSDynamic object will 
+	* replace the previous instance in cash.
+	* @example 	Example showing the work of caching:
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -89,14 +90,14 @@ package {
 			JSInterface.initialize(true);
 			var htmlTag1:JSHTMLElement = JSInterface.getInstance('window.document.body.firstChild', JSHTMLElement);
 			var htmlTag2:Object = JSInterface.document.body.firstChild;
-			// вернёт TRUE т.к. второй раз объект JSHTMLElement для переданного JavaScript объекта создаваться не будет - будет получен уже созданный экземпляр из кеша. 
+			// return TRUE because the second time the object passed JSHTMLElement for JavaScript object will not be created - would be received a copy from the cache.
 			trace(htmlTag1===htmlTag2);
 		}
 	}
 }
 </listing>
 	* 
-	* @see aw.external.jsinterface.JSTypeMap Пример указания типов для свойств класса расширяющего JSDynamic
+	* @see aw.external.jsinterface.JSTypeMap Examples of specifying the types of properties for a class extending JSDynamic
 	* @see aw.external.jsinterface.objects.JSObjectTypeMapper
 	* 
 	* @public 
@@ -188,14 +189,16 @@ package {
 		protected var _typeMap:JSTypeMap;
 
 		/** 
-		* Конструктор принимает имя класса JavaScript объекта и массив аргументов для конструктора создаваемого JavaScript объекта.
-		* Созданный объект JSDynamic и будет оболочкой для созданного JavaScript объекта.
-		* Вместо имени класса можено передавать JavaScript функцию(которая ранее была перенесена в среду Flash Player'а), тогда при создании нового JavaScript объекта эта функция будет использована как конструктор нового объекта.
-		* Так же, можно передавать вместо имени класса другой объект JSDynamic, в таком случае будет создан новый объект такого же типа.
-		* Ещё можно передавать служебный объект типа JSInfoObject, который используется в служебных целях для создания оболочки к уже существующим объектам.
+		* The Constructor assumes the name of the JavaScript object class and the array of arguments for the constructor 
+		* of the JavaScript object being created. The created JSDynamic object will be the wrapper for the created JavaScript object. 
+		* A JavaScript function (transferred to Flash Player environment earlier) can be transferred instead of class name, in this 
+		* case this function will be used as the new object constructor upon creation of a new object. Another JSDynamic object can be 
+		* also transferred instead of class name, in this case a new object of the same type will be created. A utility object of 
+		* JSInfoObject type used for service purposes for creating wrapper to existing objects can also be transferred.
+		* 
 		* @public 
-		* @param className Имя класса JavaScript объекта, JavaScript функция или другой объект JSDynamic.
-		* @param args Список аргументов для конструктора JavaScript объекта или значение аргумента, если он один.
+		* @param className JavaScript class name, JavaScript function, or other object JSDynamic
+		* @param args The list of arguments to the JavaScript object constructor or argument value, if only one
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -210,7 +213,7 @@ package {
 		}
 
 		/** 
-		* Инициализация объекта и получение карты типов.
+		* Initialize the object and receiving the type map
 		* 
 		* 
 		* @private (protected) 
@@ -223,7 +226,7 @@ package {
 		}
 
 		/** 
-		* Создаёт JavaScriptc объект или получает информацию о существующем JavaScript объекте.
+		* Creates a JavaScript object or get information about existing JavaScript object
 		* 
 		* 
 		* @public (js_interface) 
@@ -249,7 +252,7 @@ package {
 		}
 
 		/** 
-		* Строковая ссылка на JavaScript объект в стеке передаваемых объектов.
+		* String reference to the JavaScript object in stack of transmitted objects
 		* 
 		* 
 		* @public (js_interface,getter) 
@@ -276,7 +279,7 @@ package {
 		}
 
 		/** 
-		* Инфо объект переданного объекта.
+		* Info object of passed object
 		* 
 		* 
 		* @public (js_interface,getter) 
@@ -310,9 +313,9 @@ package {
 		}
 
 		/** 
-		* Получить значение по пути в точечной нотации относителньо текущего JavaScript объекта. 
+		* 	Get the value by path from JavaScript Object 
 		* 
-		* @example Пример использования:
+		* @example
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -325,7 +328,7 @@ package {
 		public function Test():void{
 			super();
 			JSInterface.initialize(this, true);
-			// получить значение по строковому пути к объекту
+			// Obtain the value of the string path to an object
 			var element:JSHTMLElement = JSInterface.document.js_interface::getValue("body.childNodes[1]", JSHTMLElement);
 			trace(element); // [object]
 		}
@@ -344,7 +347,7 @@ package {
 		}
 
 		/** 
-		* Возвращает список имён свойств JavaScript объектов.
+		* Returns a list of the names of the properties of JavaScript object
 		* 
 		* 
 		* @public (js_interface,getter) 
@@ -357,18 +360,17 @@ package {
 		}
 
 		/** 
-		* Используется для "преобразования" объекта JSDynamic в функцию в случаях, когда из JavaScript 
-		* среды была передана ссылка на функцию. Поскольку функция и в JavaScript среде является объектом, 
-		* то она приходит как объект с информацией об объекте функции. Получение из JavaScript объект типа 
-		* JSDynamic вместо Function может препятствовать её использованию, поэтому полученный JSDynamic 
-		* автоматически оборачивается функцией и разработчика появляется возможность использовать JavaScript 
-		* функцию в среде Flash Player'а как обычную функцию. Все вызовы такой функции будут отправлены в 
-		* JavaScript среду и выполнены как обычные вызовы функции. Эта функция работает автоматически, нет 
-		* нужды вызывать её самостоятельно.
-		* Такая функция имеет дополнительные методы, кроме стандартных Function.call() и Function.apply():
+		* Used for “transformation” of JSDynamic object to a function in cases when a reference to function was 
+		* transferred from JavaScript environment. Getting an object of JSDynamic type instead of a Function from 
+		* JavaScript can prevent using it, that’s why the received JSDynamic automatically turns into a function 
+		* and the developers gets a possibility to use a JavaScript function in Flash Player environment as a usual 
+		* function. All calls for such function will be sent to JavaScript environment and executed as usual function 
+		* calls. This function works automatically, there is no need to call for it yourself.
+		* 
+		* This function has additional methods, besides the standard Function.call() and Function.apply():
 		* <ul>
-		* <li>Function.remove() - удаляет JavaScript функцию из стека переданных функций.</li>
-		* <li>Function.isExists() - проверяет наличие JavaScript функции в стеке.</li>
+		* <li>Function.remove() – removes JavaScript function from the stack of transferred functions.</li>
+		* <li>Function.isExists() – checks for presence of a JavaScript function in the stack.</li>
 		* </ul>
 		* @private (js_interface) 
 		* @return Function 
@@ -411,7 +413,7 @@ package {
 		static private const CURRENT_CALLBACK_NAME:QName = new QName(js_interface, 'currentCallback');
 
 		/** 
-		* Свойство открыто для служебных целей. Служит для временного хранения анонимных функций.
+		* The property is open for internal usage. Use for temporary storage of anonymous functions.
 		* 
 		* 
 		* @private (js_interface) 
@@ -421,7 +423,7 @@ package {
 		js_interface var currentCallback:Function;
 
 		/** 
-		* Метод для служебного пользования - вызывает временную, предполагаемо, анонимную функцию в области видимости данного объекта, без использования Function.call() и Function.apply().
+		* Method for internal use - calls a temporary, anonymous function in the scope of the object, without using Function.call() and Function.apply().
 		* 
 		* 
 		* @private (js_interface) 
@@ -444,12 +446,12 @@ package {
 		}
 
 		/** 
-		* Вызывает перебор свойств JavaScript объекта с помощью функции обратного вызова.
+		* Cycle properties of JavaScript object using the callback function
 		* 
 		* 
 		* @public (js_interface) 
-		* @param callbackFunction Функция обратного вызова.
-		* @param useList Если указать TRUE, то будет использован не "живой" перебор, а перебор свойств в среде Flash Player'а с предварительным получением списка имён перебираемых свойств.
+		* @param callbackFunction Callback function
+		* @param useList If you specify TRUE, it will be used for not "live" cycle, a sort out of properties in the Flash Player environment with the list of property names.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -473,7 +475,7 @@ package {
 		}
 
 		/** 
-		* Удалить JavaScript объект из стека.
+		* Remove JavaScript object from the stack
 		* 
 		* 
 		* @public (js_interface) 
@@ -488,7 +490,7 @@ package {
 		}
 
 		/** 
-		* Проверяет наличие JavaScript объекта в стеке.
+		* Verifies the existence of JavaScript object in the stack
 		* 
 		* 
 		* @public (js_interface) 
@@ -501,7 +503,7 @@ package {
 		}
 
 		/** 
-		* Проверяет ссылки на JavaScript объекты и возвращает TRUE, если ссылки идентичны, т.е. ссылаются на один и тот же объект.
+		* Verifies references to JavaScript objects and returns TRUE, if the links are identical, ie refer to the same object
 		* 
 		* 
 		* @public (js_interface) 
@@ -783,9 +785,9 @@ package {
 		}
 
 		/** 
-		* Конвертирует объект типа JSDynamic в расширяющий его тип.
+		* Converts an object of JSDynamic type in extended type
 		* 
-		* @example Пример использования:
+		* @example
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -820,7 +822,7 @@ package {
 		}
 
 		/** 
-		* Возвращает JSDynamic объект переданной JavaScript функции.
+		* Returns the JSDynamic object of JavaScript function
 		* 
 		* 
 		* @public 

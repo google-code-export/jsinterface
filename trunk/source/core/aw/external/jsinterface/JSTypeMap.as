@@ -28,10 +28,11 @@ package aw.external.jsinterface{
 	
 	[Exclude]
 	/** 
-	* Класс маппинга типов для свойств и методов JavaScript объектов в среде Flash Player'а. 
-	* Объекты этого класса служат как менеджеры типов для свойств классов расширяющих JSDynamic.
-	* Чтоб указать тип свойства необъходимо указать имя свойства и его тип. Если указано имя метода, то тип будет применён к возвращаемому значению.
-	* @example Пример использования:
+	* It’s the class of types mapping for properties and methods of JavaScript objects in Flash Player environment. 
+	* Objects of this class serve as type managers for properties of classes extending JSDynamic. In order to indicate 
+	* the property type, you need to indicated the property name and type. If a method name is indicated, the type will 
+	* be applied to the retrieved value.
+	* @example
 <listing version="3.0">
 package {
 	import aw.external.js_interface;
@@ -62,11 +63,11 @@ package {
 			this.internalSet('ownerElement', p);
 		}
 		static private function defineTypes():void{
-			// создание объекта содержащего отношения имя свойства - тип содержимого 
+			// 	creating an object containing the relationship between the name of the properties and the type of content
 			var types:JSTypeMap = new JSTypeMap();
-			// указание свойства и его типа
+			// indication of the property and the type of
 			types.addType('ownerElement', JSElement);
-			// регистрация карты типов по объекту класса, для которого предназначена карта
+			// registration map of types for the object class for which the map
 			JSObjectTypeMapper.addMapByObject(AttributeNode, types);
 		}
 	}
@@ -548,7 +549,7 @@ package {
 		};
 
 		/** 
-		* Конструктор принимает объекты для метода addTypes().
+		* The constructor takes the objects to the method addTypes().
 		* 
 		* 
 		* @public 
@@ -565,12 +566,12 @@ package {
 		}
 
 		/** 
-		* Регистрирует тип свойства, по имени свойства.
+		* It registers the type of property by the name of the property.
 		* 
 		* 
 		* @public 
-		* @param name Имя свойства или метода.
-		* @param cls Класс типа свойства.
+		* @param name Name of the property or method.
+		* @param cls Property type class.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -582,11 +583,11 @@ package {
 		}
 
 		/** 
-		* Регистрировать типы свойств из ассоциативного массива.
-		* Именем свойства должно служить имя свойства передаваемого объекта, а типом - его значение.
+		* Register types of properties from the associative array.
+		* The name of the property should be the name of the property of the transferred object and the type - its value.
 		* 
 		* @public 
-		* @param obj Объект использованный в качестве ассоциативного массива. 
+		* @param obj The object used as an associative array. 
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -603,7 +604,7 @@ package {
 		}
 
 		/** 
-		* Метод регистрирующий заранее созданные карты типов для встроенных объектов.
+		* The method of registering pre-established map of types for embedded objects.
 		* 
 		* 
 		* @public 
@@ -628,7 +629,7 @@ package {
 		}
 
 		/** 
-		* Возвращает тип свойства.
+		* Returns the type of property.
 		* 
 		* 
 		* @public 
@@ -642,7 +643,7 @@ package {
 		}
 
 		/** 
-		* Проверяет наличие зарегистрированного типа для свойства, по его имени.
+		* Verifies the existence of the registered type for the property by its name.
 		* 
 		* 
 		* @public 

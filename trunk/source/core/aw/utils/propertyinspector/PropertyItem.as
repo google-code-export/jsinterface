@@ -4,7 +4,7 @@
 	import flash.utils.getQualifiedClassName;
 
 	/** 
-	* Объект описывающий член класса(свойство или метод). Хранит информацию о особенностях, таких как: имя, тип возвращаемого значения, тип члена класса, уровень доступа.
+	* 	Object describing a member of a class (property or method). It stores information about the features, such as: name, type of return value, type member of the class, level of access
 	* 
 	* 
 	* @public 
@@ -53,7 +53,7 @@
 		protected var _access:int;
 
 		/** 
-		* В конструктор передаются характеристики члена класса.
+		* Into the constructor passed characteristics of the class members
 		* 
 		* 
 		* @public 
@@ -75,7 +75,7 @@
 		}
 
 		/** 
-		* Возвращает строковое представление объекта, имя свойства.
+		* Returns a string representation of the object, the name of the property
 		* 
 		* 
 		* @public 
@@ -88,7 +88,7 @@
 		}
 
 		/** 
-		* Имя члена класса
+		* Name of a member of the class
 		* 
 		* 
 		* @public (getter) 
@@ -101,7 +101,7 @@
 		}
 
 		/** 
-		* Ключ пространства имён, в котором находится имя данного члена класса.
+		* Namespace URI in which the member of the class
 		* 
 		* 
 		* @public (getter) 
@@ -114,7 +114,7 @@
 		}
 
 		/** 
-		* Пространиство имён, в котором находится имя данного члена класса.
+		* Namespace in which the members of the class
 		* 
 		* 
 		* @public (getter) 
@@ -127,7 +127,7 @@
 		}
 
 		/** 
-		* Локальное имя члена класса.
+		* Local name of a member of the class
 		* 
 		* 
 		* @public (getter) 
@@ -140,7 +140,7 @@
 		}
 
 		/** 
-		* Тип возвращаемого значения, а для свойств - тип значения свойства. 
+		* Type of return value, and for the properties - the type of property value
 		* 
 		* 
 		* @public (getter) 
@@ -153,7 +153,7 @@
 		}
 
 		/** 
-		* Вид члена класса - переменная, GET/SET метод, константа или метод.
+		* Type of class members - a variable, GET/SET method, a constant or method
 		* 
 		* 
 		* @public (getter) 
@@ -166,7 +166,7 @@
 		}
 
 		/** 
-		* Уровень доступа - чтение/запись, только чтение, только запись или метод.
+		* The level of access - read / write, read only, write only, or method
 		* 
 		* 
 		* @public (getter) 
@@ -179,7 +179,7 @@
 		}
 
 		/** 
-		* Простым значением объекта будет имя описываемого члена класса.  
+		* Name of a member of the class
 		* 
 		* 
 		* @public 
@@ -192,7 +192,7 @@
 		}
 
 		/** 
-		* Клонировать объект
+		* Clone
 		* 
 		* 
 		* @public 

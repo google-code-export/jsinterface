@@ -5,11 +5,12 @@ package aw.external.jsinterface{
 	
 
 	/** 
-	* Готовый объект оболочка для объектов передаваемых в JavaScript напрямую. Позволяет передавать 
-	* объекты в виде "как есть", без ссылок и сохранения в стеке. Если необходимо передать объект 
-	* из среды Flash Player'а прямо в JavaScript минуя всяческие преобразования, то его необходимо 
-	* обернуть в этот объект.
-	* @example Пример использования:
+	* It’s a ready wrapper object for objects, transferred to JavaScript directly. 
+	* It allows transferring objects “as is”, without links or saving in the stack. 
+	* If you need to transfer an object from Flash Player environment directly to 
+	* JavaScript without any transformations then you should wrap it in this object. 
+	* 
+	* @example
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -125,11 +126,11 @@ package {
 		}
 
 		/** 
-		* Метод возвращающий переданный в конструктор объект, как набор простых данных. 
-		* Используется при формировании запроса в JavaScript среду и для всех всех сложных 
-		* объектов генерируется служебная информация, которая и будет передана. Этот объект 
-		* используемый как оболочка гарантирует передачу оригинального объекта в JavaScript 
-		* среду напрямую, без записи его в стек и передачи дополнительной информации. 
+		* It’s a method that retrieves an object transferred to the constructor as a set of simple data. 
+		* It is used when forming a request to JavaScript environment and service information is generated 
+		* for all complex objects. This information will be transferred. This object used as wrapper 
+		* guarantees transfer of the original object to JavaScript environment directly, without writing 
+		* it to stack and transferring additional information.  
 		* 
 		* 
 		* @public 
@@ -142,18 +143,3 @@ package {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

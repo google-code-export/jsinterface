@@ -1,0 +1,613 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../print.css" type="text/css" media="print">
+<meta content="JSDynamic,aw.external.jsinterface.JSDynamic,info,name,properties,convert,convertFunctionToObject,create,createInfo,forEach,getValue,isEqual,isExists,remove" name="keywords">
+<title>aw.external.jsinterface.JSDynamic</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'JSDynamic - API Documentation';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">API Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../all-classes.html')" href="../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../index-list.html')" href="../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../index.html?aw/external/jsinterface/JSDynamic.html&amp;aw/external/jsinterface/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;JSDynamic</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class JSDynamic"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">aw.external.jsinterface</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public dynamic  class JSDynamic</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">JSDynamic <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../images/inherit-arrow.gif"> flash.utils.Proxy</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Subclasses</td><td><a href="objects/JSApplet.html">JSApplet</a>, <a href="objects/JSArray.html">JSArray</a>, <a href="objects/JSCSSRule.html">JSCSSRule</a>, <a href="objects/JSCSSRuleList.html">JSCSSRuleList</a>, <a href="objects/JSCSSStyleDeclaration.html">JSCSSStyleDeclaration</a>, <a href="objects/JSCSSValue.html">JSCSSValue</a>, <a href="objects/JSDate.html">JSDate</a>, <a href="objects/JSEvent.html">JSEvent</a>, <a href="objects/JSForm.html">JSForm</a>, <a href="objects/JSFrame.html">JSFrame</a>, <a href="objects/JSHistory.html">JSHistory</a>, <a href="objects/JSHTMLStyleObject.html">JSHTMLStyleObject</a>, <a href="objects/JSLocation.html">JSLocation</a>, <a href="objects/JSMediaList.html">JSMediaList</a>, <a href="objects/JSMimeType.html">JSMimeType</a>, <a href="objects/JSNamedNodeMap.html">JSNamedNodeMap</a>, <a href="objects/JSNavigator.html">JSNavigator</a>, <a href="objects/JSNode.html">JSNode</a>, <a href="objects/JSPlugin.html">JSPlugin</a>, <a href="objects/JSScreen.html">JSScreen</a>, <a href="objects/JSStyleSheet.html">JSStyleSheet</a>, <a href="objects/JSWindow.html">JSWindow</a>, <a href="objects/JSXMLHttpRequest.html">JSXMLHttpRequest</a></td>
+</tr>
+</table>
+<p></p> 
+ It’s a wrapper object for all objects transferred from JavaScript environment to Flash Player environment. 
+ It works as an object mirror (proxy), and you can get access to any properties of the original JavaScript 
+ object though it, call for its methods and create new JavaScript objects.
+ 
+ <p></p>
+<br>
+<span class="label">Example</span>
+<br>Example of creating JavaScript objects:
+<div class='listing'><pre>
+package {
+ import aw.external.JSInterface;
+ import aw.external.jsinterface.JSDynamic;
+ 
+ import flash.display.Sprite;
+ 
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   JSInterface.initialize(true);
+   var request:JSDynamic;
+   if('XMLHttpRequest' in JSInterface.window){
+    request = new JSDynamic("XMLHttpRequest");
+      }else if('ActiveXObject' in JSInterface.window){
+    request = new JSDynamic("ActiveXObject", "Msxml2.XMLHTTP");
+    if(!request) request = new JSDynamic("ActiveXObject", "Microsoft.XMLHTTP");
+   }
+   request.open('GET', 'http://some.server.com', true);
+   request.send(null);
+  }
+ }
+}
+</pre></div>
+ <p></p>Example of getting a reference to the existing JavaScript objects:
+<div class='listing'><pre>
+package {
+ import aw.external.JSInterface;
+ import aw.external.jsinterface.JSDynamic;
+ import aw.external.jsinterface.objects.JSHTMLElement;
+ 
+ import flash.display.Sprite;
+ 
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   JSInterface.initialize(true);
+   // JavaScript object using standard JSDynamic
+   var object1:JSDynamic = JSInterface.getInstance('window.document.body.firstChild');
+   // JavaScript object using the class extended from JSDynamic
+   var object2:JSHTMLElement = JSInterface.getInstance('window.document.body.firstChild', JSHTMLElement);
+   // Return type Object, but it's JSDynamic
+   var object3:Object = JSInterface.window.document.body.firstChild;
+   // Conversion of wrapper type of JavaScript object from JSDynamic in JSHTMLElement (this will not affect the original object in JavaScript)
+   var object4:JSHTMLElement = JSDynamic.convert(object1, JSHTMLElement);
+  }
+ }
+}
+</pre></div>
+ This object is also the basic one for all specialized wrapper objects to such JavaScript objects as 
+ HTMLElement, Document, Navigator etc. This class can be extended for specific objects, for example, 
+ for special objects of JavaScript framework, to announce its properties and set types for the 
+ properties (types mapping). Upon extension of the class for properties’ types mapping it’s necessary to 
+ indicate the properties’ types by name in JSObjectTypeMapper class, by the name of the new class, before 
+ addressing the properties. 
+ 
+ Each instance of this class, created for a new JavaScript object, will be cashed in JSInstanceCache class, 
+ but if one more JSDynamic object will be created for the same object, then the new JSDynamic object will 
+ replace the previous instance in cash.
+ <p></p> Example showing the work of caching:
+<div class='listing'><pre>
+package {
+ import aw.external.JSInterface;
+ import aw.external.jsinterface.JSDynamic;
+ import aw.external.jsinterface.objects.JSHTMLElement;
+ 
+ import flash.display.Sprite;
+ 
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   JSInterface.initialize(true);
+   var htmlTag1:JSHTMLElement = JSInterface.getInstance('window.document.body.firstChild', JSHTMLElement);
+   var htmlTag2:Object = JSInterface.document.body.firstChild;
+   // return TRUE because the second time the object passed JSHTMLElement for JavaScript object will not be created - would be received a copy from the cache.
+   trace(htmlTag1===htmlTag2);
+  }
+ }
+}
+</pre></div>
+ 
+ <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSTypeMap.html" target="">Examples of specifying the types of properties for a class extending JSDynamic</a>
+<br>
+<a href="objects/JSObjectTypeMapper.html" target="">aw.external.jsinterface.objects.JSObjectTypeMapper</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#JSDynamic()">JSDynamic</a>(className:Object, args:* = null)</div>
+<div class="summaryTableDescription"> 
+  The Constructor assumes the name of the JavaScript object class and the array of arguments for the constructor 
+  of the JavaScript object being created.</div>
+</td><td class="summaryTableOwnerCol">JSDynamic</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#convert()">convert</a>(jsd:<a href="JSDynamic.html">JSDynamic</a>, cls:Class):*</div>
+<div class="summaryTableDescription">[static] 
+  Converts an object of JSDynamic type in extended type
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSDynamic</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#convertFunctionToObject()">convertFunctionToObject</a>(f:Function):<a href="../jsinterface/JSDynamic.html">JSDynamic</a>
+</div>
+<div class="summaryTableDescription">[static] 
+  Returns the JSDynamic object of JavaScript function
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSDynamic</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#create()">create</a>(className:String, args:Array = null, cls:Class = null):<a href="../jsinterface/JSDynamic.html">JSDynamic</a>
+</div>
+<div class="summaryTableDescription">[static] 
+  
+  
+  
+  </div>
+</td><td class="summaryTableOwnerCol">JSDynamic</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="info"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">info</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>info:JSInfoObject</code>&nbsp;&nbsp;[read-write]<p> 
+  Info object of passed object
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;js_interface function get info():JSInfoObject</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;js_interface function set info(value:JSInfoObject):void</code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">aw.external.jsinterface.JSInfoObject</div>
+</div>
+<a name="name"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">name</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>name:String</code>&nbsp;&nbsp;[read-write]<p> 
+  String reference to the JavaScript object in stack of transmitted objects
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;js_interface function get name():String</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;js_interface function set name(value:String):void</code>
+<br>
+</div>
+<a name="properties"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">properties</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>properties:Array</code>&nbsp;&nbsp;[read-only]<p> 
+  Returns a list of the names of the properties of JavaScript object
+  
+  
+  </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;js_interface function get properties():Array</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="JSDynamic()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">JSDynamic</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function JSDynamic(className:Object, args:* = null)</code><p> 
+  The Constructor assumes the name of the JavaScript object class and the array of arguments for the constructor 
+  of the JavaScript object being created. The created JSDynamic object will be the wrapper for the created JavaScript object. 
+  A JavaScript function (transferred to Flash Player environment earlier) can be transferred instead of class name, in this 
+  case this function will be used as the new object constructor upon creation of a new object. Another JSDynamic object can be 
+  also transferred instead of class name, in this case a new object of the same type will be created. A utility object of 
+  JSInfoObject type used for service purposes for creating wrapper to existing objects can also be transferred.
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">className</span>:Object</code> &mdash; JavaScript class name, JavaScript function, or other object JSDynamic
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:*</code> (default = <code>null</code>)<code></code> &mdash; The list of arguments to the JavaScript object constructor or argument value, if only one
+  </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="convert()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">convert</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function convert(jsd:<a href="JSDynamic.html">JSDynamic</a>, cls:Class):*</code><p> 
+  Converts an object of JSDynamic type in extended type
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jsd</span>:<a href="JSDynamic.html">JSDynamic</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">cls</span>:Class</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+<br>
+<span class="label">Example</span>
+<br><div class='listing'><pre>
+package {
+ import aw.external.JSInterface;
+ import aw.external.jsinterface.JSDynamic;
+ import aw.external.jsinterface.objects.JSDocument;
+ 
+ import flash.display.Sprite;
+ 
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   JSInterface.initialize(true);
+   var jsObject:JSDynamic = JSInterface.getInstance('window.document');
+   var document:JSDocument = JSDynamic.convert(jsObject, JSDocument);
+  }
+ }
+}
+</pre></div>
+  <p></p>
+</div>
+<a name="convertFunctionToObject()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">convertFunctionToObject</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function convertFunctionToObject(f:Function):<a href="../jsinterface/JSDynamic.html">JSDynamic</a></code><p> 
+  Returns the JSDynamic object of JavaScript function
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">f</span>:Function</code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../jsinterface/JSDynamic.html">JSDynamic</a></code> &mdash; 
+                        JSDynamic 
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+</div>
+<a name="create()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">create</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function create(className:String, args:Array = null, cls:Class = null):<a href="../jsinterface/JSDynamic.html">JSDynamic</a></code><p> 
+  
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">className</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">cls</span>:Class</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../jsinterface/JSDynamic.html">JSDynamic</a></code> &mdash; 
+                        JSDynamic 
+  
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+</div>
+<a name="createInfo()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">createInfo</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>js_interface function createInfo(className:Object, args:Array = null):void</code><p> 
+  Creates a JavaScript object or get information about existing JavaScript object
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">className</span>:Object</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">args</span>:Array</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="forEach()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">forEach</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>js_interface function forEach(callbackFunction:Function, useList:Boolean = false):void</code><p> 
+  Cycle properties of JavaScript object using the callback function
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">callbackFunction</span>:Function</code> &mdash; Callback function
+  </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">useList</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If you specify TRUE, it will be used for not "live" cycle, a sort out of properties in the Flash Player environment with the list of property names.
+  </td>
+</tr>
+</table>
+</div>
+<a name="getValue()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getValue</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>js_interface function getValue(path:String, cls:Class = null):*</code><p> 
+   Get the value by path from JavaScript Object 
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">path</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">cls</span>:Class</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>*</code></td>
+</tr>
+</table>
+<br>
+<span class="label">Example</span>
+<br><div class='listing'><pre>
+package {
+ import aw.external.JSInterface;
+ import aw.external.js_interface;
+ import aw.external.jsinterface.objects.JSHTMLElement;
+ 
+ import flash.display.Sprite;
+ 
+ public class Test extends Sprite{
+  public function Test():void{
+   super();
+   JSInterface.initialize(this, true);
+   // Obtain the value of the string path to an object
+   var element:JSHTMLElement = JSInterface.document.js_interface::getValue("body.childNodes[1]", JSHTMLElement);
+   trace(element); // [object]
+  }
+ }
+}
+</pre></div>
+  <p></p>
+</div>
+<a name="isEqual()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isEqual</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>js_interface function isEqual(jsd:<a href="JSDynamic.html">JSDynamic</a>):Boolean</code><p> 
+  Verifies references to JavaScript objects and returns TRUE, if the links are identical, ie refer to the same object
+  
+  
+  </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">jsd</span>:<a href="JSDynamic.html">JSDynamic</a></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../jsinterface/JSDynamic.html" target="">aw.external.jsinterface.JSDynamic</a>
+</div>
+</div>
+<a name="isExists()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isExists</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>js_interface function isExists():Boolean</code><p> 
+  Verifies the existence of JavaScript object in the stack
+  
+  
+  </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; Boolean 
+  </td>
+</tr>
+</table>
+</div>
+<a name="remove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">remove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>js_interface function remove():void</code><p> 
+  Remove JavaScript object from the stack
+  
+  
+  </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright"> 
+</center>
+</div>
+</body>
+</html>
+<!-- -->

@@ -4,9 +4,9 @@
 	import flash.errors.*;
 
 		/**
-		* Класс для работы с объектами классов.
-		* Позволяет инстанциировать классы по имени или по объекту класса.
-		* @example Пример использования:
+		* Class for working with object classes/definitions.
+		* 	Allows you to create instances of classes by name or Class object.
+		* @example
 <listing version="3.0">
 package {
 	import aw.utils.ClassUtils;
@@ -25,8 +25,8 @@ package {
 	}
 }
 </listing>
-		* Содержит метод для получения объекта класса из экземпляра класса.
-		* @example Пример использования:
+		* Provides a method for obtaining an class instance from Class object.
+		* @example
 <listing version="3.0">
 package {
 	import aw.utils.ClassUtils;
@@ -66,9 +66,9 @@ package {
 		static protected const classCallers:Array = [call0Class, call1Class, call2Class, call3Class, call4Class, call5Class, call6Class, call7Class, call8Class, call9Class, call10Class, call11Class, call12Class, call13Class, call14Class, call15Class];
 
 		/**
-		* Возвращает объект класса по его имени или экземпляру.
+		* Returns an Class object by its instance
 		* 
-		* @param any Имя класса или его экземпляр.
+		* @param any Class instance  
 		* @return Class
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -81,9 +81,9 @@ package {
 		}
 
 		/**
-		* Возвращает имя класса.
+		* Returns the name of the class.
 		* 
-		* @param cls Объект класса, его экземпляр или имя(если скормить имя несуществующего класса, то вернёт имя класса "String").
+		* @param cls Class object, a instance of it or name (if set name of a non-existent class, it returns the class name "String")
 		* @return String
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -94,10 +94,10 @@ package {
 		}
 
 		/**
-		* Эмулирует действие одноимённого метода объектов типа Function.
+		* Emulates the same method of the Function class.
 		* 
-		* @param cls Объект класса, экземпляр которого нужно получить.
-		* @param arr Список параметров передаваемых в конструкторе.
+		* @param cls Class object, a copy of which will be retrieved
+		* @param arr List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -110,10 +110,10 @@ package {
 		}
 
 		/**
-		* Создаёт экземпляр класса по его имени, передавая в конструктор параметры из массива.
+		* Creates a copy of the class by its name, passing in the constructor parameters from the array
 		* 
-		* @param name Имя класса, экземпляр которого нужно получить.
-		* @param arr Список параметров передаваемых в конструкторе.
+		* @param name Class name, which instance to get
+		* @param arr List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -132,10 +132,10 @@ package {
 		}
 		
 		/**
-		* Эмулирует действие одноимённого метода объектов типа Function.
+		* Emulates the same method of the Function class.
 		* 
-		* @param cls Объект класса, экземпляр которого нужно получить.
-		* @param ...args Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param ...args List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -147,10 +147,10 @@ package {
 		}
 
 		/**
-		* Создаёт экземпляр класса по его имени, передавая в конструктор все последующие параметры, за именем класса.
+		* Creates a copy of the class by its name, passing in the constructor, all parameters following by the class name.
 		* 
-		* @param cls Объект класса, экземпляр которого нужно получить.
-		* @param ...args Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param ...args List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -168,9 +168,9 @@ package {
 		}
 
 		/**
-		* Получить ссылку на метод создающий экземпляр класса по количеству передаваемых аргументов.
+		* Get a reference to the method, which creates a copy of the class, by the number of arguments
 		* @private
-		* @param i Количество аргументов.
+		* @param i 	Number of arguments
 		* @return Function
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -180,9 +180,9 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого не принимает параметров.
+		* Get instance of class, which constructor takes no parameters
 		* @private
-		* @param cls Объект класса.
+		* @param cls Class object
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -192,10 +192,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 1 параметр.
+		* Get instance of class, which constructor takes 1 parameter
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -205,10 +205,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 2 параметра.
+		* Get instance of class, which constructor takes 2 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -218,10 +218,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 3 параметра.
+		* Get instance of class, which constructor takes 3 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -231,10 +231,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 4 параметра.
+		* Get instance of class, which constructor takes 4 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -244,10 +244,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 5 параметров.
+		* Get instance of class, which constructor takes 5 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -257,10 +257,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 6 параметров.
+		* Get instance of class, which constructor takes 6 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -270,10 +270,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 7 параметров.
+		* Get instance of class, which constructor takes 7 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -283,10 +283,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 8 параметров.
+		* Get instance of class, which constructor takes 8 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -296,10 +296,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 9 параметров.
+		* Get instance of class, which constructor takes 9 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -309,10 +309,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 10 параметров.
+		* Get instance of class, which constructor takes 10 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -322,10 +322,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 11 параметров.
+		* Get instance of class, which constructor takes 11 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -335,10 +335,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 12 параметров.
+		* Get instance of class, which constructor takes 12 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -348,10 +348,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 13 параметров.
+		* Get instance of class, which constructor takes 13 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -361,10 +361,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 14 параметров.
+		* Get instance of class, which constructor takes 14 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -374,10 +374,10 @@ package {
 		}
 
 		/**
-		* Получить экземпляр класса, конструктор которого принимает 15 параметров.
+		* Get instance of class, which constructor takes 15 parameters
 		* @private
-		* @param cls Объект класса.
-		* @param a Параметры передаваемые в конструкторе.
+		* @param cls Class object
+		* @param a List of parameters for constructor
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
@@ -387,9 +387,9 @@ package {
 		}
 
 		/**
-		* Создаёт сообщение об ошибке.
+		* Creates an error message
 		* @private
-		* @param cls Имя класса вызвавшего ошибку.
+		* @param cls Class name, that caused the error
 		* @return *
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0

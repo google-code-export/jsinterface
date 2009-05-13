@@ -5,16 +5,17 @@ package aw.external.jsinterface{
 	import flash.utils.flash_proxy;
 
 	/** 
-	* Гарантирует передачу значения в JavaScript, как сложный тип данных - связанный с оригинальным объектом.
-	* Этот объект служит оболочкой для объектов передаваемых в JavaScript среду, он указывает JSInterface, 
-	* что его значение необходимо обязательно зарегистрировать в стеке передаваемых объектов и передавать 
-	* в JavaScript только информацию о нём, используя "живое общение" с объектом. Такая связь обозначает, 
-	* что передаваемый объект на самом деле не передаётся в JavaScript среду, а в JavaScript среде создаётся 
-	* специальный объект, который сообщает о всех запросах к объекту и его свойствам/методам. Эти запросы, 
-	* в свою очередь, передаются в среду Flash Player'а, там обрабатываются и отправляются назад в JavaScript, 
-	* как результат выполнения запроса. Таким образом можно получить самую актуальную информацию о объекте и 
-	* значениях его свойств.
-	* @example Пример метода преобразования:
+	* It guarantees transfer of value to JavaScript as complex data type connected to the original object. 
+	* This object serves as wrapper for objects transferred to the JavaScript environment; it indicates to 
+	* JSInterface that its value should necessarily be registered in the stack of transferred objects and 
+	* it should transfer to JavaScript only the information about it, using “alive communication” with the 
+	* object. Such connection means that the transferred object is not really transferred to JavaScript 
+	* environment, but a special object that informs about all the requests for the object and its properties/methods 
+	* is created in JavaScript environment. These request, in their turn, are transferred to Flash Player 
+	* environment, transferred there and sent back to JavaScript as a result of request fulfilling. Thus the 
+	* most recent information on the object and its properties’ values can be received.
+	* 
+	* @example Example of transformation:
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -27,7 +28,9 @@ package {
 		public function Test():void{
 			super();
 			JSInterface.initialize(this);
-			// можно изменять свойства этого объекта и в JavaScript среде, сразу после обновления значений свойств оригинального объекта, будут получены новые значения.
+			// You can change the properties of this object in the JavaScript environment,  
+			// immediately after updating the values of the properties of the original 
+			// object will be received by the new values.
 			JSInterface.window.drawInFlash(this.graphics, new JSComplex(this._drawProperties));
 		}
 	}
@@ -74,7 +77,7 @@ package {
 		}
 
 		/** 
-		* Ссылка на передаваемый объект
+		* Link in the transferred object
 		* 
 		* 
 		* @public (js_interface,getter) 

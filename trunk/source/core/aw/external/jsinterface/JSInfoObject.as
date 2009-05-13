@@ -6,12 +6,14 @@ package aw.external.jsinterface{
 	import flash.utils.getQualifiedClassName;
 	[ExcludeClass]
 	/**
-	 * Класс управляющий объектами информации о импортируемых или экспортируемых объектах между средами выполнения. 
-	 * Он собирает информацию о экспортируемых объектах из среды Flash Player'а и обрабатывает информацию полученную о 
-	 * объектах импортируемых из JavaScript среды.
-	 * Умеет определять дважды перенесённые объекты и подменяет их оригинальными. К примеру, если объект из среды Flash Player'а 
-	 * был перенесён в JavaScript, а потом возвращён, то окончательным значением будет не объект JSDynamic, как для JavaScript 
-	 * объекта, а оригинальный объект вызванный из стека переносимых объектов.
+	 * Class manager of imported or exported objects between environments.
+	 * It collects information about the exported objects from the Flash Player 
+	 * environment and processes information received on objects imported from the 
+	 * JavaScript environment.
+	 * Can identify two deferred objects and replaces their by original object. 
+	 * For example, if an object from the Flash Player environment has been ported to JavaScript, 
+	 * and then returned, the final value will be not JSDynamic object, like for JavaScript 
+	 * object, but the original object from the stack of exported objects.
 	 * 
 	 * @private
 	 * @see aw.external.jsinterface.JSDynamic
@@ -150,11 +152,10 @@ package aw.external.jsinterface{
 		public var side:String = JAVASRIPT_SIDE;
 
 		/** 
-		* Оболочка для информации о импортируемом объекте. Получает в качестве параметра простой объект и переносит все необходимые свойства. 
-		* 
+		* Wrapper, for information about the imported object. Retrieves as value a simple object, and moves from it all necessary properties.
 		* 
 		* @public 
-		* @param obj Объект с информацией о JavaScript объекте с которым связана информация.
+		* @param obj The object with information about the JavaScript object with which the information relates.
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -170,7 +171,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Создаёт простой объект с информацией для передачи её в JavaScript среду.
+		* Create a simple object with information for sending it to the JavaScript environment.
 		* 
 		* 
 		* @public 
@@ -183,7 +184,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Строковое представление объекта.
+		* String representation of the object.
 		* 
 		* 
 		* @public 
@@ -221,12 +222,12 @@ package aw.external.jsinterface{
 		}();
 
 		/** 
-		* Создаёт объект информации из объектов любых типов.
+		* 	Creates an object of information from objects of any type.
 		* 
 		* 
 		* @public 
-		* @param val Любой передаваемый в JavaScript объект.
-		* @return Object Объект с информацией о объекте.
+		* @param val Any object passed to JavaScript.
+		* @return Object The object with information about the target object.
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
@@ -411,7 +412,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Создаёт информацию для вложенных объектов и свойств других объектов.
+		* Create information for nested objects and properties of other objects.
 		* 
 		* 
 		* @public 
@@ -432,7 +433,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Создаёт информацию для значений массива.
+		* Create information for values of passed array.
 		* 
 		* 
 		* @public 
@@ -452,7 +453,7 @@ package aw.external.jsinterface{
 		}
 
 		/** 
-		* Преобразует объект с информацией в объект оболочку, который будет связан с JavaScript объектом.
+		* Converts an object with the information in an wrapper object, which will be linked to the JavaScript object.
 		* 
 		* 
 		* @public 

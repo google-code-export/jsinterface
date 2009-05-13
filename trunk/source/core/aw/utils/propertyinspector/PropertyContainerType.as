@@ -1,7 +1,7 @@
 ﻿package aw.utils.propertyinspector{
 
 	/** 
-	* Виды воспринимаемых членов класса и их значения. 
+	* Types of acceptable members of the class and their values 
 	* 
 	* 
 	* @public 
@@ -11,7 +11,7 @@
 	public final class PropertyContainerType extends Object{
 
 		/** 
-		* Любой тип
+		* Any type
 		* 
 		* 
 		* @public (constant) 
@@ -21,7 +21,7 @@
 		static public const ANY:int = -1;
 
 		/** 
-		* Тип "переменная"
+		* Variable
 		* 
 		* 
 		* @public (constant) 
@@ -31,7 +31,7 @@
 		static public const VARIABLE:int = 0;
 
 		/** 
-		* Тип методов доступа, аксессоров(GET/SET методы).
+		* Accessor method (GET/SET method).
 		* 
 		* 
 		* @public (constant) 
@@ -41,7 +41,7 @@
 		static public const ACCESSOR:int = 1;
 
 		/** 
-		* Тип "константа"
+		* Constant
 		* 
 		* 
 		* @public (constant) 
@@ -51,7 +51,7 @@
 		static public const CONSTANT:int = 2;
 
 		/** 
-		* Тип "метод"
+		* Method
 		* 
 		* 
 		* @public (constant) 
@@ -61,7 +61,7 @@
 		static public const METHOD:int = 3;
 
 		/** 
-		* Строка содержащая стандартное описание типа "переменная"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -71,7 +71,7 @@
 		static public const VARIABLE_NAME:String = 'variable';
 
 		/** 
-		* Строка содержащая стандартное описание типа "аксессор"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -81,7 +81,7 @@
 		static public const ACCESSOR_NAME:String = 'accessor';
 
 		/** 
-		* Строка содержащая стандартное описание типа "константа"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -91,7 +91,7 @@
 		static public const CONSTANT_NAME:String = 'constant';
 
 		/** 
-		* Строка содержащая стандартное описание типа "метод"
+		* 
 		* 
 		* 
 		* @public (constant) 
@@ -111,7 +111,7 @@
 		static private const TYPE_LIST:Object = [VARIABLE_NAME, ACCESSOR_NAME, CONSTANT_NAME, METHOD_NAME];
 
 		/** 
-		* Метод возвращающий описательную строку по значению типа.
+		* The method returns a description by value type
 		* 
 		* 
 		* @public

@@ -1,7 +1,7 @@
 package aw.utils.eval{
 	import aw.utils.iteration.LengthIterationIndex;
 	
-	/** Выделяет из строки числовое значение и преобразовывает в число.
+	/** Gets from a string numeric value and converts to a number.
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

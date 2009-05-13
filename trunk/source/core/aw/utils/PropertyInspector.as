@@ -57,6 +57,7 @@ Rectangle methods:    getBounds,getRect
 	* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 	*/
 	//TODO: Добавить проверку на тип namespace
+	//TODO: В isExists нужно учесть, что могут быть одноимённые члены класса статические и экземпляра
 
 	/** 
 	* 
@@ -68,7 +69,7 @@ Rectangle methods:    getBounds,getRect
 	public final class PropertyInspector extends Object{
 
 		/** 
-		* Текст ошибки, в случае невозможности получить доступ к объекту.
+		* Text of the error, occurs when failure to gain access to the object
 		* 
 		* 
 		* @public (constant) 
@@ -78,8 +79,8 @@ Rectangle methods:    getBounds,getRect
 		static public const OBJECT_NULL_ERROR:String = 'Object is NULL.';
 
 		/** 
-		* Словарь объектов и их описаний.
-		* _types[класс объекта] = его описание.
+		* Dictionary of objects and their descriptions
+		* _types[object definition] = object description.
 		* 
 		* @private (protected) 
 		* @langversion ActionScript 3.0 
@@ -88,11 +89,11 @@ Rectangle methods:    getBounds,getRect
 		static protected var _types:Dictionary = new Dictionary();
 
 		/** 
-		* Получить объект PropertyInspectorItem содержащий в себе информацию о переданном объекте.
+		* Get PropertyInspectorItem object contains the information about target object
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
+		* @param o Object instance or definition
 		* @return PropertyInspectorItem 
 		* @see aw.utils.propertyinspector.PropertyInspectorItem 
 		* @langversion ActionScript 3.0 
@@ -108,13 +109,13 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает список объектов PropertyItem, описывающих свойства принадлежащие объекту класса, по уровню доступа.
+		* Get properties of object by level of access
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
-		* @param acc Тип доступа
-		* @param useStatic Если зазано значение TRUE, то будут использоваться члены класса принадлежащие объекту класса, статические члены класса.
+		* @param o Object instance or definition
+		* @param acc Access type
+		* @param useStatic Use static memebers only
 		* @return Array
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @see aw.utils.propertyinspector.PropertyAccessType
@@ -130,12 +131,12 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает объект PropertyItem содержащий информацию о члене класса, по его имени.
+		* Retrieve object PropertyItem, by name of a member of the class
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
-		* @param name Имя свойства, может быть String или QName.
+		* @param o Object instance or definition
+		* @param name Name of property can be String or QName instance
 		* @return PropertyItem 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @langversion ActionScript 3.0 
@@ -149,12 +150,12 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Проверяет наличие свойства или метода у объекта или экземпляров класса.
+		* Verifies the existence of a member of the class, by its name
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
-		* @param name Имя свойства, может быть String или QName.
+		* @param o Object instance or definition
+		* @param name Name of property can be String or QName instance
 		* @return Boolean 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -166,12 +167,12 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Проверяет наличие свойства у объекта или экземпляров класса. Если существует одноимённый метод, то возвращает FALSE.
+		* Returns TRUE, if passed the name of the property and FALSE - if the name of the method.
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
-		* @param name Имя свойства, может быть String или QName.
+		* @param o Object instance or definition
+		* @param name Name of property can be String or QName instance
 		* @return Boolean 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -183,13 +184,13 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает список объектов PropertyItem, описывающих свойства принадлежащие объекту класса, по виду члена класса(свойство, костанта, аксессор - GET/SET метод, метод).
+		* Returns properties by the type of class member
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса.
+		* @param o Object instance or definition.
 		* @param cont 
-		* @param useStatic Если зазано значение TRUE, то будут использоваться члены класса принадлежащие объекту класса, статические члены класса.
+		* @param useStatic Use static memebers only
 		* @return Array 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @see aw.utils.propertyinspector.PropertyContainerType 
@@ -203,13 +204,13 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает список объектов PropertyItem, описывающих свойства содержащие значения указанного типа.
+		* Returns the properties by value type
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
+		* @param o Object instance or definition
 		* @param type Тип значения, по которому требуется произвести выборку.
-		* @param useStatic Если зазано значение TRUE, то будут использоваться члены класса принадлежащие объекту класса, статические члены класса.
+		* @param useStatic Use static memebers only
 		* @return Array 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @langversion ActionScript 3.0 
@@ -226,8 +227,8 @@ Rectangle methods:    getBounds,getRect
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
-		* @param useStatic Если зазано значение TRUE, то будут использоваться члены класса принадлежащие объекту класса, статические члены класса.
+		* @param o Object instance or definition
+		* @param useStatic Use static memebers only
 		* @return Array 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @langversion ActionScript 3.0 
@@ -240,13 +241,13 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает список объектов PropertyItem, описывающих методы возвращающие объекты указанного типа.
+		* Returns list of PropertyItem, which describes object methods.
 		* 
 		* 
 		* @public 
-		* @param o Объект или экземпляр класса
-		* @param type Тип возвращаемого значения, по которому требуется произвести выборку.
-		* @param useStatic Если зазано значение TRUE, то будут использоваться члены класса принадлежащие объекту класса, статические члены класса.
+		* @param o Object instance or definition
+		* @param type Type of return value
+		* @param useStatic Use static memebers only
 		* @return Array 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @langversion ActionScript 3.0 
@@ -259,12 +260,12 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает объект с дубликатами свойств объекта источника и их значений.
+		* Returns an object with duplicates of the source object properties and their values
 		* 
 		* 
 		* @public 
-		* @param obj Объект источник данных
-		* @param type Если указан тип данных, то будут обработаны только свойства со значениями этого типа.
+		* @param obj Target object
+		* @param type If the type of values is specified, will be processed only properties with values of this type
 		* @return Object 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -286,13 +287,13 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает объект содержащий свойства со значениями одинаковыми в обоих объектах.
+		* Returns an object containing properties with values similar in both objects
 		* 
 		* 
 		* @public 
-		* @param obj1 Первый объект
-		* @param obj2 Второй объект
-		* @param type Если указан тип данных, то будут обработаны только свойства со значениями этого типа.
+		* @param obj1 First object
+		* @param obj2 Second object
+		* @param type If the type of values is specified, will be processed only properties with values of this type
 		* @return Object 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -319,13 +320,13 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает объект содержащий свойства со значениями первого объекта имеющие значения отличные от значений тех же свойств второго объекта.
+		* Returns an object containing properties with the values of the first object having a value different from the values of the same properties of the second object
 		* 
 		* 
 		* @public 
-		* @param obj1 Первый объект
-		* @param obj2 Второй объект
-		* @param type Если указан тип данных, то будут обработаны только свойства со значениями этого типа.
+		* @param obj1 First object
+		* @param obj2 Second object
+		* @param type If the type of values is specified, will be processed only properties with values of this type
 		* @return Object 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -352,14 +353,14 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Меняет между объектами значения общих свойств, у которых совпадают имена и типы значений.
+		* Changes between the objects, values of common properties that have the same names and types of values
 		* 
 		* 
 		* @public 
-		* @param obj1 Первый объект
-		* @param obj2 Второй объект
-		* @param type Если указан тип данных, то будут обработаны только свойства со значениями этого типа
-		* @param names Массив имён свойств, если указан, то метод будет работать только с этими свойствами
+		* @param obj1 First object
+		* @param obj2 Second object
+		* @param type If the type of values is specified, will be processed only properties with values of this type
+		* @param names An array of names of properties, if specified, the method will work only with those properties
 		* @return void 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -397,12 +398,12 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает массив объектов PropertyItem описывающих доступные для чтения и записи свойства, присутствующие в обоих объектах. 
+		* Returns an array of PropertyItem objects describing available for reading and writing properties that are present in both objects
 		* 
 		* 
 		* @public 
-		* @param obj1 Первый объект
-		* @param obj2 Второй объект
+		* @param obj1 First object
+		* @param obj2 Second object
 		* @return Array 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @langversion ActionScript 3.0 
@@ -430,12 +431,12 @@ Rectangle methods:    getBounds,getRect
 		}
 
 		/** 
-		* Возвращает массив объектов PropertyItem описывающих доступные для чтения и записи свойства и имеющие отличие(в типе содержимого), либо отсутствующие в одном из объектов. 
+		* Returns an array of PropertyItem objects describing available for read and write properties and are opposed (to the type of content), or missing in one of the objects 
 		* 
 		* 
 		* @public 
-		* @param obj1 Первый объект
-		* @param obj2 Второй объект
+		* @param obj1 First object
+		* @param obj2 Second object
 		* @return Array 
 		* @see aw.utils.propertyinspector.PropertyItem 
 		* @langversion ActionScript 3.0 

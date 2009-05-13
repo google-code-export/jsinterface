@@ -3,7 +3,7 @@ package aw.utils.eval{
 	import aw.utils.EvalUtils;
 	import aw.utils.iteration.LengthIterationIndex;
 	
-	/** Преобразовывает строку в объект типа XML.
+	/** Converts a string to an XML object.
 	 * 
 	 * 
 	 * @author Galaburda a_[w] Oleg	  http://www.actualwave.com 

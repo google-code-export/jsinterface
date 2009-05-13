@@ -12,7 +12,7 @@ package aw.external.jsinterface.flobject{
 
 	[ExcludeClass]
 	/** 
-	* Класс в котором реализованы команды вызываемые из JavaScript для объектов перенесённых из среды Flash Player'а.
+	* The class which implemented the commands called from JavaScript objects transferred from the Flash Player'a.
 	* 
 	* 
 	* @private 
@@ -115,7 +115,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Возвращает объект напрямую, как простой тип.
+		* Returns an object directly, as a simple type.
 		* 
 		* 
 		* @public 
@@ -129,7 +129,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Сокращённое обозначение "чтение и запись".
+		* Abbreviation "read and write"
 		* 
 		* 
 		* @public (constant) 
@@ -139,7 +139,7 @@ package aw.external.jsinterface.flobject{
 		static public const READWRITE_TYPE:String = 'rw';
 
 		/** 
-		* Сокращённое обозначение "только для чтения".
+		* Abbreviation "read only"
 		* 
 		* 
 		* @public (constant) 
@@ -149,7 +149,7 @@ package aw.external.jsinterface.flobject{
 		static public const READONLY_TYPE:String = 'r';
 
 		/** 
-		* Сокращённое обозначение "только для записи".
+		* Abbreviation "write only"
 		* 
 		* 
 		* @public (constant) 
@@ -159,7 +159,7 @@ package aw.external.jsinterface.flobject{
 		static public const WRITEONLY_TYPE:String = 'w';
 
 		/** 
-		* Сокращённое обозначение "динамическое свойство".
+		* Abbreviation "dynamic property"
 		* 
 		* 
 		* @public (constant) 
@@ -169,12 +169,12 @@ package aw.external.jsinterface.flobject{
 		static public const DYNAMIC_TYPE:String = 'd';
 
 		/** 
-		* Возвращает список свойств объекта.
+		* Returns list of object properties
 		* 
 		* 
 		* @public 
-		* @param obj 
-		* @param access 
+		* @param obj Target object
+		* @param access Access type, like RW, R, W or D.
 		* @return Array 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -201,7 +201,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Возвращает перебираемые цыклом for...in свойства, предполагается, что они были созданы динамически.
+		* Get moving cycle for ... in the properties, it is assumed that they were created dynamically.
 		* 
 		* 
 		* @private 
@@ -220,7 +220,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Переформировывает список объектов QName в список простых объектов с аналогичными свойствами uri и localName, в которые переносит значения.
+		* Converts the list of QName in the list of simple objects with similar properties uri and localName, which brings value.
 		* 
 		* 
 		* @private 
@@ -242,7 +242,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Возвращает список методов объекта.
+		* Returns a list of the object.
 		* 
 		* 
 		* @public 
@@ -265,7 +265,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Возвращает строковоке представление XML дерева описывающего класс. Использует метод flash.utils.describeType().
+		* Returns a string representation of XML tree describing the class. Uses method flash.utils.describeType().
 		* 
 		* 
 		* @public 
@@ -279,7 +279,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Возвращает имя класса объекта.
+		* Returns the name of the class object.
 		* 
 		* 
 		* @public 
@@ -293,7 +293,7 @@ package aw.external.jsinterface.flobject{
 		}
 
 		/** 
-		* Возвращает имя суперкласса объекта.
+		* Returns the name of superclass of the object.
 		* 
 		* 
 		* @public 

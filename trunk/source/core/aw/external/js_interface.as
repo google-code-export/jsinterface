@@ -7,9 +7,9 @@
 package aw.external{
 
 	/** 
-	* Пространство имён используемое для получения достура к спецефическим особенностям JSInterface, JSDynamic и типах объектов входящих в данную библиотеку.
+	* Namespace used to gain access to the specific features of JSInterface, JSDynamic and types of objects included in this library.
 	* 
-	* @example Пример использования:
+	* @example
 <listing version="3.0">
 package {
 	import aw.external.JSInterface;
@@ -24,13 +24,13 @@ package {
 			super();
 			JSInterface.initialize(this, true);
 			var document:JSDynamic = JSInterface.document;
-			// получить список имён свойств
+			// 	get a list of names of properties
 			var properties:Array = document.js_interface::properties;
 			trace(properties);
-			// получить значение по строковому пути к объекту
+			// obtain the value of the string path to an object
 			var element:JSHTMLElement = document.js_interface::getValue("body.childNodes[1]", JSHTMLElement);
 			trace(element);
-			// перебрать свойства объекта с помощью функции обратного вызова
+			// classifу properties of the object by using the callback function
 			trace(element.js_interface::forEach(function(target:Object, propertyName:String, propertyValue:*):void{trace(propertyName, ' = ', propertyValue);}));
 		}
 	}
