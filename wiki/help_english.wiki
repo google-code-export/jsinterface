@@ -12,6 +12,8 @@
  * [http://code.google.com/p/jsinterface/wiki/help_english#memory Managing memory]
  * [http://code.google.com/p/jsinterface/wiki/help_english#addition Additional features]
 
+Thank's to [http://wellgames.com/ wellgames.com] for documentation translation!
+
 <font color="#ffffff">
 ========= intro =========
 </font>
@@ -461,4 +463,4 @@ One step for solving the problem could be applying `flash.utils.Dictionary` clas
 
 *!ClassUtils* - Works with class objects, contains additional methods for working with them.
 
-*JSON* - Works with class objects, contains additional methods for working with them.
+*JSON* - Fast JSON encoder and decoder.
