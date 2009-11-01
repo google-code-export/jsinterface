@@ -77,19 +77,23 @@ package aw.external{
 			var url:String = '';
 			if(arg is DisplayObject){
 				var displayObject:DisplayObject = arg as DisplayObject;
-				_stage = displayObject.stage;
-				findCurrentRoot();
+				if(allowJSAccess){
+					_stage = displayObject.stage;
+					_root = findCurrentRoot();
+				}
 				url = displayObject.loaderInfo.url;
 			}else if(arg is LoaderInfo){
-				_stage = (arg as LoaderInfo).content.stage;
-				findCurrentRoot();
+				if(allowJSAccess){
+					 _stage = (arg as LoaderInfo).content.stage;
+					 _root = findCurrentRoot();
+				}
 				url = (arg as LoaderInfo).url;
 			}else if(arg) url = arg as String;
 			allowJavaScriptAccess = allowJSAccess;
 			JSCore.init(url);
 		}
-
-		static private function findCurrentRoot():void{
+		static private function findCurrentRoot():DisplayObject{
+			if(!_stage) return null;
 			var len:int = _stage.numChildren;
 			var item:DisplayObject;
 			if(len==1) item = _stage.getChildAt(0);
@@ -99,7 +103,7 @@ package aw.external{
 					if(item.root && item.root!=_stage) break;
 				}
 			}
-			_root = item;
+			return item;
 		}
 
 		static public function get stage():Stage{

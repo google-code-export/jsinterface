@@ -554,12 +554,12 @@ package aw.external.jsinterface{
 ]]></command>
 <command><![CDATA[
 	JSIElement=function(){};
-	JSIElement.noIENodeName='embed';
+	JSIElement.EmbedNodeName='embed';
 	JSIElement.get=function(id,url){
 		var r;
 		if(id){
 			var d=JSI.d();
-			r=JSI.isIE()? d[id]:JSIElement.getNOIE(d,id);
+			r=JSI.isIE()? d[id]:JSIElement.getEmbedNode(d,id);
 			if(!r){
 				r=d.getElementById(id);
 			};
@@ -571,20 +571,22 @@ package aw.external.jsinterface{
 	};
 ]]></command>
 <command><![CDATA[
-	JSIElement.getNOIE=function(d,id){
-		var n='embed';
+	JSIElement.getEmbedNode=function(d,id){
 		var d=JSI.d();
-		var r=JSIElement.getEmbed(window[id]);
-		if(!r){
+		var r;
+		if(id in window){
+			r=JSIElement.getEmbed(window[id]);
+		};
+		if(!r && id in d){
 			r=JSIElement.getEmbed(d[id]);
 		};
-		if(!r){
+		if(!r && 'all' in d && id in d.all){
 			r=JSIElement.getEmbed(d.all[id]);
 		};
 		return r;
 	};
 	JSIElement.isEmbed=function(node){
-		if(node instanceof HTMLElement && node.nodeName.toLowerCase()==JSIElement.noIENodeName){
+		if(node instanceof HTMLElement && node.nodeName.toLowerCase()==JSIElement.EmbedNodeName){
 			return true;
 		}else{
 			return false;

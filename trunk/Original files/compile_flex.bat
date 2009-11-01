@@ -1,2 +1,2 @@
-"C:\Program Files (x86)\Adobe\Flex Builder 3\sdks\3.2.0\bin\compc.exe" -source-path ../source/core ../source/full . -namespace aw.external.JSInterface ./manifest_flex.xml -include-namespaces aw.external.JSInterface -output ../JSInterface_flex.swc -include-classes aw.external.JSInterface -include-file icon.png ./icon.png
+"c:\Program Files (x86)\Adobe\Adobe Flash Builder Beta 2\sdks\4.0.0\bin\compc.exe" -source-path ../source/core ../source/full . -namespace aw.external.JSInterface ./manifest_flex.xml -include-namespaces aw.external.JSInterface -output ../JSInterface_flex.swc -include-classes aw.external.JSInterface -include-file icon.png ./icon.png
 pause

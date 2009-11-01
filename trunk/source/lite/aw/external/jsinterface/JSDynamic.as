@@ -14,6 +14,8 @@ package aw.external.jsinterface{
 	*/
 	public dynamic class JSDynamic extends Proxy{
 		JSFunction;
+		
+		static public const CLASS_NAME:String = 'Object';
 
 		static public const FUNCTION_TARGET_NAME:String = 'jsDynamicTarget';
 
@@ -29,7 +31,7 @@ package aw.external.jsinterface{
 
 		protected var _forInProperties:Array;
 
-		public function JSDynamic(className:Object='', args:*=null):void{
+		public function JSDynamic(className:Object=CLASS_NAME, args:*=null):void{
 			super();
 			if(className && className!==DO_NOT_CREATE_OBJECT){
 				if(arguments.length>1 && !(args is Array)) args = [args];

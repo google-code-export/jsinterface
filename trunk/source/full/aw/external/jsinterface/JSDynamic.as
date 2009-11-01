@@ -110,6 +110,16 @@ package {
 		* 
 		* 
 		* 
+		* @public (constant) 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public const CLASS_NAME:String = 'Object';
+
+		/** 
+		* 
+		* 
+		* 
 		* @private (constant) 
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
@@ -203,7 +213,7 @@ package {
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		public function JSDynamic(className:Object='', args:*=null):void{
+		public function JSDynamic(className:Object=CLASS_NAME, args:*=null):void{
 			super();
 			if(className && className!==DO_NOT_CREATE_OBJECT){
 				if(arguments.length>1 && !(args is Array)) args = [args];
