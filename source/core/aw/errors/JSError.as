@@ -1,4 +1,6 @@
 package aw.errors{
+	import flash.utils.getQualifiedClassName;
+	
 
 	/** 
 	* Object is a copy of a JavaScript error in the Flash Player environment.
@@ -118,7 +120,7 @@ package aw.errors{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		public function JSError(mess:String='', num:int=0, desc:String='', fNam:String='', lNum:Number=NaN, nam:String='', st:String='', obj:Object=null, pNam:String=''):void{
+		public function JSError(mess:String='', num:Number=NaN, desc:String='', fNam:String='', lNum:Number=NaN, nam:String='', st:String='', obj:Object=null, pNam:String=''):void{
 			super(mess, num);
 			_description = desc;
 			_fileName = fNam;
@@ -140,7 +142,7 @@ package aw.errors{
 		* @playerversion Flash 9.0.28.0 
 		*/
 		public function toString():String{
-			return '{JavaScript} '+this.message+'\nTarget object: ['+this._targetObject+'] property: ['+this._targetParameter+']\nStack trace: '+this._stack+'\n\n';
+			return '{JavaScript} Error\nname: '+this._jsErrorName+'\nnumber:'+this._number+'\nmessage:'+this.message+'\ndescription: '+this._description+'\ntarget: '+this._targetObject+'['+this._targetParameter+']\nStack trace: '+this._stack+'\n\n';
 		}
 
 		/** 

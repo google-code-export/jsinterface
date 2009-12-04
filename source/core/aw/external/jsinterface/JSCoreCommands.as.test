@@ -5,43 +5,43 @@ package aw.external.jsinterface{
 	 */
 	internal class JSCoreCommands extends Object{
 
-		/** 
-		* 
-		* 
-		* 
-		* @public (constant) 
-		* @langversion ActionScript 3.0 
-		* @playerversion Flash 9.0.28.0 
+		/**
+		*
+		*
+		*
+		* @public (constant)
+		* @langversion ActionScript 3.0
+		* @playerversion Flash 9.0.28.0
 		*/
 		static public const VERIFY_JSI_INSTALLATION:String='(function(){return Boolean(JSI);})';
 
-		/** 
-		* 
-		* 
-		* 
-		* @public (constant) 
-		* @langversion ActionScript 3.0 
-		* @playerversion Flash 9.0.28.0 
+		/**
+		*
+		*
+		*
+		* @public (constant)
+		* @langversion ActionScript 3.0
+		* @playerversion Flash 9.0.28.0
 		*/
 		static public const VERIFY_DOCUMENT_AVAILABILITY:String='(function(){return JSI.hasDocument();})';
 
-		/** 
-		* 
-		* 
-		* 
-		* @private (constant) 
-		* @langversion ActionScript 3.0 
-		* @playerversion Flash 9.0.28.0 
+		/**
+		*
+		*
+		*
+		* @private (constant)
+		* @langversion ActionScript 3.0
+		* @playerversion Flash 9.0.28.0
 		*/
 		static private const PREP_COMMAND_REGEXP:RegExp=/[\v\t\r\n]+/gi;
 
-		/** 
-		* 
-		* 
-		* 
-		* @private (internal,constant) 
-		* @langversion ActionScript 3.0 
-		* @playerversion Flash 9.0.28.0 
+		/**
+		*
+		*
+		*
+		* @private (internal,constant)
+		* @langversion ActionScript 3.0
+		* @playerversion Flash 9.0.28.0
 		*/
 		static internal const JSI_COMMANDS:XML=<root>
 <command><![CDATA[
@@ -555,13 +555,16 @@ package aw.external.jsinterface{
 <command><![CDATA[
 	JSIElement=function(){};
 	JSIElement.EmbedNodeName='embed';
-	JSIElement.get=function(id,url){
+	JSIElement.get = function(id,url){
 		var r;
 		if(id){
 			var d=JSI.d();
-			r=JSI.isIE()? d[id]:JSIElement.getEmbedNode(d,id);
+			r=JSI.isIE() ? d[id] : JSIElement.getEmbedNode(d,id);
 			if(!r){
 				r=d.getElementById(id);
+			};
+			if(!r){
+				r=JSIElement.getObjectByName(id);
 			};
 		};
 		if(!r){
@@ -575,7 +578,7 @@ package aw.external.jsinterface{
 		var d=JSI.d();
 		var r;
 		if(id in window){
-			r=JSIElement.getEmbed(window[id]);
+		r=JSIElement.getEmbed(window[id]);
 		};
 		if(!r && id in d){
 			r=JSIElement.getEmbed(d[id]);
@@ -612,21 +615,36 @@ package aw.external.jsinterface{
 		return r;
 	};
 	JSIElement.find=function(url){
-		if(JSI.isIE()){
-			return JSIElement.findIE(url);
-		}else{
-			return JSIElement.findNOIE(url);
+		var r=JSIElement.findNOIE(url);
+		if(!r){
+			r=JSIElement.findIE(url);
 		};
+		return r;
 	};
 ]]></command>
 <command><![CDATA[
-	JSIElement.findIE=function(url){
+	JSIElement.getObjectByName=function(n){
 		var r;
 		var list=JSI.d().getElementsByTagName('object');
 		var len=list.length;
 		for(var i=0; i<len; i++){
 			var o=list[i];
-			if(JSIElement.findIEIsValid(o.childNodes,url)){
+			if(('name' in o && o.name==n) || ('name' in o.attributes && o.attributes.name.value==n) || JSIElement.findIEVerifyParams(o.childNodes, 'name', n)){
+				r = o;
+				break;
+			};
+		};
+		return r;
+	}
+]]></command>
+<command><![CDATA[
+	JSIElement.findIE = function(url){
+		var r;
+		var list=JSI.d().getElementsByTagName('object');
+		var len = list.length;
+		for(var i=0; i<len; i++){
+			var o=list[i];
+			if(JSIElement.findIEIsValid(o,url)){
 				r=o;
 				break;
 			};
@@ -638,12 +656,31 @@ package aw.external.jsinterface{
 	};
 ]]></command>
 <command><![CDATA[
-	JSIElement.findIEIsValid=function(list,url){
-		var len=list.length;
+	JSIElement.findIEIsValid=function(o,url){
+		if(JSIElement.findIEVerifyAttrs(o,url)){
+			return true;
+		}else{
+			return JSIElement.findIEVerifyParams(o.childNodes,'movie',url);
+		};
+	};
+	JSIElement.findIEVerifyAttrs=function(o,url){
+		var r;
+		if('data' in o && o.data==url){
+			r=true;
+		};
+		if('data' in o.attributes && o.attributes.data.vaule==url){
+			r=true;
+		};
+		return r;
+	};
+]]></command>
+<command><![CDATA[
+	JSIElement.findIEVerifyParams=function(list,n,v){
+		var len = list.length;
 		for(var i=0; i<len; i++){
 			var a=list[i].attributes;
-			if(a.name.value=='movie'){
-				if(a.value.value==url){
+			if(a.name.value==n){
+				if(a.value.value==v){
 					return true;
 				}else{
 					return false;
@@ -1123,7 +1160,7 @@ package aw.external.jsinterface{
 		var n=this.findItem(fn,pn,nm);
 		if(!n){
 			n=JSIFunctions.base+String(this.index++);
-			this.items[n]={func:fn,parent:pn,name:nm};	
+			this.items[n]={func:fn,parent:pn,name:nm};
 		};
 		return n;
 	};
@@ -1787,15 +1824,15 @@ package aw.external.jsinterface{
 ]]></command>
 </root>;
 
-		/** 
-		* 
-		* 
-		* 
-		* @public 
-		* @param xml 
-		* @return void 
-		* @langversion ActionScript 3.0 
-		* @playerversion Flash 9.0.28.0 
+		/**
+		*
+		*
+		*
+		* @public
+		* @param xml
+		* @return void
+		* @langversion ActionScript 3.0
+		* @playerversion Flash 9.0.28.0
 		*/
 		static public function callJSCommands(xml:XML):void{
 			var rgx:RegExp = PREP_COMMAND_REGEXP;
