@@ -464,7 +464,7 @@ package aw.external.jsinterface{
 		* @playerversion Flash 9.0.28.0 
 		*/
 		static public function convert(obj:Object, cls:Class=null):*{
-			if(!obj) return undefined;
+			if(!obj) return obj;
 			var jsd:JSDynamic;
 			if(Object(obj).constructor==Object){
 				if(obj.isComplex){

@@ -1,2 +1,2 @@
-"c:\Program Files (x86)\Adobe\Adobe Flash Builder Beta 2\sdks\4.0.0\bin\compc.exe" -source-path ../source/full/ ../source/core/ . -namespace JSInterfaceComponent ./manifest_flash.xml -include-namespaces JSInterfaceComponent -compute-digest=false -output ../JSInterface_flash.swc -include-classes JSInterfaceComponent -include-file livepreview.swf ./livepreview.swf -include-file icon.png ./icon.png
+"z:\flexsdk\4.1.0.15082\bin\compc.exe" -source-path ../source/full/ ../source/core/ . -namespace JSInterfaceComponent ./manifest_flash.xml -include-namespaces JSInterfaceComponent -compute-digest=false -output ../JSInterface_flash.swc -include-classes JSInterfaceComponent -include-file livepreview.swf ./livepreview.swf -include-file icon.png ./icon.png
 pause

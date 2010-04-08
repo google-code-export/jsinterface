@@ -1,59 +1,22 @@
 ﻿package aw.utils{
-	import flash.utils.*;
-	import flash.system.*;
-	import flash.errors.*;
-
-		/**
+	import flash.errors.IllegalOperationError;
+	import flash.system.ApplicationDomain;
+	import flash.utils.Proxy;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+		/* *
 		* Class for working with object classes/definitions.
-		* 	Allows you to create instances of classes by name or Class object.
-		* @example
-<listing version="3.0">
-package {
-	import aw.utils.ClassUtils;
-	
-	import flash.display.Sprite;
-	import flash.filters.DropShadowFilter;
-	
-	public class Test extends Sprite{
-		public function Test():void{
-			super();
-			var filter1:DropShadowFilter = ClassUtils.apply(DropShadowFilter, [4, 45, 0, 1, 4, 4, 1]);
-			var filter2:DropShadowFilter = ClassUtils.applyByName("flash.filters.DropShadowFilter", [4, 45, 0, 1, 4, 4, 1]);
-			var filter3:DropShadowFilter = ClassUtils.call(DropShadowFilter, 4, 45, 0, 1, 4, 4, 1);
-			var filter4:DropShadowFilter = ClassUtils.callByName("flash.filters.DropShadowFilter", 4, 45, 0, 1, 4, 4, 1);
-		}
-	}
-}
-</listing>
-		* Provides a method for obtaining an class instance from Class object.
-		* @example
-<listing version="3.0">
-package {
-	import aw.utils.ClassUtils;
-	
-	import flash.display.Sprite;
-	import flash.filters.DropShadowFilter;
-	
-	public class Test extends Sprite{
-		public function Test():void{
-			super();
-			trace(ClassUtils.getClassDefinition(this));
-			var filter:DropShadowFilter = new DropShadowFilter();
-			trace(ClassUtils.getClassDefinition(filter));
-		}
-	}
-}
-/&#042; trace output
-[class Test]
-[class DropShadowFilter]
-&#042;/
-</listing>
+		* Allows you to create instances of classes by name or Class object.
 		* @author Galaburda a_[w] Oleg	  http://www.actualwave.com 
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
 		*/
 	public class ClassUtils extends Object{
 		
+		/**
+		* @private
+		*/
+		static public const VECTOR_CLASS_NAME:String = getQualifiedClassName(ApplicationDomain.currentDomain.hasDefinition('__AS3__.vec.Vector') ? ApplicationDomain.currentDomain.getDefinition('__AS3__.vec.Vector') : ApplicationDomain.currentDomain.getDefinition('Vector'));
 		
 		/**
 		* @private
@@ -78,6 +41,32 @@ package {
 			if(any is Proxy) cls = getDefinitionByName(getQualifiedClassName(any));
 			else cls = Object(any).constructor;
 			return cls as Class;
+		}
+		
+		/**
+		 * Get Vector class defnition with selected elements type 
+		 * @param itemDefinition Selected element type
+		 * @param applicationDomain Application domain of element type
+		 * @return Vector class definition
+		 * 
+		 */
+		static public function getVectorDefinition(itemDefinition:Class, applicationDomain:ApplicationDomain=null):Class{
+			if(!applicationDomain) applicationDomain = ApplicationDomain.currentDomain;
+			return applicationDomain.getDefinition(VECTOR_CLASS_NAME+'.<'+getQualifiedClassName(itemDefinition)+'>') as Class;
+		}
+		
+		/**
+		 * Create Vector class instance with selected elements type
+		 * @param itemDefinition Selected element type
+		 * @param length Vector length
+		 * @param fixed Fixed length
+		 * @param applicationDomain Application domain of element type 
+		 * @return Vector class instance
+		 * 
+		 */
+		static public function createCustomVector(itemDefinition:Class, length:uint=0, fixed:Boolean=false, applicationDomain:ApplicationDomain=null):*/* Vector.<*> */{
+			var definition:Class = getVectorDefinition(itemDefinition, applicationDomain);
+			return new definition(length, fixed);
 		}
 
 		/**

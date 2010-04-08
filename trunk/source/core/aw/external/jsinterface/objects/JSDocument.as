@@ -1597,7 +1597,7 @@ package aw.external.jsinterface.objects{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		public function createTextNode(data:String):String{
+		public function createTextNode(data:String):JSText{
 			return this.internalCall(js_interface::CREATE_TEXT_NODE_METHOD, arguments);
 		}
 

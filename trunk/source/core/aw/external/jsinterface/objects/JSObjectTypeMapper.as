@@ -79,6 +79,7 @@ package aw.external.jsinterface.objects{
 				JSNode, new JSTypeMap(JSTypeMap.JSNODE), 
 				JSNodeList, new JSTypeMap(JSTypeMap.JSNODE_LIST), 
 				JSStyleSheet, new JSTypeMap(JSTypeMap.JSSTYLE_SHEET), 
+				JSText, new JSTypeMap(JSTypeMap.JSTEXT),
 				JSWindow, new JSTypeMap(JSTypeMap.JSWINDOW), 
 				JSXMLHttpRequest, new JSTypeMap(JSTypeMap.JSXML_HTTP_REQUEST)
 			);
@@ -228,6 +229,7 @@ package aw.external.jsinterface.objects{
 		JSPlugin;
 		JSScreen;
 		JSStyleSheet;
+		JSText;
 		JSWindow;
 		JSXMLHttpRequest;
 	}

@@ -126,9 +126,13 @@ Definition: [class Sprite] flash.display::Sprite
 				else if(chr==ArrayEval.ARRAY_OPEN) ret = ArrayEval.getData(str, iteration, parseValue, scope);
 				else if(chr==ObjectEval.OBJECT_OPEN) ret = ObjectEval.getData(str, iteration, parseValue, scope);
 				else if(chr==RegExpEval.REGEXP_OPEN) ret = RegExpEval.getData(str, iteration);
+				else if(chr==ExecutableEval.GROUP_OPEN) ret = ExecutableEval.parseGroup(str, iteration, parseValue, scope);
 				else{
 					ret = ExecutableEval.lookToExecutableData(str, iteration, parseValue, scope);
-					//ret = getExecutableData(str, iteration, scope);
+				}
+				chr = str.charAt(iteration.index);
+				if(chr==ExecutableEval.DOT_CHAR){
+					ret = ExecutableEval.getDottedSequence(str, iteration, parseValue, scope, ret);
 				}
 				if(pref) ret = OperationEval.executePrefixOperator(ret, pref);
 				if(iteration.index<len) ret = OperationEval.getNextOperation(ret, str, iteration, parseValue, scope);

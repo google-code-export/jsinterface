@@ -24,6 +24,7 @@ package aw.external.jsinterface{
 	import aw.external.jsinterface.objects.JSNodeList;
 	import aw.external.jsinterface.objects.JSScreen;
 	import aw.external.jsinterface.objects.JSStyleSheet;
+	import aw.external.jsinterface.objects.JSText;
 	import aw.external.jsinterface.objects.JSWindow;
 	
 	[Exclude]
@@ -254,6 +255,7 @@ package {
 			createDocumentFragment:JSDocumentFragment,
 			createElement:JSHTMLElement,
 			createElementNS:JSHTMLElement,
+			createTextNode:JSText,
 			getElementById:JSHTMLElement,
 			getElementsByTagName:JSArray
 		};
@@ -490,6 +492,28 @@ package {
 			ownerNode:JSNode,
 			parentStyleSheet:JSStyleSheet
 		};
+		
+		/** 
+		 * 
+		 * 
+		 * 
+		 * @private (constant) 
+		 * @langversion ActionScript 3.0 
+		 * @playerversion Flash 9.0.28.0 
+		 */
+		static public const JSTEXT:String = 'JSTEXT_MAP';
+		
+		/** 
+		 * 
+		 * 
+		 * 
+		 * @private (constant) 
+		 * @langversion ActionScript 3.0 
+		 * @playerversion Flash 9.0.28.0 
+		 */
+		static private const JSTEXT_MAP:Object = {
+			splitText:JSText
+		};
 
 		/** 
 		* 
@@ -547,6 +571,8 @@ package {
 		static private const JSXML_HTTP_REQUEST_MAP:Object = {
 			responseXML:JSDocument
 		};
+		
+		protected const _typeList:Array = [];
 
 		/** 
 		* The constructor takes the objects to the method addTypes().
@@ -579,6 +605,7 @@ package {
 		public function addType(name:String, cls:Class):void{
 			if(name && cls){
 				this[name] = cls;
+				this._typeList.push(name);
 			}
 		}
 
@@ -639,7 +666,7 @@ package {
 		* @playerversion Flash 9.0.28.0 
 		*/
 		public function getType(name:String):Class{
-			return (name in this && this[name] is Class) ? this[name] : JSDynamic;
+			return (this._typeList.indexOf(name)>=0 && this[name] is Class) ? this[name] : JSDynamic;
 		}
 
 		/** 
@@ -653,7 +680,7 @@ package {
 		* @playerversion Flash 9.0.28.0 
 		*/
 		public function hasType(name:String):Boolean{
-			return name in this;
+			return this._typeList.indexOf(name)>=0;
 		}
 	}
 }

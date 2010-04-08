@@ -77,7 +77,7 @@
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
 		*/
-		static public function rightFill(str:String, num:uint, fill:String):String{
+		static public function rightFill(str:String, num:uint, fill:String='0'):String{
 			while(str.length<num) str = str+fill;
 			return str;
 		}
@@ -92,7 +92,7 @@
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
 		*/
-		static public function leftFill(str:String, num:uint, fill:String):String{
+		static public function leftFill(str:String, num:uint, fill:String='0'):String{
 			while(str.length<num) str = fill+str;
 			return str;
 		}
@@ -254,7 +254,7 @@
 		* @playerversion Flash 9.0.28.0
 		* @langversion 3.0
 		*/
-		static public function numberToString(num:Number, length:uint):String{
+		static public function numberToString(num:*, length:uint):String{
 			var str:String = String(num);
 			while(str.length<length) str = '0'+str;
 			return str;

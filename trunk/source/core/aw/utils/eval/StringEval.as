@@ -107,8 +107,7 @@ package aw.utils.eval{
 			obj['v'] = '\v';
 			obj['b'] = '\b';
 			obj['f'] = '\f';
-			obj['x'] = '\x';
-			obj['0'] = '\0';
+			obj['0'] = String.fromCharCode(0);
 			obj['/'] = '\/';
 			return obj;
 		}();
@@ -143,18 +142,34 @@ package aw.utils.eval{
 		* @playerversion Flash 9.0.28.0 
 		*/
 		static public function getData(str:String, iteration:LengthIterationIndex):String{
+			return parseString(getRawData(str, iteration));
+		}
+		
+		/**
+		* 
+		* @param str
+		* @param iteration
+		* @return 
+		* @see aw.utils.iteration.LengthIterationIndex 
+		* @langversion ActionScript 3.0 
+		* @playerversion Flash 9.0.28.0 
+		*/
+		static public function getRawData(str:String, iteration:LengthIterationIndex, backQuote:String=''):String{
 			var i:int = iteration.index;
-			var q:String = str.charAt(i);
+			var quote:String = str.charAt(i);
+			if(!backQuote) backQuote = quote;
 			var j:int = i;
 			var mI:int;
-			while((j = str.indexOf(q, j+1))>=0){
+			while((j = str.indexOf(backQuote, j+1))>=0){
 				mI = j;
-				while(str.charAt(--mI)==STRING_META_CHAR);
+				while(str.charAt(--mI)==STRING_META_CHAR){
+					// nothing to do
+				}
 				if((j-mI)%META_SEQUENCE_LENGTH==1) break;
 			}
 			iteration.index = ++j;
-			// trace('----------- STRING LAST CHAR', str.charAt(j));
-			return parseString(str.substring(i, j));
+			//trace('----------- STRING LAST CHAR', str.charAt(j));
+			return str.substring(i, j);
 		}
 
 		/** 
@@ -176,7 +191,9 @@ package aw.utils.eval{
 			var mI:int;
 			while((j = str.indexOf(q, j+1))>=0){
 				mI = j;
-				while(str.charAt(--mI)==STRING_META_CHAR);
+				while(str.charAt(--mI)==STRING_META_CHAR){
+					// nothing to do
+				}
 				if((j-mI)%META_SEQUENCE_LENGTH==1) break;
 			}
 			iteration.index = j+1;

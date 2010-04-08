@@ -71,9 +71,12 @@ package aw.utils.eval{
 		*/
 		static public function getData(str:String, iteration:LengthIterationIndex):RegExp{
 			var rgx:String = getRegExpExpression(str, iteration);
+			var length:int = iteration.length;
 			var i:int = iteration.index;
 			var j:int = i+1;
-			while(REGEXP_ADDON.indexOf(str.charAt(++i))>=0);
+			while(i<length && REGEXP_ADDON.indexOf(str.charAt(++i))>=0){
+				// nothing to do
+			}
 			var keys:String = str.substring(j, i);
 			iteration.index = i;
 			return new RegExp(rgx, keys);
@@ -97,7 +100,9 @@ package aw.utils.eval{
 			var mI:int;
 			while((j = str.indexOf(REGEXP_OPEN, j+1))>=0){
 				mI = j;
-				while(str.charAt(--mI)==STRING_META_CHAR);
+				while(str.charAt(--mI)==STRING_META_CHAR){
+					// nothing to do
+				}
 				if((j-mI)%2==1) break;
 			}
 			iteration.index = j;
