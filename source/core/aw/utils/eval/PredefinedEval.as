@@ -48,6 +48,7 @@ package aw.utils.eval{
 			obj['+Infinity'] = +Infinity;
 			obj['-Infinity'] = -Infinity;
 			obj['NaN'] = NaN;
+			obj['AS3'] = AS3;
 			for(var p:String in obj){
 				var len:int = p.length;
 				for(var i:int=0; i<len; i++) CONSTANT_SYMBOLS[p.charAt(i)] = true;
@@ -113,7 +114,17 @@ package aw.utils.eval{
 		* @playerversion Flash 9.0.28.0 
 		*/
 		static public function getValue(name:String):*{
+			trace('GET:', name);
 			return CONSTANTS[name];
+		}
+		/**
+		 * 
+		 * @param name
+		 * @param value
+		 * 
+		 */
+		static public function define(name:String, value:*):void{
+			CONSTANTS[name] = value;
 		}
 	}
 }

@@ -20,9 +20,7 @@
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static public function random(min:Number, max:Number):Number{
-			if(!Calc.isNumber(min)) min = Number.MIN_VALUE;
-			if(!Calc.isNumber(max)) max = Number.MAX_VALUE;
+		static public function random(min:Number=Number.MIN_VALUE, max:Number=Number.MAX_VALUE):Number{
 			return  Math.round(min+Math.random()*(max-min));
 		}
 
@@ -41,9 +39,9 @@
 		*/
 		static public function randomArray(num:Number, min:Number, max:Number, noUnique:Boolean):Array{
 			var arr:Array = new Array();
-			if(Math.abs(max-min)<num) return Calc.valuesArray(min, max);
+			if(Math.abs(max-min)<num) return valuesArray(min, max);
 			for(var i:Number=0; i<num; i++){
-				var value:Number = Calc.random(min, max);
+				var value:Number = random(min, max);
 				var dbl:Boolean = false;
 				for(var j:Number=0; j<i && !noUnique; j++){
 					if(arr[j]==value){
@@ -84,10 +82,11 @@
 		*/
 		static public function valuesArray(min:Number, max:Number):Array{
 			var arr:Array = new Array();
+			var i:int;
 			if(max>min){
-				for(var i:Number=min; i<=max; i++) arr.push(i);
+				for(i=min; i<=max; i++) arr.push(i);
 			}else{
-				for(var i:Number=max; i<=min; i++) arr.push(i);
+				for(i=max; i<=min; i++) arr.push(i);
 			}
 			
 			return arr;
@@ -103,7 +102,7 @@
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static public function isNumber(num):Boolean{
+		static public function isNumber(num:*):Boolean{
 			if(typeof(num)=='number') return true;
 			else return false;
 		}
@@ -118,27 +117,10 @@
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static public function toNumber(obj):Number{
+		static public function toNumber(obj:*):Number{
 			var num:Number = Number(obj);
 			if(isNaN(num)) return 0;
 			else return num;
-		}
-
-		/** 
-		* 
-		* 
-		* 
-		* @public 
-		* @param num 
-		* @param len 
-		* @return String 
-		* @langversion ActionScript 3.0 
-		* @playerversion Flash 9.0.28.0 
-		*/
-		static public function toString(num:Number, len:Number):String{
-			var str:String = num.toString();
-			while(str.length<len) str = '0'+str;
-			return str;
 		}
 
 		/** 
@@ -215,6 +197,35 @@
 		*/
 		static public function partByPercent(max1:Number, max2:Number, num2:Number):Number{
 			return num2/max2*max1;
+		}
+		static private const STRING_ENCODER:String = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$-@_.!*(),';
+		static public const MAX_RADIX:int = 72;
+		static private const STRING_DECODER:Object = function():Object{
+			var obj:Object = {};
+			var length:int = STRING_ENCODER.length;
+			for(var i:int=0; i<length; i++){
+				obj[STRING_ENCODER.charAt(i)] = i;
+			}
+			return obj;
+		}();
+		static public function toString(value:Number, radix:uint=MAX_RADIX):String{
+			var encoded:String = '';
+			value = Math.floor(value);
+			while(value){
+				var code:int = value%radix;
+				encoded = STRING_ENCODER.charAt(code)+encoded;
+				value = (value-code)/radix;
+			}
+			return encoded;
+		}
+		static public function fromString(value:String, radix:uint=MAX_RADIX):Number{
+			var decoded:Number = 0;
+			var factor:Number = 1;
+			for(var i:int=value.length-1; i>=0; i--){
+				decoded += STRING_DECODER[value.charAt(i)]*factor;
+				factor *= radix;
+			}
+			return decoded;
 		}
 	}
 }

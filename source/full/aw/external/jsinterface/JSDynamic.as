@@ -607,21 +607,21 @@ package {
 		*/
 		protected function internalGet(name:*, cls:Class=null):*{
 			//trace(name);
-			var obj:Object = ExternalInterface.call(JSCaller.getPropertyMethod, JSCore.name, this.js_interface::name, this._info.type, name.toString());
-			if(JSCore.ERROR_PARAM in obj){
-				JSCaller.throwException(obj.error);
+			var value:Object = ExternalInterface.call(JSCaller.getPropertyMethod, JSCore.name, this.js_interface::name, this._info.type, name.toString());
+			if(JSCore.ERROR_PARAM in value){
+				JSCaller.throwException(value.error);
 				return undefined;
-			}else obj = obj.value;
+			}else value = value.value;
 			//trace(obj);
 			//trace(this._typeMap, this._typeMap.getType(name));
-			if(obj){
+			if(value){
 				if(!cls){
 					cls = this._typeMap ? this._typeMap.getType(name) : JSDynamic;
 				}
-				var ret:* = JSInfoObject.convert(obj, cls);
-				//trace(getQualifiedClassName(this), name, obj, obj.value, this._typeMap, this._typeMap.getType(name), getQualifiedClassName(ret));
+				var ret:* = JSInfoObject.convert(value, cls);
+				//trace(getQualifiedClassName(this), name, value, value.value, this._typeMap, this._typeMap.getType(name), getQualifiedClassName(ret));
 				return ret;
-			}else return undefined;
+			}else return value;
 		}
 
 		/** 
@@ -655,7 +655,7 @@ package {
 			}else{
 				return ret.value;
 			}
-			return undefined;
+			return false;
 		}
 
 		/** 
@@ -689,7 +689,7 @@ package {
 			}else{
 				return ret.value;
 			}
-			return undefined;
+			return false;
 		}
 
 		/** 

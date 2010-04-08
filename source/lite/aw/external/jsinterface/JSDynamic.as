@@ -188,7 +188,7 @@ package aw.external.jsinterface{
 			if(obj){
 				var ret:* = JSInfoObject.convert(obj, JSDynamic);
 				return ret;
-			}else return undefined;
+			}else return obj;
 		}
 
 		override flash_proxy function hasProperty(name:*):Boolean{
@@ -202,7 +202,7 @@ package aw.external.jsinterface{
 			}else{
 				return ret.value;
 			}
-			return undefined;
+			return false;
 		}
 
 		override flash_proxy function deleteProperty(name:*):Boolean{
@@ -216,7 +216,7 @@ package aw.external.jsinterface{
 			}else{
 				return ret.value;
 			}
-			return undefined;
+			return false;
 		}
 
 		override flash_proxy function setProperty(name:*, value:*):void{

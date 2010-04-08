@@ -73,7 +73,7 @@ package aw.utils.eval{
 			var len:int = iteration.length;
 			var i:int = iteration.index+1;
 			var nextValue:Boolean = true;
-			// trace('------------------------ START PARSE ARRAY');
+			// trace('------------------------ START PARSE ARRAY', str.substr(iteration.index));
 			while(i<len){
 				chr = str.charAt(i);
 				// trace('next char', chr);
@@ -103,7 +103,7 @@ package aw.utils.eval{
 				}
 				i++;
 			}
-			// trace('------------------------ STOP PARSE ARRAY');
+			// trace('------------------------ STOP PARSE ARRAY', str.substr(iteration.index));
 			return ret;
 		}
 	}

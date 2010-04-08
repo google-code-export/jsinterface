@@ -2,7 +2,6 @@ package aw.utils.eval{
 	import aw.emulate.Arithmetic;
 	import aw.errors.EvalUtilsError;
 	import aw.utils.ClassUtils;
-	import aw.utils.MethodCaller;
 	import aw.utils.iteration.LengthIterationIndex;
 	
 	import flash.system.ApplicationDomain;
@@ -25,6 +24,16 @@ package aw.utils.eval{
 		* @playerversion Flash 9.0.28.0 
 		*/
 		static private const PARAM_NAME_SPACERS:String = '.([';
+		
+		/**
+		 * 
+		 * 
+		 * 
+		 * @private (constant) 
+		 * @langversion ActionScript 3.0 
+		 * @playerversion Flash 9.0.28.0 
+		 */
+		static public const GROUP_OPEN:String = '(';
 
 		/** 
 		* 
@@ -134,7 +143,7 @@ package aw.utils.eval{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static private const DOT_CHAR:String = '.';
+		static public const DOT_CHAR:String = '.';
 
 		/** 
 		* 
@@ -145,7 +154,7 @@ package aw.utils.eval{
 		* @playerversion Flash 9.0.28.0 
 		*/
 		static private const RESTRICTED_NAME_CHARS:String = '~!#$%^&*()+|-=\\[];\'`<>?,./:"{}№ \t';
-
+		
 		/** 
 		* 
 		* 
@@ -160,6 +169,18 @@ package aw.utils.eval{
 			for(var i:int=0; i<len; i++) obj[RESTRICTED_NAME_CHARS.charAt(i)] = true;
 			return obj;
 		}();
+		
+		/** 
+		 * 
+		 * 
+		 * 
+		 * @private (constant) 
+		 * @langversion ActionScript 3.0 
+		 * @playerversion Flash 10.0.0
+		 */
+		static private const VECTOR_TYPE_CONTAINER:String = '.<';
+		static private const VECTOR_TYPE_OPEN:String = '<';
+		static private const VECTOR_TYPE_CLOSE:String = '>';
 
 		/** 
 		* 
@@ -215,8 +236,8 @@ package aw.utils.eval{
 				var plen:int = p.length;
 				if(str.substr(i, plen)==p && SPACES.indexOf(str.charAt(i+plen))>=0){
 					i+=plen;
-					var len:int = iteration.length;
-					while(SPACES.indexOf(str.charAt(i))>=0 && i<len) i++;
+					var length:int = iteration.length;
+					while(i<length && SPACES.indexOf(str.charAt(i))>=0) i++;
 					iteration.index = i;
 					return EXECUTABLE_OPERATORS[p](str, iteration, parseValue, scope);
 				}
@@ -248,12 +269,32 @@ package aw.utils.eval{
 			iteration.index = i;
 			var object:Object;
 			if(str.charAt(i)==FUNCTION_CALL_OPEN){
-				object = ClassUtils.apply(definition, ArrayEval.getData(str, iteration, parseValue, scope, FUNCTION_CALL_CLOSE));
-				iteration.index+=1;
+				var arguments:Array = ArrayEval.getData(str, iteration, parseValue, scope, FUNCTION_CALL_CLOSE);
+				object = ClassUtils.apply(definition, arguments);
 			}else{
 				object = ClassUtils.apply(definition);
 			}
 			return object;
+		}
+		
+		/**
+		 * 
+		 * @param str
+		 * @param iteration
+		 * @param parseValue
+		 * @param scope
+		 * @return 
+		 * 
+		 */
+		static public function parseGroup(str:String, iteration:LengthIterationIndex, parseValue:Function, scope:Object=null):Object{
+			iteration.index++;
+			var target:Object = parseValue(str, iteration, scope);
+			iteration.index += 1;
+			var chr:String = str.charAt(iteration.index);
+			if(chr==DOT_CHAR || chr==FUNCTION_CALL_OPEN){
+				target = getDottedSequence(str, iteration, parseValue, scope, target);
+			}
+			return target;
 		}
 
 		/** 
@@ -276,7 +317,6 @@ package aw.utils.eval{
 			var len:int = iteration.length;
 			var chr:String = str.charAt(i);
 			var isAttribute:Boolean = false;
-			var isGetDescendants:Boolean = false;
 			var currentScope:Object;
 			// trace('------------------------ START PARSE EXECUTABLE');
 			if(chr==ATTRIBUTE_SEPARATOR){
@@ -301,17 +341,34 @@ package aw.utils.eval{
 				// trace(' - static scope');
 				currentScope = getStaticValue(str, iteration, applicationDomain, String(name));
 			}
-			i = iteration.index;
+			currentScope = getDottedSequence(str, iteration, parseValue, scope, currentScope, callFunction);
+			// trace('------------------------ STOP PARSE EXECUTABLE');
+			return currentScope;
+		}
+		static public function getDottedSequence(str:String, iteration:LengthIterationIndex, parseValue:Function, scope:Object=null, currentScope:Object=null, callFunction:Boolean=true):Object{
+			var i:int = iteration.index;
+			var len:int = iteration.length;
+			var isAttribute:Boolean = false;
+			var isGetDescendants:Boolean = false;
+			var previousScope:Object = scope;
+			var operators:String;
+			var name:QName;
+			var chr:String;
 			// trace(' -- cycle');
 			while(i<len){
 				chr = str.charAt(i);
 				// trace('next char:', chr);
 				if(chr==FUNCTION_CALL_OPEN){
 					if(callFunction){
-						// trace('function call');
-						if(currentScope is Function) currentScope = MethodCaller.apply(currentScope as Function, ArrayEval.getData(str, iteration, parseValue, scope, FUNCTION_CALL_CLOSE));
-						else throw new EvalUtilsError(EvalUtilsError.getIsNotFunctionMessage(name));
-						i = iteration.index+1;
+						// trace('function call', previousScope);
+						if(previousScope is XML || previousScope is XMLList){
+							name = new QName(AS3.uri, name.localName);
+							currentScope = previousScope[name];
+						}
+						if(currentScope is Function){
+							currentScope = (currentScope as Function).apply(previousScope, ArrayEval.getData(str, iteration, parseValue, scope, FUNCTION_CALL_CLOSE));
+						}else throw new EvalUtilsError(EvalUtilsError.getIsNotFunctionMessage(name));
+						i = iteration.index;
 						continue;
 					}else{
 						// trace('do not call function', currentScope);
@@ -334,14 +391,19 @@ package aw.utils.eval{
 						isAttribute = true;
 						chr = str.charAt(++i);
 					}else isAttribute = false;
-				}else if(chr!=DYNAMIC_NAME_OPEN){
-					// trace('incorrect char');
+					iteration.index = i;
+					name = getQName(str, iteration, parseValue, scope);
+				}else if(chr==DYNAMIC_NAME_OPEN){
+					iteration.index = i+1;
+					var nameValue:Object = parseValue(str, iteration, scope);
+					name = nameValue is QName ? nameValue as QName : new QName('', String(nameValue));
+					iteration.index += 1;
+				}else{
 					break;
 				}
-				iteration.index = i;
-				name = getQName(str, iteration, parseValue, scope);
 				// trace('name: ', name);
 				operators = getAssignOperator(str, iteration);
+				previousScope = currentScope;
 				if(operators){
 					// trace('assign operator found:', operators);
 					return applyValue(str, iteration, parseValue, operators, currentScope, name, isAttribute, scope);
@@ -356,7 +418,7 @@ package aw.utils.eval{
 						currentScope = isAttribute ? currentScope.@[name] : currentScope[name];
 					}
 				}
-				// trace('scope: ', currentScope);
+				// trace('scope: ', name, currentScope);
 				i = iteration.index;
 			}
 			iteration.index = i;
@@ -453,23 +515,55 @@ package aw.utils.eval{
 			var ret:Object;
 			var i:int;
 			var chr:String;
-			while(!appd.hasDefinition(name)){
+			while(!appd.hasDefinition(name) || str.substr(iteration.index, 2)==VECTOR_TYPE_CONTAINER){
 				i = iteration.index;
 				chr = str.charAt(i);
 				if(chr==DOT_CHAR){
 					iteration.index = i+1;
-					name += DOT_CHAR+getNameString(str, iteration);
+					if(str.charAt(iteration.index)==VECTOR_TYPE_OPEN){
+						var vectorType:String = getVectorType(str, iteration);
+						name += DOT_CHAR+vectorType;
+						break;
+					}else{
+						name += DOT_CHAR+getNameString(str, iteration, RESTRICTED_NAME_CHARS_OBJECT);
+					}
 				}else if(chr==NAMESPACE_SEPARATOR_PART){
 					if(str.charAt(i+1)==NAMESPACE_SEPARATOR_PART){
 						iteration.index = i+2;
-						name += NAMESPACE_SEPARATOR+getNameString(str, iteration);
-						break;
+						name += NAMESPACE_SEPARATOR+getNameString(str, iteration, RESTRICTED_NAME_CHARS_OBJECT);
 					}else throw new EvalUtilsError(EvalUtilsError.getIncorrectCharMessage(i+1));
 				}else break;
 			}
+			// trace(' ----------------- getDefinition', '"'+name+'"', str.substr(iteration.index));
 			ret = appd.getDefinition(name);
 			//iteration.index = i; index already saved inside cycle body
 			return ret;
+		}
+		
+		static public function getVectorType(str:String, iteration:LengthIterationIndex):String{
+			var i:int = iteration.index;
+			var j:int = i+1;
+			var openCount:int = 1;
+			var chr:String;
+			while(openCount){
+				var open:int = str.indexOf(VECTOR_TYPE_OPEN, j);
+				var close:int = str.indexOf(VECTOR_TYPE_CLOSE, j);
+				if(close>0){
+					if(open>0 && open<close){
+						j = open+1;
+						openCount++;
+						continue;
+					}else{
+						j = close+1;
+						openCount--;
+					}
+				}else{
+					throw new Error('Wrong Vector type container, can not parse.');
+				}
+			}
+			iteration.index = j;
+			//trace('----------- STRING LAST CHAR', str.charAt(j));
+			return str.substring(i, j);
 		}
 
 		/** 
@@ -535,12 +629,13 @@ package aw.utils.eval{
 		*/
 		static public function getNameData(str:String, iteration:LengthIterationIndex, parseValue:Function, scope:Object=null):*{
 			var i:int = iteration.index;
+			var length:int = iteration.length;
 			var ret:*;
 			if(str.charAt(i)==DYNAMIC_NAME_OPEN){
 				iteration.index = i+1;
 				ret = parseValue(str, iteration, scope);
 				i = iteration.index;
-				while(str.charAt(i)!=DYNAMIC_NAME_CLOSE) i++;
+				while(i<length && str.charAt(i)!=DYNAMIC_NAME_CLOSE) i++;
 				iteration.index = i+1;
 			}else{
 				ret = getNameString(str, iteration);
@@ -560,12 +655,13 @@ package aw.utils.eval{
 		* @langversion ActionScript 3.0 
 		* @playerversion Flash 9.0.28.0 
 		*/
-		static public function getNameString(str:String, iteration:LengthIterationIndex):String{
+		static public function getNameString(str:String, iteration:LengthIterationIndex, restriction:Object=null):String{
+			if(!restriction) restriction = RESTRICTED_NAME_CHARS_OBJECT;
 			var len:int = iteration.length;
 			var i:int = iteration.index;
 			var dest:String = str.charAt(i);
 			for(i=i+1; i<len; i++){
-				if(str.charAt(i) in RESTRICTED_NAME_CHARS_OBJECT) break;
+				if(str.charAt(i) in restriction) break;
 			}
 			dest = str.substring(iteration.index, i);
 			iteration.index = i;

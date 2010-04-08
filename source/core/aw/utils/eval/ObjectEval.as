@@ -150,7 +150,9 @@ package aw.utils.eval{
 				end = str.indexOf(OBJECT_PAIR_SEPARATOR, i);
 				if(end>0){
 					iteration.index = end;
-					while(SPACES.indexOf(str.charAt(--end))>=0);
+					while(SPACES.indexOf(str.charAt(--end))>=0){
+						// nothing to do
+					}
 					name = str.substring(i, end+1);
 				}
 			}

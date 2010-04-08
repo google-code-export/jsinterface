@@ -62,7 +62,7 @@ package aw.data.json{
 		* @private (constant)
 		*/
 		static private const STRING_SEARCHES:Array = function():Array{
-			var arr:Array = ['\\','\/','\r','\n','\t','\v','\b','\f','\x','\0'];
+			var arr:Array = ['\\','\/','\r','\n','\t','\v','\b','\f', String.fromCharCode(0)];
 			stringSearchesLength = arr.length;
 			return arr;
 		}();
@@ -71,7 +71,7 @@ package aw.data.json{
 		*
 		* @private (constant)
 		*/
-		static private const STRING_REPLACEMENTS:Array = ['\\\\','\\\/','\\r','\\n','\\t','\\v','\\b','\\f','\\x','\\0'];
+		static private const STRING_REPLACEMENTS:Array = ['\\\\','\\\/','\\r','\\n','\\t','\\v','\\b','\\f','\\0'];
 
 		/**
 		* Packs any data to a JSON string.

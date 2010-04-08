@@ -104,10 +104,11 @@ package aw.utils.eval{
 		static public function getData(str:String, iteration:LengthIterationIndex):XML{
 			var start:int = iteration.index;
 			var i:int;
+			// trace(' -------------- XML started', str.substr(start));
 			var tagName:String = getXMLTagName(str, iteration);
 			if(!tagName) throw new EvalUtilsError(EvalUtilsError.XML_ROOT_NODE_WITHOUT_NAME);
 			else if(str.indexOf(XML_CDATA_OPEN, start)==start){
-				i = str.indexOf(XML_CDATA_CLOSE, start)+XML_CDATA_CLOSE.length;
+				iteration.index = str.indexOf(XML_CDATA_CLOSE, start)+XML_CDATA_CLOSE.length;
 			}else if(!isClosedXMLTag(str, iteration)){
 				var tagNameLength:int = tagName.length;
 				i = iteration.index;
@@ -137,7 +138,8 @@ package aw.utils.eval{
 				}
 				iteration.index = ++i;
 			}
-			return XML(str.substring(start, i));
+			// trace(' ------------------------- XML done', start, i, str.substring(start, iteration.index));
+			return XML(str.substring(start, iteration.index));
 		}
 
 		/** 
@@ -177,7 +179,7 @@ package aw.utils.eval{
 			var start:int = iteration.index;
 			var cls:int = str.indexOf(XML_CLOSE_TAG_CHAR+XML_CLOSE, start);
 			var ncls:int = str.indexOf(XML_CLOSE, start);
-			iteration.index = ncls;
+			iteration.index = ncls+1;
 			return (cls>=0 && cls<ncls) ? true : false;
 		}
 	}
