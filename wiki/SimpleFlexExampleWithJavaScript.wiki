@@ -9,7 +9,7 @@ If you are trying to run some JavaScript within your Flex application, you shoul
 
 When debug is done, you can disable JSInterface debug mode disabling JSInterface.redirectJavaScriptExceptions and JSInterface.redirectFlashExceptions, this will increase application speed, sometimes dramatically. :)
 
-Some of JavaScript methods cannot be executed outside of context, foe example, Document.createElement. If you are trying to execute this function directly -- use Function.call() and Function.apply() methods with Document object used as scope.
+Some of JavaScript methods cannot be executed outside of context, for example, Document.createElement. If you are trying to execute this function directly -- use Function.call() and Function.apply() methods with Document object used as scope.
 
 
 = Example =
